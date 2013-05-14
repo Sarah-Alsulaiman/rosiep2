@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv='cache-control' content='no-cache'>
+    <meta http-equiv='expires' content='0'>
+    <meta http-equiv='pragma' content='no-cache'>
+
+    <title>BlocklyDart</title>
+    <link rel="stylesheet" href="blocklydart.css">
+    
+    <script type="text/javascript" src="../../blockly/blockly_compressed.js"></script>
+    <script type="text/javascript" src="../../blockly/language/en/_messages.js"></script>
+    <script type="text/javascript" src="../../blockly/generators/javascript.js"></script>
+    
+    <!--<script type="text/javascript" src="../../blockly/generators/javascript/variables.js"></script>
+    <script type="text/javascript" src="../../blockly/language/common/variables-custom.js"></script> -->
+    
+    <script type="text/javascript" src="language.js"></script>
+    <script type="text/javascript" src="generator.js"></script>
+    
+    <script type="text/javascript">
+      
+    //---------------------------------------------------------------------------
+    // Attempt to open a web socket connection
+    //---------------------------------------------------------------------------
+    var socket = null;
+    if ("WebSocket" in window) {
+      socket = new WebSocket("ws://localhost:8080");
+      socket.onopen    = function(evt) { console.log("HTML connected."); }
+      socket.onmessage = function(evt) { processEvent(evt.data); }
+      socket.onerror   = function(evt) { console.log("HTML error in server connection"); }
+      socket.onclose   = function(evt) { console.log("HTML server connection closed."); }
+      
+    }
+    
+    function setHtmlOpacity(id, opacity) {
+      var el = document.getElementById(id);
+      if (el) {
+         if (opacity > 0) {
+            el.style.zIndex = 100;
+         } else {
+            el.style.zIndex = -1;
+         }
+         el.style.opacity = opacity;
+      }
+   }
+   
+   
+   function fadeOutAfterDelay(id, delay) {
+      window.setTimeout(function() { setHtmlOpacity(id, 0.0); }, delay);
+   }
+    
+    //---------------------------------------------------------------------------
+    // Process dart event
+    //---------------------------------------------------------------------------
+    function processEvent(event) {
+      //var button = document.getElementById("play-button");
+      if (event == "@blockly DONE" ||
+          event == "@blockly RESTARTED" ||
+          event == "@blockly PAUSED") {
+         //button.style.backgroundImage = 'url("images/play.png")';
+         //playing = false;
+         console.log("HTML received message from dart" + event);
+         
+      }
+      else if (event == "@blockly GOT IT!") {
+        console.log("HTML received message from dart " + event);
+         //button.style.backgroundImage = 'url("images/pause.png")';
+         //playing = true;
+      }
+    }
+       
+       
+    function sendBlocklyCode() {
+      var code = Blockly.Generator.workspaceToCode('JavaScript');
+      //--------------------------------------------------
+     // error 1: no blocks on the screen
+     //--------------------------------------------------
+      if (code.length == 0) {
+        setHtmlOpacity("hint1", 1.0);
+        fadeOutAfterDelay("hint1", 4000);
+      }
+  
+      //--------------------------------------------------
+      // error 2: blocks aren't connected
+      //--------------------------------------------------
+      
+       /*else if (code.indexOf("\n") >= 0) {
+            setHtmlOpacity("hint2", 1.0);
+            fadeOutAfterDelay("hint2", 4000);
+         }*/
+  
+      else {
+        code = code.replace(/\]\[/g, '], [');
+        code = (code.replace(/\)/g, '')).replace(/\(/g, '');
+        code = code.replace(/\;/g, '');
+        if (socket != null && socket.readyState == 1) {
+        alert(code);
+        socket.send('@dart '+ code);
+        //window.location.reload(true);
+        }
+        
+      }
+      
+    }
+      
+    </script>
+       
+  </head>
+  <body>
+    <img src="images/rosie.png" id="title">
+    <div id="rosie-code" style="width: 900px; height: 848px;"></div>
+    
+    
+     <xml id="toolbox2" style="display: none">
+       <category name="+ Tops">
+         <block type="top1"></block>
+         <block type="top2"></block>
+       </category>
+       <category> </category>
+       <category name="+ Bottoms">
+         <block type="bottom1"></block>
+         <block type="bottom2"></block>
+       </category>
+       <category></category>
+       <category name="+ Coloring">
+         <block type="set_color"></block>
+         <block type="get_color"></block>
+         <block type="equal"></block>
+         <block type="red"></block>
+         <block type="blue"></block>
+         
+       </category>
+       <category></category>
+       <category name = "+ Controls">
+         <block type = "control_if"></block>
+         <block type="going_to"></block>   
+         <block type="control_repeat"></block>
+         
+       </category>
+       <category></category>
+       <category name = "+ Outfit Definitions" custom="PROCEDURE"></category>
+       <category name = "+ VARS" > 
+       
+        </category>
+       </category>
+         
+   </xml>
+       
+  <xml id="toolbox3" style="display: none">
+    <block type="maze_moveForward"></block>
+    <block type="maze_stepRight"></block>
+    
+    <block type="maze_forever"></block>
+      
+    <block type="maze_if"></block>
+    <block type="maze_ifElse"></block>
+  
+  </xml>
+  <xml id="toolbox" style="display: none">
+  <block type="controls_if" inline="false" x="321" y="155">
+    <value name="IF0">
+      <block type="logic_compare" inline="true">
+        <title name="OP">EQ</title>
+        <value name="A">
+          <block type="colour_picker">
+            <title name="COLOUR">#ffffff</title>
+          </block>
+        </value>
+        <value name="B">
+          <block type="colour_random"></block>
+        </value>
+      </block>
+    </value>
+    <statement name="DO0">
+      <block type="math_change" inline="false">
+        <title name="VAR">item</title>
+        <value name="DELTA">
+          <block type="math_number">
+            <title name="NUM">1</title>
+          </block>
+        </value>
+      </block>
+    </statement>
+  </block>
+</xml> <!---->
+  
+  
+    
+      <script type="text/javascript">
+      Blockly.inject(document.getElementById('rosie-code'), { path: '../../blockly/', toolbox: document.getElementById('toolbox2')} );
+      </script>
+     
+       <!-- POPUP HINT TEXT -->
+      <img src="images/hint1.png" id="hint1" class="hint">
+      <img src="images/hint2.png" id="hint2" class="hint">
+      
+      
+      
+      
+      <img src="images/top1-red.png" id="top1-red" class="top">
+      <img src="images/top2-red.png" id="top2-red" class="top">
+      <img src="images/top1-blue.png" id="top1-blue" class="top">
+      <img src="images/top2-blue.png" id="top2-blue" class="top">
+      
+      
+      <img src="images/bottom1-red.png" id="bottom1-red" class="bottom">
+      <img src="images/bottom2-red.png" id="bottom2-red" class="bottom">
+      <img src="images/bottom1-blue.png" id="bottom1-blue" class="bottom">
+      <img src="images/bottom2-blue.png" id="bottom2-blue" class="bottom">
+      
+      <div id="rosie-output"> 
+        
+      </div>
+
+   <!-- TOOLBAR -->
+   <div id="rosie-toolbar">
+      <div>
+         <button id="play-button" onclick="sendBlocklyCode();"></button>
+      </div>
+   </div>
+   
+    <script type="application/dart" src="blocklydart.dart"></script>
+    <script src="packages/browser/dart.js"></script>
+  </body>
+</html>
