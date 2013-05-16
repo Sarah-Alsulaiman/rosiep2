@@ -7,7 +7,6 @@ Blockly.Language.top1 = {
     this.setColour(330);
     this.appendValueInput("color")
         .setCheck([String, "var"])
-        .appendTitle(new Blockly.FieldImage("http://www.gstatic.com/codesite/ph/images/star_on.gif", 50, 50))
         .appendTitle("Top1")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
@@ -27,7 +26,6 @@ Blockly.Language.top2 = {
     this.setColour(330);
     this.appendValueInput("color")
         .setCheck([String, "var"])
-        .appendTitle(new Blockly.FieldImage("http://www.gstatic.com/codesite/ph/images/star_on.gif", 50, 50))
         .appendTitle("Top2")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
@@ -44,7 +42,6 @@ Blockly.Language.bottom1 = {
     this.setColour(330);
     this.appendValueInput("color")
         .setCheck([String, "var"])
-        .appendTitle(new Blockly.FieldImage("http://www.gstatic.com/codesite/ph/images/star_on.gif", 50, 50))
         .appendTitle("Bottom1")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
@@ -61,7 +58,6 @@ Blockly.Language.bottom2 = {
     this.setColour(330);
     this.appendValueInput("color")
         .setCheck([String, "var"])
-        .appendTitle(new Blockly.FieldImage("http://www.gstatic.com/codesite/ph/images/star_on.gif", 50, 50))
         .appendTitle("Bottom2")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
@@ -96,7 +92,6 @@ Blockly.Language.get_color_input = {
     this.setColour(290);
     this.appendValueInput("GET")
         .setCheck([Boolean, "equal", String])
-        .appendTitle(new Blockly.FieldImage("http://www.gstatic.com/codesite/ph/images/star_on.gif", 50, 50))
         .appendTitle("GET COLOR OF")
         .appendTitle(new Blockly.FieldDropdown(GET_options()), "part")
         .appendTitle("EQUALS");
@@ -118,7 +113,6 @@ Blockly.Language.get_color_var = {
   init: function() {
     this.setColour(290);
     this.appendDummyInput()
-        .appendTitle(new Blockly.FieldImage("http://www.gstatic.com/codesite/ph/images/star_on.gif", 50, 50))
         .appendTitle("GET COLOR OF")
         .appendTitle(new Blockly.FieldDropdown(GET_options()), "part");
     this.setOutput(true, "var");
@@ -261,8 +255,9 @@ Blockly.Language.procedures_defnoreturn = {
     var name = Blockly.Procedures.findLegalName(
         Blockly.LANG_PROCEDURES_DEFNORETURN_PROCEDURE, this);
     this.appendDummyInput()
+    	.appendTitle("Outfit Name: ")
         .appendTitle(new Blockly.FieldTextInput(name,
-        Blockly.Procedures.rename), 'NAME')
+        Blockly.Procedures.rename), 'NAME') //------------------------------------------------------------------------------------
         .appendTitle('', 'PARAMS');
     this.appendStatementInput('STACK')
         .appendTitle(Blockly.LANG_PROCEDURES_DEFNORETURN_DO);
