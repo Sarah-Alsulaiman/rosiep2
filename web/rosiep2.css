@@ -53,19 +53,6 @@ A:visited {text-decoration: none}
 A:active {text-decoration: none}
 A:hover {text-decoration: underline; color: rgba(102, 0, 102, .6);}
 
-#rosie-toolbar {
-   background-color: rgba(255, 192, 203, 1); 
-   border-radius: 15px;
-   border: 2px solid white;
-   border-color:  rgba(102, 0, 102, .6);
-   position: absolute;
-   top: 820px;
-   left: 1250px;
-   text-align: center;
-   padding: 5px;
-   width: 150px;
-   z-index: 2;
-}
 
 #rosie-output {
    border: 1px solid black;
@@ -73,13 +60,26 @@ A:hover {text-decoration: underline; color: rgba(102, 0, 102, .6);}
    left: 1110px;
    top: 78px;
    width: 400px;
-   height: 840px;
+   height: 872px;
    padding: 10px;
    border: 1px solid black;
    text-align: center;
    background-color: rgba(255, 192, 203, .6); 
 }
 
+#rosie-toolbar {
+   background-color: rgba(255, 192, 203, 1); 
+   border-radius: 15px;
+   border: 2px solid white;
+   border-color:  rgba(102, 0, 102, .6);
+   position: absolute;
+   top: 870px;
+   left: 1250px;
+   text-align: center;
+   padding: 5px;
+   width: 150px;
+   z-index: 2;
+}
 
 
 .swatch {

@@ -14,14 +14,26 @@
     <script type="text/javascript" src="../../blockly/language/en/_messages.js"></script>
     <script type="text/javascript" src="../../blockly/generators/javascript.js"></script>
     
-    <!--<script type="text/javascript" src="../../blockly/generators/javascript/variables.js"></script>
-    <script type="text/javascript" src="../../blockly/language/common/variables-custom.js"></script> -->
-    
     <script type="text/javascript" src="language.js"></script>
     <script type="text/javascript" src="generator.js"></script>
     
     <script type="text/javascript">
-      
+     //---------------------------------------------------------------------------
+    // Global Level variables
+    //---------------------------------------------------------------------------
+      var MAX_LEVEL = 7;
+      var MIN_LEVEL = 1;
+      var CURRENT_LEVEL = getLevel();
+      var LEVELS_MSG = [" Rosie is going to a resturant with her friend, Jasmin. <BR/> &nbsp;&nbsp;&nbsp;&nbsp; Help her decide what to wear. ",
+                        " Rosie is invited to a party. Dress code is white. <BR/> &nbsp;&nbsp;&nbsp;&nbsp; Help Rosie decide what to wear. ",
+                        " Rosie wants to go to the gym. Jasmin invited her to go to brunch. Rosie is still hesitant on where to go. Help Rosie choose her outfit for both cases",
+                        " Rosie want you to help her pick an outfit that would be her favorite to wear on formal occasions. define an outfit and use it",
+                        " Rosie in invited to a formal event. She also has tickets for her favorite band concert.<BR/> Help Rosie on both cases",
+                        " Rosie likes to have her bag and shoe of the same color. She picked the bag but not the shoe, pick a shoe and give it the same color",
+                        " Rosie wore a top of a certain color, and wants you to pick a bottom that is different in color, pick a bottom and give it a different color"
+                       ];
+    
+    
     //---------------------------------------------------------------------------
     // Attempt to open a web socket connection
     //---------------------------------------------------------------------------
@@ -34,6 +46,50 @@
       socket.onclose   = function(evt) { console.log("HTML server connection closed."); }
       
     }
+    
+    //---------------------------------------------------------------------------
+    //  Get level number from URL
+    //---------------------------------------------------------------------------
+    function getLevel () {
+      var val = window.location.search.match(new RegExp('[?&]level=(\\d+)'));
+      val = val ? val[1] : MIN_LEVEL;
+      val = Math.min(Math.max(MIN_LEVEL, val), MAX_LEVEL);
+      return val;
+    }
+    
+    //---------------------------------------------------------------------------
+    // Redirect to the next level
+    //---------------------------------------------------------------------------
+    function advanceLevel () {
+      if (CURRENT_LEVEL < MAX_LEVEL) {
+        var proceed = window.confirm('Congratulations!\nAre you ready to proceed to level %1?'.replace('%1', CURRENT_LEVEL + 1));
+        if (proceed) {
+          window.location = window.location.protocol + '//' +
+          window.location.host + window.location.pathname +
+          '?level=' + (CURRENT_LEVEL + 1);
+        }
+      } 
+      else {
+        window.alert("END OF GAME");
+      }
+    
+    }
+    
+    //----------------------------------------------------------------------------------------
+    // Inject blockly to this page and display the message corrosponding to the current level
+    //----------------------------------------------------------------------------------------
+    function inject() {
+      Blockly.inject(document.getElementById('rosie-code'),
+      { path: '../../blockly/', toolbox: document.getElementById('toolbox' + CURRENT_LEVEL)} );
+    
+      document.getElementById('full_text_div').innerHTML= LEVELS_MSG[CURRENT_LEVEL - 1];
+      document.getElementById('level-h').innerHTML= "Level " + CURRENT_LEVEL + " :";
+    }
+    
+    //---------------------------------------------------------------------------------------
+    //                                                                                       
+    //---------------------------------------------------------------------------------------
+   
     
     function setHtmlOpacity(id, opacity) {
       var el = document.getElementById(id);
@@ -108,42 +164,39 @@
         code = code.replace(/\]\[/g, '], [');
         code = (code.replace(/\)/g, '')).replace(/\(/g, '');
         code = code.replace(/\;/g, '');
+      }
         if (socket != null && socket.readyState == 1) {
-        alert(code);
+        //alert(code);
         socket.send('@dart '+ code);
+        advanceLevel();
         //window.location.reload(true);
         }
-        
-      }
       
     }
       
     </script>
        
   </head>
-  <body>
+  <body onload="inject()">
     <img src="images/rosie.png" id="title">
     
     <div class="level-text">
-        
-      <div id="full_text_div"  style="display:inline;">
-        <div id="level-h" style="display:inline;">Level 1:</div> 
-        Rosie is going to a resturant with her friend, Jasmin. Help her decide what to wear. Help her decide what to wear.
-      </div>
-      <div id="more_btn"  style="display:inline;">
+      <div id="level-h" style="display:inline;"> </div> 
+      <div id="full_text_div"  style="display:inline;"> </div>
+      <!--<div id="more_btn"  style="display:inline;">
           <a href="JavaScript:void()"  onClick="hideText()" /> Show less...</a>
       </div>
 
       <div id="part_text_div"  style="display:none" > Level1
       <a href="JavaScript:void()"  onClick="showText()" /> Show more...</a>
-      </div>
+      </div>-->
 
     </div>
        
     <div id="rosie-code" style="width: 900px; height: 815px;"></div>
     
     
-     <xml id="toolbox2" style="display: none">
+     <xml id="toolbox1" style="display: none">
        <category> </category>
        <category name="+ Tops">
          <block type="top1"></block>
@@ -173,17 +226,7 @@
        <category name = "+ VARS" > </category>
          
    </xml>
-       
-  <xml id="toolbox3" style="display: none">
-    <block type="maze_moveForward"></block>
-    <block type="maze_stepRight"></block>
-    
-    <block type="maze_forever"></block>
-      
-    <block type="maze_if"></block>
-    <block type="maze_ifElse"></block>
-  
-  </xml>
+
   <xml id="toolbox" style="display: none">
   <block type="controls_if" inline="false" x="321" y="155">
     <value name="IF0">
@@ -212,11 +255,6 @@
   </block>
 </xml> <!---->
   
-  
-    
-      <script type="text/javascript">
-      Blockly.inject(document.getElementById('rosie-code'), { path: '../../blockly/', toolbox: document.getElementById('toolbox2')} );
-      </script>
      
        <!-- POPUP HINT TEXT -->
       <img src="images/hint1.png" id="hint1" class="hint">
@@ -234,9 +272,7 @@
       <img src="images/bottom1-blue.png" id="bottom1-blue" class="bottom">
       <img src="images/bottom2-blue.png" id="bottom2-blue" class="bottom">
       
-      <div id="rosie-output"> 
-        
-      </div>
+      <div id="rosie-output"> </div>
 
    <!-- TOOLBAR -->
    <div id="rosie-toolbar">
