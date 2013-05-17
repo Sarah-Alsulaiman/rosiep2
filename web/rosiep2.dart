@@ -72,12 +72,11 @@ void initWebsocket() {
       compile(evt.data.substring(6));
       print(outfits);
       print('Dart received message from HTML ');
-      Timer.run(() => display(timer));
+      Timer.run(() => display());
       timer = new Timer.periodic(new Duration(milliseconds: 1000), (Timer t) {
         if (outfits.length == 0) {
           timer.cancel();
           sendMessage("DONE!");
-          print("timer cancelled");
         }
         else {
           display();
