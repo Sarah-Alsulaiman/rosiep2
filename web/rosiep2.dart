@@ -26,7 +26,7 @@ CanvasRenderingContext2D context = null;
 Map originals = new Map <String, String>();
 
 /** Timer to call display periodically **/
-var timer;
+Timer timer;
 
 /** Image for the top part of the outfit **/
 var TopImage;
@@ -72,8 +72,17 @@ void initWebsocket() {
       compile(evt.data.substring(6));
       print(outfits);
       print('Dart received message from HTML ');
-      Timer.run(() => display());
-      timer = new Timer.periodic(const Duration(milliseconds: 1000), (Timer timer) => display());
+      Timer.run(() => display(timer));
+      timer = new Timer.periodic(new Duration(milliseconds: 1000), (Timer t) {
+        if (outfits.length == 0) {
+          timer.cancel();
+          sendMessage("DONE!");
+          print("timer cancelled");
+        }
+        else {
+          display();
+        }
+        });
       sendMessage("GOT IT!");
     }
     
@@ -131,9 +140,7 @@ List parseCode(code) {
 //--------------------------------------------------------------------------
 void display() {
   
-  if (outfits.length == 0) { timer.cancel; }
-  else {
-    String outfit = outfits[0]; //print("current = $outfit");
+  String outfit = outfits[0]; //print("current = $outfit");
     
     /**-------------------------------------------------------------------------------------
      * option1: Control imgVisibility on a div: (all images must be loaded in the HTML file)
@@ -152,9 +159,7 @@ void display() {
     /* addImageElement(outfit); */
     
     
-    outfits.removeAt(0);
-  }
-  
+  outfits.removeAt(0);  
 }
 
 //--------------------------------------------------------------------------

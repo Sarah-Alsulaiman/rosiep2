@@ -18,9 +18,9 @@
     <script type="text/javascript" src="generator.js"></script>
     
     <script type="text/javascript">
-     //---------------------------------------------------------------------------
-    // Global Level variables
-    //---------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------------
+    // Global Level variables                                                                   
+    //------------------------------------------------------------------------------------------
       var MAX_LEVEL = 7;
       var MIN_LEVEL = 1;
       var CURRENT_LEVEL = getLevel();
@@ -34,9 +34,9 @@
                        ];
     
     
-    //---------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------
     // Attempt to open a web socket connection
-    //---------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------
     var socket = null;
     if ("WebSocket" in window) {
       socket = new WebSocket("ws://localhost:8080");
@@ -135,9 +135,16 @@
       }
       else if (event == "@blockly GOT IT!") {
         console.log("HTML received message from dart " + event);
+        
          //button.style.backgroundImage = 'url("images/pause.png")';
          //playing = true;
       }
+      
+       else if (event == "@blockly DONE!") {
+        console.log("HTML received message from dart " + event);
+        advanceLevel();
+        
+       }
     }
        
        
@@ -168,7 +175,7 @@
         if (socket != null && socket.readyState == 1) {
         //alert(code);
         socket.send('@dart '+ code);
-        advanceLevel();
+        
         //window.location.reload(true);
         }
       
