@@ -9,6 +9,10 @@
 
     <title>Rosie P2</title>
     <link rel="stylesheet" href="rosieP2.css">
+    <link rel="stylesheet" type="text/css" href="jqdialog.css"/>
+    
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="jqdialog.min.js"></script>
     
     <script type="text/javascript" src="../../blockly/blockly_compressed.js"></script>
     <script type="text/javascript" src="../../blockly/language/en/_messages.js"></script>
@@ -61,7 +65,7 @@
     // Redirect to the next level
     //---------------------------------------------------------------------------
     function advanceLevel () {
-      if (CURRENT_LEVEL < MAX_LEVEL) {
+      /*if (CURRENT_LEVEL < MAX_LEVEL) {
         var proceed = window.confirm('Congratulations!\nAre you ready to proceed to level %1?'.replace('%1', CURRENT_LEVEL + 1));
         if (proceed) {
           window.location = window.location.protocol + '//' +
@@ -71,7 +75,23 @@
       } 
       else {
         window.alert("END OF GAME");
+      }*/
+      if (CURRENT_LEVEL < MAX_LEVEL) {
+      $.jqDialog.confirm("Congratulations!<BR/> <BR/> Are you ready to proceed to level %1?".replace('%1', CURRENT_LEVEL + 1),
+      function() { window.location = window.location.protocol + '//' +
+                   window.location.host + window.location.pathname +
+                   '?level=' + (CURRENT_LEVEL + 1); },    // callback function for 'YES' button
+      
+      function() {  }    // callback function for 'NO' button
+      );  
       }
+      
+      else {
+        $.jqDialog.alert("End of game", function() {  // callback function for 'OK' button
+                                          $('#message').html('OK');
+                                         });
+      }   
+    
     
     }
     
@@ -171,13 +191,14 @@
         code = code.replace(/\]\[/g, '], [');
         code = (code.replace(/\)/g, '')).replace(/\(/g, '');
         code = code.replace(/\;/g, '');
-      }
         if (socket != null && socket.readyState == 1) {
         //alert(code);
         socket.send('@dart '+ code);
         
         //window.location.reload(true);
         }
+      }
+        
       
     }
       
@@ -234,35 +255,6 @@
          
    </xml>
 
-  <xml id="toolbox" style="display: none">
-  <block type="controls_if" inline="false" x="321" y="155">
-    <value name="IF0">
-      <block type="logic_compare" inline="true">
-        <title name="OP">EQ</title>
-        <value name="A">
-          <block type="colour_picker">
-            <title name="COLOUR">#ffffff</title>
-          </block>
-        </value>
-        <value name="B">
-          <block type="colour_random"></block>
-        </value>
-      </block>
-    </value>
-    <statement name="DO0">
-      <block type="math_change" inline="false">
-        <title name="VAR">item</title>
-        <value name="DELTA">
-          <block type="math_number">
-            <title name="NUM">1</title>
-          </block>
-        </value>
-      </block>
-    </statement>
-  </block>
-</xml> <!---->
-  
-     
        <!-- POPUP HINT TEXT -->
       <img src="images/hint1.png" id="hint1" class="hint">
       <img src="images/hint2.png" id="hint2" class="hint">
