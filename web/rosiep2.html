@@ -77,31 +77,54 @@
         window.alert("END OF GAME");
       }*/
       if (CURRENT_LEVEL < MAX_LEVEL) {
-      $.jqDialog.confirm("Congratulations!<BR/> <BR/> Are you ready to proceed to level %1?".replace('%1', CURRENT_LEVEL + 1),
-      function() { window.location = window.location.protocol + '//' +
-                   window.location.host + window.location.pathname +
-                   '?level=' + (CURRENT_LEVEL + 1); },    // callback function for 'YES' button
-      
-      function() {  }    // callback function for 'NO' button
-      );  
+        $.jqDialog.confirm("Congratulations!<BR/> <BR/> Are you ready to proceed to level %1?".replace('%1', CURRENT_LEVEL + 1),
+        function() { window.location = window.location.protocol + '//' +
+                     window.location.host + window.location.pathname +
+                     '?level=' + (CURRENT_LEVEL + 1); },    // callback function for 'YES' button
+        
+        function() {  }    // callback function for 'NO' button
+        );  
       }
       
       else {
-        $.jqDialog.alert("End of game", function() {  // callback function for 'OK' button
-                                          $('#message').html('OK');
-                                         });
+        $.jqDialog.alert("End of game", function() { }); // callback function for 'OK' button
       }   
-    
-    
+      
+      
     }
     
     //----------------------------------------------------------------------------------------
     // Inject blockly to this page and display the message corrosponding to the current level
     //----------------------------------------------------------------------------------------
     function inject() {
-      Blockly.inject(document.getElementById('rosie-code'),
-      { path: '../../blockly/', toolbox: document.getElementById('toolbox' + CURRENT_LEVEL)} );
     
+      var toolbox = '<xml>';
+      toolbox += '  <category></category>';
+      
+      toolbox += '  <category name="+ Tops"> <block type="top1"></block> <block type="top2"></block>';
+      toolbox += '</category> <category> </category>'; //close tops
+      
+      toolbox += '<category name="+ Bottoms"> <block type="bottom1"></block> <block type="bottom2"></block>';
+      toolbox += '</category> <category> </category>'; //close bottoms
+      
+      if (CURRENT_LEVEL > 1) {
+        toolbox += '<category name="+ Coloring"> <block type="get_color_var"></block> <block type="red"></block> <block type="blue"></block>';
+        toolbox += '</category> <category> </category>'; //close coloring
+        if (CURRENT_LEVEL > 2) {
+          toolbox += '<category name = "+ Controls"> <block type = "control_if"></block> <block type="going_to"></block> <block type="get_color_input"></block> <block type="control_repeat"></block>';
+          toolbox += '</category> <category> </category>'; //close controls
+          if (CURRENT_LEVEL > 3) {
+            toolbox += '<category name = "+ Outfit Definitions" custom="PROCEDURE"></category>';
+            toolbox += '</category> <category> </category>'; //close definitions*/
+          }
+        }  
+      }
+      
+      toolbox += '</xml>';
+      
+      
+      Blockly.inject(document.getElementById('rosie-code'), {path: '../../blockly/', toolbox: toolbox} );
+      
       document.getElementById('full_text_div').innerHTML= LEVELS_MSG[CURRENT_LEVEL - 1];
       document.getElementById('level-h').innerHTML= "Level " + CURRENT_LEVEL + " :";
     }
@@ -223,39 +246,7 @@
        
     <div id="rosie-code" style="width: 900px; height: 815px;"></div>
     
-    
-     <xml id="toolbox1" style="display: none">
-       <category> </category>
-       <category name="+ Tops">
-         <block type="top1"></block>
-         <block type="top2"></block>
-       </category>
-       <category> </category>
-       <category name="+ Bottoms">
-         <block type="bottom1"></block>
-         <block type="bottom2"></block>
-       </category>
-       <category></category>
-       <category name="+ Coloring">
-         <block type="get_color_input"></block>
-         <block type="get_color_var"></block>
-         <block type="red"></block>
-         <block type="blue"></block>
-       </category>
-       <category></category>
-       <category name = "+ Controls">
-         <block type = "control_if"></block>
-         <block type="going_to"></block>   
-         <block type="control_repeat"></block>
-       </category>
-       <category></category>
-       <category name = "+ Outfit Definitions" custom="PROCEDURE"></category>
-       <category></category>
-       <category name = "+ VARS" > </category>
-         
-   </xml>
-
-       <!-- POPUP HINT TEXT -->
+           <!-- POPUP HINT TEXT -->
       <img src="images/hint1.png" id="hint1" class="hint">
       <img src="images/hint2.png" id="hint2" class="hint">
       
