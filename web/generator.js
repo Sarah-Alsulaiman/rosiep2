@@ -85,6 +85,48 @@ Blockly.JavaScript.blue = function() {
 		
 };
 
+Blockly.JavaScript.black = function() {
+	color = '"black"';
+	return [color, Blockly.JavaScript.ORDER_NONE];
+		
+};
+
+Blockly.JavaScript.pink = function() {
+	color = '"pink"';
+	return [color, Blockly.JavaScript.ORDER_NONE];
+		
+};
+
+Blockly.JavaScript.grey = function() {
+	color = '"grey"';
+	return [color, Blockly.JavaScript.ORDER_NONE];
+		
+};
+
+Blockly.JavaScript.gold = function() {
+	color = '"gold"';
+	return [color, Blockly.JavaScript.ORDER_NONE];
+		
+};
+
+Blockly.JavaScript.lime = function() {
+	color = '"lime"';
+	return [color, Blockly.JavaScript.ORDER_NONE];
+		
+};
+
+Blockly.JavaScript.purple = function() {
+	color = '"purple"';
+	return [color, Blockly.JavaScript.ORDER_NONE];
+		
+};
+
+Blockly.JavaScript.orange = function() {
+	color = '"orange"';
+	return [color, Blockly.JavaScript.ORDER_NONE];
+		
+};
+
 
 
 Blockly.JavaScript.going_to = function() {

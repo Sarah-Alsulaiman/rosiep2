@@ -150,7 +150,10 @@ Blockly.Language.red = {
         .appendTitle("Red");
     this.setOutput(true, String);
     this.setTooltip('');
-  }
+  },
+  getName: function() {
+  	"";
+  },
 };
 
 //-------------------------------------------------------------------------
@@ -165,7 +168,136 @@ Blockly.Language.blue = {
         .appendTitle("Blue");
     this.setOutput(true, String);
     this.setTooltip('');
-  }
+  },
+  getName: function() {
+  	"";
+  },
+};
+
+//-------------------------------------------------------------------------
+// Purple
+//-------------------------------------------------------------------------
+
+Blockly.Language.purple = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(314);
+    this.appendDummyInput()
+        .appendTitle("Purple");
+    this.setOutput(true, String);
+    this.setTooltip('');
+  },
+  getName: function() {
+  	"";
+  },
+};
+
+//-------------------------------------------------------------------------
+// Lime
+//-------------------------------------------------------------------------
+
+Blockly.Language.lime = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(112);
+    this.appendDummyInput()
+        .appendTitle("Lime");
+    this.setOutput(true, String);
+    this.setTooltip('');
+  },
+  getName: function() {
+  	"";
+  },
+};
+
+//-------------------------------------------------------------------------
+// Black
+//-------------------------------------------------------------------------
+
+Blockly.Language.black = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    //this.setColour(112);
+    this.appendDummyInput()
+        .appendTitle("Black");
+    this.setOutput(true, String);
+    this.setTooltip('');
+  },
+  getName: function() {
+  	"";
+  },
+};
+
+//-------------------------------------------------------------------------
+// Gold
+//-------------------------------------------------------------------------
+
+Blockly.Language.gold = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    //this.setColour(64);
+    this.appendDummyInput()
+        .appendTitle("Gold");
+    this.setOutput(true, String);
+    this.setTooltip('');
+  },
+  getName: function() {
+  	"";
+  },
+};
+
+//-------------------------------------------------------------------------
+// Pink
+//-------------------------------------------------------------------------
+
+Blockly.Language.pink = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    //this.setColour(0);
+    this.appendDummyInput()
+        .appendTitle("pink");
+    this.setOutput(true, String);
+    this.setTooltip('');
+  },
+  getName: function() {
+  	"";
+  },
+};
+
+//-------------------------------------------------------------------------
+// Orange
+//-------------------------------------------------------------------------
+
+Blockly.Language.orange = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    //this.setColour(15);
+    this.appendDummyInput()
+        .appendTitle("Orange");
+    this.setOutput(true, String);
+    this.setTooltip('');
+  },
+  getName: function() {
+  	"";
+  },
+};
+
+//-------------------------------------------------------------------------
+// Grey
+//-------------------------------------------------------------------------
+
+Blockly.Language.grey = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    //this.setColour(36);
+    this.appendDummyInput()
+        .appendTitle("Grey");
+    this.setOutput(true, String);
+    this.setTooltip('');
+  },
+  getName: function() {
+  	"";
+  },
 };
 
 
