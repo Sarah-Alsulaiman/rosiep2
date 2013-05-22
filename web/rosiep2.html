@@ -65,17 +65,6 @@
     // Redirect to the next level
     //---------------------------------------------------------------------------
     function advanceLevel () {
-      /*if (CURRENT_LEVEL < MAX_LEVEL) {
-        var proceed = window.confirm('Congratulations!\nAre you ready to proceed to level %1?'.replace('%1', CURRENT_LEVEL + 1));
-        if (proceed) {
-          window.location = window.location.protocol + '//' +
-          window.location.host + window.location.pathname +
-          '?level=' + (CURRENT_LEVEL + 1);
-        }
-      } 
-      else {
-        window.alert("END OF GAME");
-      }*/
       if (CURRENT_LEVEL < MAX_LEVEL) {
         $.jqDialog.confirm("Congratulations!<BR/> <BR/> Are you ready to proceed to level %1?".replace('%1', CURRENT_LEVEL + 1),
         function() { window.location = window.location.protocol + '//' +
@@ -89,10 +78,11 @@
       else {
         $.jqDialog.alert("End of game", function() { }); // callback function for 'OK' button
       }   
-      
-      
     }
     
+    //---------------------------------------------------------------------------
+    // Populate images
+    //---------------------------------------------------------------------------
     function populate() {
       var COLORS = ['red', 'blue', 'gold', 'lime', 'black', 'pink', 'orange' , 'purple', 'grey'];
       for (var i=1; i < 9; i++ ) {
@@ -120,15 +110,33 @@
     function inject() {
       populate();
       
-      var toolbox = '<xml>';
-      toolbox += '  <category></category>';
+      var toolbox1 = '<xml>';
+      toolbox1 += '  <category></category>';
       
-      toolbox += '  <category name="+ Tops"> <block type="top1"></block> <block type="top2"></block>';
-      toolbox += '</category> <category> </category>'; //close tops
+      toolbox1 += '  <category name="+ Tops"> <block type="top1"></block> <block type="top2"></block>';
+      toolbox1 += '</category> <category> </category>'; //close tops
       
-      toolbox += '<category name="+ Bottoms"> <block type="bottom1"></block> <block type="bottom2"></block>';
-      toolbox += '</category> <category> </category>'; //close bottoms
+      toolbox1 += '<category name="+ Bottoms"> <block type="bottom1"></block> <block type="bottom2"></block>';
+      toolbox1 += '</category> <category> </category>'; //close bottoms
+      toolbox1 += '</xml>';
       
+      //------------------------------------------------------------------------------
+      var toolbox2 = '<xml> <category></category> ';
+      toolbox2 += '  <category name="+ Tops"> <block type="top1"></block> <block type="top2"></block> <block type="top3"></block>';
+      toolbox2 += '</category> <category> </category>'; //close tops
+      
+      toolbox2 += '<category name="+ Bottoms"> <block type="bottom1"></block> <block type="bottom2"></block> <block type="bottom3"></block>';
+      
+      toolbox2 += '</category> <category> </category>'; //close bottoms
+      
+      toolbox2 += '<category name="+ Coloring"> <block type="get_color_var"></block> <block type="red"></block> <block type="blue"></block>' + 
+                    '<block type="black"></block> <block type="pink"></block> <block type="grey"></block> <block type="orange"></block> <block type="purple"></block>' +
+                    '<block type="lime"></block> <block type="gold"></block>' ;
+      toolbox2 += '</category> <category> </category>'; //close coloring
+      
+      toolbox2 += '</xml>';
+      
+      /*
       if (CURRENT_LEVEL > 1) {
         toolbox += '<category name="+ Coloring"> <block type="get_color_var"></block> <block type="red"></block> <block type="blue"></block>' + 
                     '<block type="black"></block> <block type="pink"></block> <block type="grey"></block> <block type="orange"></block> <block type="purple"></block>' +
@@ -139,15 +147,24 @@
           toolbox += '</category> <category> </category>'; //close controls
           if (CURRENT_LEVEL > 3) {
             toolbox += '<category name = "+ Outfit Definitions" custom="PROCEDURE"></category>';
-            toolbox += '</category> <category> </category>'; //close definitions*/
+            toolbox += '</category> <category> </category>'; //close definitions
           }
         }  
+      }//*/
+      
+      switch(CURRENT_LEVEL)
+      {
+        case 1:
+          Blockly.inject(document.getElementById('rosie-code'), {path: '../../blockly/', toolbox: toolbox1 } );
+          break;
+        case 2:
+          Blockly.inject(document.getElementById('rosie-code'), {path: '../../blockly/', toolbox: toolbox2 } );
+          break;
+        default:
+          Blockly.inject(document.getElementById('rosie-code'), {path: '../../blockly/', toolbox: toolbox1 } );
       }
       
-      toolbox += '</xml>';
-      
-      
-      Blockly.inject(document.getElementById('rosie-code'), {path: '../../blockly/', toolbox: toolbox} );
+      //Blockly.inject(document.getElementById('rosie-code'), {path: '../../blockly/', toolbox: } );
       
       document.getElementById('full_text_div').innerHTML= LEVELS_MSG[CURRENT_LEVEL - 1];
       document.getElementById('level-h').innerHTML= "Level " + CURRENT_LEVEL + " :";

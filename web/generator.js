@@ -6,8 +6,6 @@ Blockly.JavaScript.top1 = function() {
 	else {
 		return '[ "top1-",' + color + ' ]';
 	}
-	
-  	
 };
 
 Blockly.JavaScript.top2 = function() {
@@ -20,6 +18,69 @@ Blockly.JavaScript.top2 = function() {
 	}
 };
 
+Blockly.JavaScript.top3 = function() {
+	var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
+	if (color == '0') {
+		return '[ "top3-", "red" ]';
+	}
+	else {
+		return '[ "top3-",' + color + ' ]';
+	}
+};
+
+Blockly.JavaScript.top4 = function() {
+	var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
+	if (color == '0') {
+		return '[ "top4-", "red" ]';
+	}
+	else {
+		return '[ "top4-",' + color + ' ]';
+	}
+};
+
+Blockly.JavaScript.top5 = function() {
+	var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
+	if (color == '0') {
+		return '[ "top5-", "red" ]';
+	}
+	else {
+		return '[ "top5-",' + color + ' ]';
+	}
+};
+
+Blockly.JavaScript.top6 = function() {
+	var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
+	if (color == '0') {
+		return '[ "top6-", "red" ]';
+	}
+	else {
+		return '[ "top6-",' + color + ' ]';
+	}
+};
+
+Blockly.JavaScript.top7 = function() {
+	var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
+	if (color == '0') {
+		return '[ "top7-", "red" ]';
+	}
+	else {
+		return '[ "top7-",' + color + ' ]';
+	}
+};
+
+Blockly.JavaScript.top8 = function() {
+	var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
+	if (color == '0') {
+		return '[ "top8-", "red" ]';
+	}
+	else {
+		return '[ "top8-",' + color + ' ]';
+	}
+};
+
+//--------------------------------------------------------------------------------------------------------------------------------------------
+//
+//--------------------------------------------------------------------------------------------------------------------------------------------
 Blockly.JavaScript.bottom1 = function() {
   var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
 	if (color == '0') {
@@ -37,6 +98,66 @@ Blockly.JavaScript.bottom2 = function() {
 	}
 	else {
 		return '[ "bottom2-",' + color + ' ]';
+	}
+};
+
+Blockly.JavaScript.bottom3 = function() {
+  var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
+	if (color == '0') {
+		return '[ "bottom3-", "blue" ]';
+	}
+	else {
+		return '[ "bottom3-",' + color + ' ]';
+	}
+};
+
+Blockly.JavaScript.bottom4 = function() {
+  var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
+	if (color == '0') {
+		return '[ "bottom4-", "blue" ]';
+	}
+	else {
+		return '[ "bottom4-",' + color + ' ]';
+	}
+};
+
+Blockly.JavaScript.bottom5 = function() {
+  var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
+	if (color == '0') {
+		return '[ "bottom5-", "blue" ]';
+	}
+	else {
+		return '[ "bottom5-",' + color + ' ]';
+	}
+};
+
+Blockly.JavaScript.bottom6 = function() {
+  var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
+	if (color == '0') {
+		return '[ "bottom6-", "blue" ]';
+	}
+	else {
+		return '[ "bottom6-",' + color + ' ]';
+	}
+};
+
+Blockly.JavaScript.bottom7 = function() {
+  var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
+	if (color == '0') {
+		return '[ "bottom7-", "blue" ]';
+	}
+	else {
+		return '[ "bottom7-",' + color + ' ]';
+	}
+};
+
+Blockly.JavaScript.bottom8 = function() {
+  var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
+	if (color == '0') {
+		return '[ "bottom8-", "blue" ]';
+	}
+	else {
+		return '[ "bottom8-",' + color + ' ]';
 	}
 };
 

@@ -34,6 +34,103 @@ Blockly.Language.top2 = {
 };
 
 //-------------------------------------------------------------------------
+// Top3
+//-------------------------------------------------------------------------
+Blockly.Language.top3 = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(330);
+    this.appendValueInput("color")
+        .setCheck([String, "var"])
+        .appendTitle("Top3")
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+//-------------------------------------------------------------------------
+// Top4
+//-------------------------------------------------------------------------
+Blockly.Language.top4 = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(330);
+    this.appendValueInput("color")
+        .setCheck([String, "var"])
+        .appendTitle("Top4")
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+//-------------------------------------------------------------------------
+// Top5
+//-------------------------------------------------------------------------
+Blockly.Language.top5 = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(330);
+    this.appendValueInput("color")
+        .setCheck([String, "var"])
+        .appendTitle("Top5")
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+//-------------------------------------------------------------------------
+// Top6
+//-------------------------------------------------------------------------
+Blockly.Language.top6 = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(330);
+    this.appendValueInput("color")
+        .setCheck([String, "var"])
+        .appendTitle("Top6")
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+//-------------------------------------------------------------------------
+// Top7
+//-------------------------------------------------------------------------
+Blockly.Language.top7 = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(330);
+    this.appendValueInput("color")
+        .setCheck([String, "var"])
+        .appendTitle("Top7")
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+//-------------------------------------------------------------------------
+// Top8
+//-------------------------------------------------------------------------
+Blockly.Language.top8 = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(330);
+    this.appendValueInput("color")
+        .setCheck([String, "var"])
+        .appendTitle("Top8")
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+
+//-------------------------------------------------------------------------
 // Bottom1
 //-------------------------------------------------------------------------
 Blockly.Language.bottom1 = {
@@ -59,6 +156,102 @@ Blockly.Language.bottom2 = {
     this.appendValueInput("color")
         .setCheck([String, "var"])
         .appendTitle("Bottom2")
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+//-------------------------------------------------------------------------
+// Bottom3
+//-------------------------------------------------------------------------
+Blockly.Language.bottom3 = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(330);
+    this.appendValueInput("color")
+        .setCheck([String, "var"])
+        .appendTitle("Bottom3")
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+//-------------------------------------------------------------------------
+// Bottom4
+//-------------------------------------------------------------------------
+Blockly.Language.bottom4 = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(330);
+    this.appendValueInput("color")
+        .setCheck([String, "var"])
+        .appendTitle("Bottom4")
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+//-------------------------------------------------------------------------
+// Bottom5
+//-------------------------------------------------------------------------
+Blockly.Language.bottom5 = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(330);
+    this.appendValueInput("color")
+        .setCheck([String, "var"])
+        .appendTitle("Bottom5")
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+//-------------------------------------------------------------------------
+// Bottom6
+//-------------------------------------------------------------------------
+Blockly.Language.bottom6 = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(330);
+    this.appendValueInput("color")
+        .setCheck([String, "var"])
+        .appendTitle("Bottom6")
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+//-------------------------------------------------------------------------
+// Bottom7
+//-------------------------------------------------------------------------
+Blockly.Language.bottom7 = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(330);
+    this.appendValueInput("color")
+        .setCheck([String, "var"])
+        .appendTitle("Bottom7")
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+//-------------------------------------------------------------------------
+// Bottom8
+//-------------------------------------------------------------------------
+Blockly.Language.bottom8 = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(330);
+    this.appendValueInput("color")
+        .setCheck([String, "var"])
+        .appendTitle("Bottom8")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setTooltip('');
