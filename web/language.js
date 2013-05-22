@@ -235,7 +235,7 @@ Blockly.Language.black = {
 Blockly.Language.gold = {
   helpUrl: 'http://www.example.com/',
   init: function() {
-    //this.setColour(64);
+    //this.setColour(50);
     this.appendDummyInput()
         .appendTitle("Gold");
     this.setOutput(true, String);

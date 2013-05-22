@@ -223,7 +223,7 @@ void hideAll () {
 // Hide all variations of a specific outfit part
 //--------------------------------------------------------------------------
 void hideVariations(String part) {
-  for (int i=1; i<2; i++) {
+  for (int i=1; i<9; i++) {
     for (int j=0; j < colors.length; j++) {
       query("#$part$i-${colors[j]}").style.visibility = "hidden";
     }
