@@ -40,6 +40,8 @@ String CURRENT_PLACE;
 /** Random Color **/
 String CURRENT_COLOR;
 
+/** Colors available for each outfit **/
+List colors = ['red', 'blue', 'gold', 'lime', 'black', 'pink', 'orange' , 'purple', 'grey'];
 
 //----------------------------------------------------------------------
 // Main function
@@ -70,7 +72,6 @@ void initWebsocket() {
   ws.onMessage.listen((evt) {
     if (evt.data.startsWith("@dart")) {
       compile(evt.data.substring(6));
-      print(outfits);
       print('Dart received message from HTML ');
       Timer.run(() => display());
       timer = new Timer.periodic(new Duration(milliseconds: 1000), (Timer t) {
@@ -114,7 +115,7 @@ void compile(String json) {
   var script = json.substring(scriptIndex);
   
   commands = parseCode(script);
-  print(commands);
+  //print(commands);
   interpret(commands);
 }
 
@@ -124,7 +125,7 @@ void compile(String json) {
 List parseCode(code) {
   code = code.split('\n');
   List parsedCode;
-  print(code);
+  //print(code);
   
   for (int i=0; i<code.length; i++) {
     String f = '[ ${code[i]} ]';
@@ -183,6 +184,7 @@ void setHtmlVisibility(String id, bool visible) {
   var variations = id.startsWith("top")? "top" : "bottom";
   hideVariations(variations);
   query("#$id").style.visibility = visible? "visible" : "hidden";
+  print(id + ' ' + visible.toString());
 }
 
 //--------------------------------------------------------------------------
@@ -221,11 +223,11 @@ void hideAll () {
 // Hide all variations of a specific outfit part
 //--------------------------------------------------------------------------
 void hideVariations(String part) {
-  for (int i=1; i<3; i++) {
-    query("#$part$i-red").style.visibility = "hidden";
-    query("#$part$i-blue").style.visibility = "hidden";
-  }
-  
+  for (int i=1; i<2; i++) {
+    for (int j=0; j < colors.length; j++) {
+      query("#$part$i-${colors[j]}").style.visibility = "hidden";
+    }
+  } 
 }
 
 //--------------------------------------------------------------------------
@@ -264,7 +266,7 @@ void interpret (List commands) {
           color = CURRENT_COLOR;
         }
         var outfit = part+color;
-        outfits.add(outfit); }
+        outfits.add(outfit);}
      }
    }
     
@@ -389,7 +391,6 @@ void processIf(List nested) {
 //--------------------------------------------------------------------------
 void randomize() {
   var places = ['party', 'gym', 'resturant', 'school'];
-  var colors = ['red', 'blue', 'yellow', 'green'];
   
   Random rnd = new Random();
   var x = rnd.nextInt(4);
@@ -397,7 +398,7 @@ void randomize() {
   CURRENT_PLACE = places[x];
   
   rnd = new Random();
-  x = rnd.nextInt(4);
+  x = rnd.nextInt(9);
   
   CURRENT_COLOR = colors[x];
   
