@@ -353,6 +353,7 @@
     function sendBlocklyCode() {
       if (!playing) {
         var code = Blockly.Generator.workspaceToCode('JavaScript');
+        var newLine = code.indexOf("\n");
         //--------------------------------------------------
         // error 1: no blocks on the screen
         //--------------------------------------------------
@@ -365,7 +366,8 @@
         // error 2: blocks aren't connected
         //--------------------------------------------------
         
-        else if (code.indexOf("\n") >= 0) {
+        else if ((newLine >= 0) && ( (newLine % 7) !=0) ) {
+          console.log(code.indexOf("\n"));
           setHtmlOpacity("hint2", 1.0);
           fadeOutAfterDelay("hint2", 4000);
         }
@@ -375,7 +377,7 @@
           code = (code.replace(/\)/g, '')).replace(/\(/g, '');
           code = code.replace(/\;/g, '');
           if (socket != null && socket.readyState == 1) {
-            //alert(code);
+            alert(code);
             socket.send('@dart '+ code);
             playing = true;
             //window.location.reload(true);
