@@ -349,7 +349,32 @@
        }
     }
        
+    //---------------------------------------------------------------------------------------
+    //                                                                                       
+    //---------------------------------------------------------------------------------------
+    function checkConnections(code) {
+      var connected = true;
+      var start = 0;
+      var newLine = 0;
+      while (start < code.length && start != -1) {
+        newLine = code.indexOf("\n",start);
+        var curlyBrace = code.indexOf("}" ,start);
+        console.log(newLine); console.log(curlyBrace);
+        if ( newLine > 0 ) {
+          if ( newLine -1 != curlyBrace ) {
+            connected = false;
+            break;
+          }
+          else { start = newLine+2; }
+        }
+        else { break; }
+      }
+      return connected;
+    }
     
+     //---------------------------------------------------------------------------------------
+    //                                                                                       
+    //---------------------------------------------------------------------------------------
     function sendBlocklyCode() {
       if (!playing) {
         var code = Blockly.Generator.workspaceToCode('JavaScript');
@@ -363,7 +388,8 @@
         }
         
         else {
-          var connected = true;
+          var connected = checkConnections(code);
+          /*var connected = true;
           var start = 0;
           var newLine = 0;
           while (start < code.length && start != -1) {
@@ -380,7 +406,7 @@
               }
             }
             else { break; }
-          }
+          }*/
           //--------------------------------------------------
           // error 2: blocks aren't connected
           //--------------------------------------------------
