@@ -353,7 +353,7 @@
     function sendBlocklyCode() {
       if (!playing) {
         var code = Blockly.Generator.workspaceToCode('JavaScript');
-        var newLine = code.indexOf("\n");
+        
         //--------------------------------------------------
         // error 1: no blocks on the screen
         //--------------------------------------------------
@@ -361,28 +361,47 @@
           setHtmlOpacity("hint1", 1.0);
           fadeOutAfterDelay("hint1", 4000);
         }
-    
-        //--------------------------------------------------
-        // error 2: blocks aren't connected
-        //--------------------------------------------------
         
-        else if ((newLine >= 0) && ( (newLine % 7) !=0) ) {
-          console.log(code.indexOf("\n"));
-          setHtmlOpacity("hint2", 1.0);
-          fadeOutAfterDelay("hint2", 4000);
-        }
-    
         else {
-          code = code.replace(/\]\[/g, '], [');
-          code = (code.replace(/\)/g, '')).replace(/\(/g, '');
-          code = code.replace(/\;/g, '');
-          if (socket != null && socket.readyState == 1) {
-            alert(code);
-            socket.send('@dart '+ code);
-            playing = true;
-            //window.location.reload(true);
+          var connected = true;
+          var start = 0;
+          var newLine = 0;
+          while (start < code.length && start != -1) {
+            newLine = code.indexOf("\n",start);
+            var curlyBrace = code.indexOf("}" ,start);
+            console.log(newLine); console.log(curlyBrace);
+            if ( newLine > 0 ) {
+              if ( newLine -1 != curlyBrace ) {
+                connected = false;
+                break;
+              }
+              else {
+              start = newLine+2;
+              }
+            }
+            else { break; }
+          }
+          //--------------------------------------------------
+          // error 2: blocks aren't connected
+          //--------------------------------------------------
+          if (!connected) {
+            setHtmlOpacity("hint2", 1.0);
+            fadeOutAfterDelay("hint2", 4000);
+          }
+        
+          else {
+            code = code.replace(/\]\[/g, '], [');
+            code = (code.replace(/\)/g, '')).replace(/\(/g, '');
+            code = code.replace(/\;/g, '');
+            if (socket != null && socket.readyState == 1) {
+              alert(code);
+              socket.send('@dart '+ code);
+              playing = true;
+              //window.location.reload(true);
+            }
           }
         }
+      
       }
     }
       
@@ -412,34 +431,6 @@
       <img src="images/hint2.png" id="hint2" class="hint">
       
       <div id="images">
-      <!--<img src="images/top1-red.png" id="top1-red" class="top">
-      <img src="images/top1-blue.png" id="top1-blue" class="top">
-      <img src="images/top1-grey.png" id="top1-grey" class="top">
-      <img src="images/top1-black.png" id="top1-black" class="top">
-      <img src="images/top1-gold.png" id="top1-gold" class="top">
-      <img src="images/top1-pink.png" id="top1-pink" class="top">
-      <img src="images/top1-purple.png" id="top1-purple" class="top">
-      <img src="images/top1-lime.png" id="top1-lime" class="top">
-      <img src="images/top1-orange.png" id="top1-orange" class="top">
-      
-      <img src="images/top2-red.png" id="top2-red" class="top">
-      <img src="images/top2-blue.png" id="top2-blue" class="top">
-      
-      
-      
-      
-      <img src="images/bottom1-red.png" id="bottom1-red" class="bottom">
-      <img src="images/bottom1-blue.png" id="bottom1-blue" class="bottom">
-      <img src="images/bottom1-grey.png" id="bottom1-grey" class="bottom">
-      <img src="images/bottom1-black.png" id="bottom1-black" class="bottom">
-      <img src="images/bottom1-gold.png" id="bottom1-gold" class="bottom">
-      <img src="images/bottom1-pink.png" id="bottom1-pink" class="bottom">
-      <img src="images/bottom1-purple.png" id="bottom1-purple" class="bottom">
-      <img src="images/bottom1-lime.png" id="bottom1-lime" class="bottom">
-      <img src="images/bottom1-orange.png" id="bottom1-orange" class="bottom">
-      
-      <img src="images/bottom2-red.png" id="bottom2-red" class="bottom">
-      <img src="images/bottom2-blue.png" id="bottom2-blue" class="bottom">-->
       </div>
       <div id="rosie-output"> </div>
 
