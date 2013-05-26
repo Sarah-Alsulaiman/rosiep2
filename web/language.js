@@ -374,7 +374,7 @@ Blockly.Language.blue = {
 Blockly.Language.purple = {
   helpUrl: 'http://www.example.com/',
   init: function() {
-    this.setColour(314);
+    this.setColour(290);
     this.appendDummyInput()
         .appendTitle("Purple");
     this.setOutput(true, String);
@@ -392,7 +392,7 @@ Blockly.Language.purple = {
 Blockly.Language.lime = {
   helpUrl: 'http://www.example.com/',
   init: function() {
-    this.setColour(112);
+    this.setColour(76);
     this.appendDummyInput()
         .appendTitle("Lime");
     this.setOutput(true, String);
@@ -428,7 +428,7 @@ Blockly.Language.black = {
 Blockly.Language.gold = {
   helpUrl: 'http://www.example.com/',
   init: function() {
-    //this.setColour(50);
+    this.setColour(36);
     this.appendDummyInput()
         .appendTitle("Gold");
     this.setOutput(true, String);
@@ -446,7 +446,7 @@ Blockly.Language.gold = {
 Blockly.Language.pink = {
   helpUrl: 'http://www.example.com/',
   init: function() {
-    //this.setColour(0);
+    this.setColour(418);
     this.appendDummyInput()
         .appendTitle("pink");
     this.setOutput(true, String);
@@ -464,7 +464,7 @@ Blockly.Language.pink = {
 Blockly.Language.orange = {
   helpUrl: 'http://www.example.com/',
   init: function() {
-    //this.setColour(15);
+    this.setColour(15);
     this.appendDummyInput()
         .appendTitle("Orange");
     this.setOutput(true, String);
@@ -482,7 +482,7 @@ Blockly.Language.orange = {
 Blockly.Language.grey = {
   helpUrl: 'http://www.example.com/',
   init: function() {
-    //this.setColour(36);
+    this.setColour(36);
     this.appendDummyInput()
         .appendTitle("Grey");
     this.setOutput(true, String);

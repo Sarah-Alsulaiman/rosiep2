@@ -334,7 +334,7 @@
         newLine = code.indexOf("\n",start);
         var curlyBrace = code.indexOf("}" ,start);
         console.log(newLine); console.log(curlyBrace);
-        if ( newLine > 0 ) {
+        if ( newLine > 0 && curlyBrace > 0 ) {
           if ( newLine -1 != curlyBrace ) {
             connected = false;
             break;
@@ -352,7 +352,7 @@
 	function sendBlocklyCode() {
       if (!playing) {
         var code = Blockly.Generator.workspaceToCode('JavaScript');
-        
+        Blockly.mainWorkspace.traceOn(true);
         //--------------------------------------------------
         // error 1: no blocks on the screen
         //--------------------------------------------------
