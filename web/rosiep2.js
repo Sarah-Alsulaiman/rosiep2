@@ -334,15 +334,19 @@
         newLine = code.indexOf("\n",start);
         var curlyBrace = code.indexOf("}" ,start);
         console.log(newLine); console.log(curlyBrace);
-        if ( newLine > 0 && curlyBrace > 0 ) {
-          if ( newLine -1 != curlyBrace ) {
-            connected = false;
-            break;
-          }
-          else { start = newLine+2; }
-        }
-        else { break; }
+        if ( newLine > 0 ) {
+        	if ( curlyBrace > 0) {
+        		if ( newLine -1 != curlyBrace ) {
+            		connected = false;
+            		break;
+          		}
+          		else { start = newLine+2; }
+        	}
+        	else { connected = false; break; }
+      	}
+      	else { break; } 
       }
+      
       return connected;
     }
     
