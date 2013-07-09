@@ -4,7 +4,7 @@
 Blockly.Language.top1 = {
   helpUrl: 'http://www.example.com/',
   init: function() {
-    this.setColour(330);
+    this.setColour(330,.1,.85);
     this.appendValueInput("color")
         .setCheck([String, "var"])
         .appendTitle("Top1")
@@ -23,7 +23,7 @@ Blockly.Language.top1 = {
 Blockly.Language.top2 = {
   helpUrl: 'http://www.example.com/',
   init: function() {
-    this.setColour(330);
+    this.setColour(330,.1,.85);
     this.appendValueInput("color")
         .setCheck([String, "var"])
         .appendTitle("Top2")
@@ -136,7 +136,7 @@ Blockly.Language.top8 = {
 Blockly.Language.bottom1 = {
   helpUrl: 'http://www.example.com/',
   init: function() {
-    this.setColour(330);
+    this.setColour(330,.1,.65);
     this.appendValueInput("color")
         .setCheck([String, "var"])
         .appendTitle("Bottom1")
@@ -152,7 +152,7 @@ Blockly.Language.bottom1 = {
 Blockly.Language.bottom2 = {
   helpUrl: 'http://www.example.com/',
   init: function() {
-    this.setColour(330);
+    this.setColour(330,.1,.85);
     this.appendValueInput("color")
         .setCheck([String, "var"])
         .appendTitle("Bottom2")
@@ -269,7 +269,7 @@ Blockly.Language.set_color = {
         .setCheck(String)
         .appendTitle(new Blockly.FieldImage("http://www.gstatic.com/codesite/ph/images/star_on.gif", 50, 50))
         .appendTitle("SET COLOR OF")
-        .appendTitle(new Blockly.FieldDropdown([["top1", "top1"], ["top2", "top2"], ["bottom1", "bottom1"], ["bottom2", "bottom2"], ["bag", "bag"]]), "part");
+        .appendTitle(new Blockly.FieldDropdown([["1", "1"], ["2", "top2"], ["3", "bottom1"], ["4", "bottom2"], ["5", "bag"]]), "part");
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setTooltip('');
@@ -912,4 +912,7 @@ Blockly.Language.procedures_callnoreturn = {
     options.push(option);
   }
 };
+
+//--------------------------------------------------------------------------------------------------------------------------
+
 

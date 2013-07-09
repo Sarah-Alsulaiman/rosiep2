@@ -84,7 +84,66 @@
 // Inject blockly to this page and display the message corrosponding to the current level
 //----------------------------------------------------------------------------------------
 	function inject() {
-      populate();
+      //***********************************************************************************************
+      Blockly.makeColour = function(hue, sat, val) {
+		  return goog.color.hsvToHex(hue, sat,
+		      val * 256);
+		};
+      //***********************************************************************************************
+      Blockly.Block.prototype.setColour = function(colourHue, colourSat, colourVal) {
+		  this.colourHue_ = colourHue;
+		  this.colourSat_ = colourSat;
+		  this.colourVal_ = colourVal;
+		  
+		  if (this.svg_) {
+		    this.svg_.updateColour();
+		  }
+		  if (this.mutator) {
+		    this.mutator.updateColour();
+		  }
+		  if (this.comment) {
+		    this.comment.updateColour();
+		  }
+		  if (this.warning) {
+		    this.warning.updateColour();
+		  }
+		  if (this.rendered) {
+		    // Bump every dropdown to change its colour.
+		    for (var x = 0, input; input = this.inputList[x]; x++) {
+		      for (var y = 0, title; title = input.titleRow[y]; y++) {
+		        title.setText(null);
+		      }
+		    }
+		    this.render();
+		  }
+		};
+		
+		//***********************************************************************************************
+		/**
+		 * Change the colour of a block.
+		 */
+		Blockly.BlockSvg.prototype.updateColour = function() {
+		  var hexColour = Blockly.makeColour(this.block_.getColourH(), this.block_.getColourS(), this.block_.getColourV());
+		  var rgb = goog.color.hexToRgb(hexColour);
+		  var rgbLight = goog.color.lighten(rgb, 0.3);
+		  var rgbDark = goog.color.darken(rgb, 0.4);
+		  this.svgPathLight_.setAttribute('stroke', goog.color.rgbArrayToHex(rgbLight));
+		  this.svgPathDark_.setAttribute('fill', goog.color.rgbArrayToHex(rgbDark));
+		  this.svgPath_.setAttribute('fill', hexColour);
+		};
+		//************************************************************************************************
+		Blockly.Block.prototype.getColourH = function() {
+		  return this.colourHue_;
+		};
+		//************************************************************************************************
+		Blockly.Block.prototype.getColourS = function() {
+		  return this.colourSat_;
+		};
+		//*************************************************************************************************
+		Blockly.Block.prototype.getColourV = function() {
+		  return this.colourVal_;
+		};
+		//*************************************************************************************************
       
       var toolbox1 = '<xml>';
       toolbox1 += '  <category></category>';
@@ -261,6 +320,7 @@
       
       document.getElementById('full_text_div').innerHTML= LEVELS_MSG[CURRENT_LEVEL - 1];
       document.getElementById('level-h').innerHTML= "Level " + CURRENT_LEVEL + " :";
+      populate();
     }
     
 //---------------------------------------------------------------------------------------

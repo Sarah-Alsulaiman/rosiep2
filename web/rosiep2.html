@@ -24,7 +24,7 @@
     <script type="text/javascript" src="rosiep2.js"></script>
        
   </head>
-  <body onload="inject()">
+  <body>
     <img src="images/rosie.png" id="title">
     
     <div class="level-text">
@@ -56,8 +56,11 @@
         <button id="play-button" onclick="sendBlocklyCode();"></button>
       </div>
     </div>
-   
+    
     <script type="application/dart" src="rosieP2.dart"></script>
     <script src="packages/browser/dart.js"></script>
+    <script type="text/javascript" >
+      inject();
+      </script>
   </body>
 </html>
