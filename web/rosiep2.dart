@@ -71,9 +71,13 @@ void initWebsocket() {
   
   ws.onMessage.listen((evt) {
     if (evt.data.startsWith("@dart")) {
-      compile(evt.data.substring(6));
-      print('Dart received message from HTML ');
-      Timer.run(() => display());
+      compile(evt.data.substring(6)); 
+      print('Dart received code from HTML ');
+      
+      if (outfits.length != 0) {
+        Timer.run(() => display());
+      }
+      
       timer = new Timer.periodic(new Duration(milliseconds: 1000), (Timer t) {
         if (outfits.length == 0) {
           timer.cancel();
@@ -145,7 +149,9 @@ void display() {
     /**-------------------------------------------------------------------------------------
      * option1: Control imgVisibility on a div: (all images must be loaded in the HTML file)
      *--------------------------------------------------------------------------------------*/
-    setHtmlVisibility(outfit, true);
+    //setHtmlVisibility(outfit, true);
+    
+    sendMessage(outfit);
     
     /**-------------------------------------------------------------------------------------
      * option2: Draw images on a Canvas (Add a canvas inside rosie-output div)
@@ -371,8 +377,12 @@ void processIf(List nested) {
   if (condition != 0) {
     if (condition == "Going") { //GOING TO block is connected to IF block
       result = (nested[1][1] == CURRENT_PLACE)? then : other;
-      //result could also be SET or REPEAT
-      addOutfit(result);
+      //result could be empty!
+      if (result.length != 0)
+        addOutfit(result);
+        print("result = " + result.length.toString());
+        //result could also be SET or REPEAT
+        
     }
       
      

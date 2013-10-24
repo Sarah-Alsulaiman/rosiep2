@@ -12,6 +12,8 @@
                         " Rosie likes to have her bag and shoe of the same color. She picked the bag but not the shoe, pick a shoe and give it the same color",
                         " Rosie wore a top of a certain color, and wants you to pick a bottom that is different in color, pick a bottom and give it a different color"
                        ];
+                       
+    var colors = ['red', 'blue', 'gold', 'lime', 'black', 'pink', 'orange' , 'purple', 'grey'];
     
     
 //------------------------------------------------------------------------------------------
@@ -297,6 +299,8 @@
 	};
       
       //***********************************************************************************************************************
+      //***********************************************************************************************************************
+      
       var toolbox1 = '<xml>';
       toolbox1 += '  <category></category>';
       
@@ -481,6 +485,31 @@
 //---------------------------------------------------------------------------------------
 // Utility functions                                                                                   
 //---------------------------------------------------------------------------------------
+	
+	function setHtmlVisibility(id, visible) {
+	  console.log("id = " + id);
+      var el = document.getElementById(String(id));
+      console.log("el = " + el);
+      var variation = id.substring(0,1);
+      variation = (variation == "t")? "top" : "bottom";
+  	  console.log("variation = " + variation);
+  	   
+  	   for (var i=1; i<9; i++) {
+	    for (var j=0; j < colors.length; j++) {
+	    	var item = variation.concat(i.toString(),"-",colors[j].toString());
+	    	console.log("item = " + item);
+	    	item = document.getElementById(item);
+	        item.style.visibility = "hidden";
+	    }
+	  } 
+  	 
+  	  
+      if (el) {
+         el.style.visibility = visible ? "visible" : "hidden";
+      }
+   }
+   
+   
 	function setHtmlOpacity(id, opacity) {
       var el = document.getElementById(id);
       if (el) {
@@ -535,6 +564,15 @@
         console.log("HTML received message from dart " + event);
         playing = false;
         window.setTimeout(function() { advanceLevel(); }, 500);
+      }
+      
+      else {		// received an outfit to display
+      		var check = event.substring(0,8);
+      		if ( check == "@blockly" ) {
+	      		console.log("HTML received message from dart for " + event);
+	      		var outfit = event.substring(9);
+	      		setHtmlVisibility(outfit, true);
+	      }
       }
     }
        
