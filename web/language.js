@@ -513,7 +513,7 @@ Blockly.Language.color_dress1 = {
 Blockly.Language.control_repeat = {
   helpUrl: 'http://www.example.com/',
   init: function() {
-    this.setColour(330, .45, .65);
+    this.setColour(240, .10, .61);
     this.appendDummyInput()
         .appendTitle("    REPEAT")
         .appendTitle(new Blockly.FieldDropdown([["2", "2"], ["3", "3"], ["4", "4"]]), "COUNT");
@@ -533,7 +533,7 @@ Blockly.Language.control_repeat = {
 Blockly.Language.control_if = {
   helpUrl: 'http://www.example.com/',
   init: function() {
-    this.setColour(290, .45, .65);
+    this.setColour(34, .66, .95);
     this.appendValueInput("CONDITION")
         .setCheck(["input", "going_to"])
         .setAlign(Blockly.ALIGN_RIGHT)
@@ -555,7 +555,7 @@ Blockly.Language.control_if = {
 Blockly.Language.going_to = {
   helpUrl: 'http://www.example.com/',
   init: function() {
-    this.setColour(290, .45, .65);
+    this.setColour(34, .66, .95);
     this.appendDummyInput()
         .appendTitle("Going To")
         .appendTitle(new Blockly.FieldDropdown([["party", "party"], ["gym", "gym"], ["resturant", "resturant"], ["school", "school"]]), "place");
@@ -564,7 +564,7 @@ Blockly.Language.going_to = {
   }
 };
 
-
+//------------------------------------------------------------------------------------------------------------------------------------
 'use strict';
 
 goog.provide('Blockly.Language.procedures');

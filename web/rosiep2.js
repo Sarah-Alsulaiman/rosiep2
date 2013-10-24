@@ -84,6 +84,8 @@
 // Inject blockly to this page and display the message corrosponding to the current level
 //----------------------------------------------------------------------------------------
 	function inject() {
+	
+		//Blockly.Workspace.prototype.traceOn = true;
       //***********************************************************************************************
       Blockly.makeColour = function(hue, sat, val) {
 		  return goog.color.hsvToHex(hue, sat,
@@ -145,6 +147,156 @@
 		};
 		//*************************************************************************************************
       
+	       Blockly.FieldDropdown.prototype.showEditor_ = function() {
+		  var svgGroup = Blockly.FieldDropdown.svgGroup_;
+		  var svgOptions = Blockly.FieldDropdown.svgOptions_;
+		  var svgBackground = Blockly.FieldDropdown.svgBackground_;
+		  var svgShadow = Blockly.FieldDropdown.svgShadow_;
+		  // Erase all existing options.
+		  goog.dom.removeChildren(svgOptions);
+		  // The menu must be made visible early since otherwise BBox and
+		  // getComputedTextLength will return 0.
+		  Blockly.removeClass_(svgGroup, 'blocklyHidden');
+		  Blockly.FieldDropdown.openDropdown_ = this;
+		
+		  function callbackFactory(value) {
+		    return function(e) {
+		      if (this.changeHandler_) {
+		        // Call any change handler, and allow it to override.
+		        var override = this.changeHandler_(value);
+		        if (override !== undefined) {
+		          value = override;
+		        }
+		      }
+		      if (value !== null) {
+		        this.setValue(value);
+		      }
+		      // This mouse click has been handled, don't bubble up to document.
+		      e.stopPropagation();
+		    };
+		  }
+		
+		  var maxWidth = 0;
+		  var resizeList = [];
+		  var checkElement = null;
+		  var options = this.getOptions_();
+		  for (var x = 0; x < options.length; x++) {
+		    var text = options[x][0];  // Human-readable text.
+		    var value = options[x][1]; // Language-neutral value.
+		    var gElement = Blockly.ContextMenu.optionToDom(text);
+		    var rectElement = /** @type {SVGRectElement} */ (gElement.firstChild);
+		    var textElement = /** @type {SVGTextElement} */ (gElement.lastChild);
+		    svgOptions.appendChild(gElement);
+		    // Add a checkmark next to the current item.
+		    if (!checkElement && value == this.value_) {
+		      checkElement = Blockly.createSvgElement('text',
+		          {'class': 'blocklyMenuText', 'y': 15}, null);
+		      // Insert the checkmark between the rect and text, thus preserving the
+		      // ability to reference them as firstChild and lastChild respectively.
+		      gElement.insertBefore(checkElement, textElement);
+		      checkElement.appendChild(document.createTextNode('\u2713'));
+		    }
+		
+		    gElement.setAttribute('transform',
+		        'translate(0, ' + (x * Blockly.ContextMenu.Y_HEIGHT) + ')');
+		    resizeList.push(rectElement);
+		    Blockly.bindEvent_(gElement, 'mousedown', null, Blockly.noEvent);
+		    Blockly.bindEvent_(gElement, 'mouseup', this, callbackFactory(value));
+		    Blockly.bindEvent_(gElement, 'mouseup', null,
+		                       Blockly.FieldDropdown.hide);
+		    // Compute the length of the longest text length.
+		    maxWidth = Math.max(maxWidth, textElement.getComputedTextLength());
+		  }
+		  // Run a second pass to resize all options to the required width.
+		  maxWidth += Blockly.ContextMenu.X_PADDING * 2;
+		  for (var x = 0; x < resizeList.length; x++) {
+		    resizeList[x].setAttribute('width', maxWidth);
+		  }
+		  if (Blockly.RTL) {
+		    // Right-align the text.
+		    for (var x = 0, gElement; gElement = svgOptions.childNodes[x]; x++) {
+		      var textElement = gElement.lastChild;
+		      textElement.setAttribute('text-anchor', 'end');
+		      textElement.setAttribute('x', maxWidth - Blockly.ContextMenu.X_PADDING);
+		    }
+		  }
+		  if (checkElement) {
+		    if (Blockly.RTL) {
+		      // Research indicates that RTL checkmarks are supposed to be drawn the
+		      // same in the same direction as LTR checkmarks.  It's only the alignment
+		      // that needs to change.
+		      checkElement.setAttribute('text-anchor', 'end');
+		      checkElement.setAttribute('x', maxWidth - 5);
+		    } else {
+		      checkElement.setAttribute('x', 5);
+		    }
+		  }
+		  var width = maxWidth + Blockly.FieldDropdown.CORNER_RADIUS * 2;
+		  var height = options.length * Blockly.ContextMenu.Y_HEIGHT +
+		               Blockly.FieldDropdown.CORNER_RADIUS + 1;
+		  svgShadow.setAttribute('width', width);
+		  svgShadow.setAttribute('height', height);
+		  svgBackground.setAttribute('width', width);
+		  svgBackground.setAttribute('height', height);
+		  //var hexColour = Blockly.makeColour(this.block_.getColourH(), this.block_.getColourS(), this.block_.getColourV());
+		  var hexColour = Blockly.makeColour(this.sourceBlock_.getColourH(), this.sourceBlock_.getColourS(), this.sourceBlock_.getColourV());
+		  svgBackground.setAttribute('fill', hexColour);
+		  // Position the dropdown to line up with the field.
+		  var xy = Blockly.getSvgXY_(/** @type {!Element} */ (this.borderRect_));
+		  var borderBBox = this.borderRect_.getBBox();
+		  var x;
+		  if (Blockly.RTL) {
+		    x = xy.x - maxWidth + Blockly.ContextMenu.X_PADDING + borderBBox.width -
+		        Blockly.BlockSvg.SEP_SPACE_X / 2;
+		  } else {
+		    x = xy.x - Blockly.ContextMenu.X_PADDING + Blockly.BlockSvg.SEP_SPACE_X / 2;
+		  }
+		  svgGroup.setAttribute('transform',
+		      'translate(' + x + ', ' + (xy.y + borderBBox.height) + ')');
+		};
+	       //**********************************************************************************************************************
+	      
+	      
+	      Blockly.FieldDropdown.prototype.setText = function(text) {
+	  if (this.sourceBlock_) {
+	    // Update arrow's colour.
+	     //var hexColour = Blockly.makeColour(this.block_.getColourH(), this.block_.getColourS(), this.block_.getColourV());
+	    this.arrow_.style.fill = Blockly.makeColour(this.sourceBlock_.getColourH(), this.sourceBlock_.getColourS(), this.sourceBlock_.getColourV());
+	  }
+	  if (text === null) {
+	    // No change if null.
+	    return;
+	  }
+	  this.text_ = text;
+	  // Empty the text element.
+	  goog.dom.removeChildren(/** @type {!Element} */ (this.textElement_));
+	  // Replace whitespace with non-breaking spaces so the text doesn't collapse.
+	  text = text.replace(/\s/g, Blockly.Field.NBSP);
+	  if (!text) {
+	    // Prevent the field from disappearing if empty.
+	    text = Blockly.Field.NBSP;
+	  }
+	  var textNode = document.createTextNode(text);
+	  this.textElement_.appendChild(textNode);
+	
+	  // Insert dropdown arrow.
+	  if (Blockly.RTL) {
+	    this.textElement_.insertBefore(this.arrow_, this.textElement_.firstChild);
+	  } else {
+	    this.textElement_.appendChild(this.arrow_);
+	  }
+	
+	  // Cached width is obsolete.  Clear it.
+	  this.size_.width = 0;
+	
+	  if (this.sourceBlock_ && this.sourceBlock_.rendered) {
+	    this.sourceBlock_.render();
+	    this.sourceBlock_.bumpNeighbours_();
+	    this.sourceBlock_.workspace.fireChangeEvent();
+	  }
+	};
+      
+      //***********************************************************************************************************************
       var toolbox1 = '<xml>';
       toolbox1 += '  <category></category>';
       
@@ -185,7 +337,7 @@
                     '<block type="lime"></block> <block type="gold"></block>' ;
       toolbox3 += '</category> <category> </category>'; //close coloring
       
-      toolbox3 += '<category name = "+ Controls"> <block type = "control_if"></block> <block type="going_to"></block> <block type="control_repeat"></block>';
+      toolbox3 += '<category name = "+ Controls">  <block type = "control_if"></block> <block type="going_to"></block>  <block type="control_repeat"></block>';
       toolbox3 += '</category> <category> </category>'; //close controls
       toolbox3 += '</xml>';
       
@@ -289,34 +441,37 @@
         }  
       }//*/
       
+      
       switch(CURRENT_LEVEL)
       {
         case 1:
-          Blockly.inject(document.getElementById('rosie-code'), {path: '../../blockly/', toolbox: toolbox1 } );
+          Blockly.inject(document.getElementById('rosie-code'), {path: '../blockly/', toolbox: toolbox1 } );
           break;
         case 2:
-          Blockly.inject(document.getElementById('rosie-code'), {path: '../../blockly/', toolbox: toolbox2 } );
+          Blockly.inject(document.getElementById('rosie-code'), {path: '../blockly/', toolbox: toolbox2 } );
           break;
         case 3:
-          Blockly.inject(document.getElementById('rosie-code'), {path: '../../blockly/', toolbox: toolbox3 } );
+          Blockly.inject(document.getElementById('rosie-code'), {path: '../blockly/', toolbox: toolbox3 } );
           break;
         case 4:
-          Blockly.inject(document.getElementById('rosie-code'), {path: '../../blockly/', toolbox: toolbox4 } );
+          Blockly.inject(document.getElementById('rosie-code'), {path: '../blockly/', toolbox: toolbox4 } );
           break; 
         case 5:
-          Blockly.inject(document.getElementById('rosie-code'), {path: '../../blockly/', toolbox: toolbox5 } );
+          Blockly.inject(document.getElementById('rosie-code'), {path: '../blockly/', toolbox: toolbox5 } );
           break;
         case 6:
-          Blockly.inject(document.getElementById('rosie-code'), {path: '../../blockly/', toolbox: toolbox6 } );
+          Blockly.inject(document.getElementById('rosie-code'), {path: '../blockly/', toolbox: toolbox6 } );
           break;
         case 7:
-          Blockly.inject(document.getElementById('rosie-code'), {path: '../../blockly/', toolbox: toolbox7 } );
+          Blockly.inject(document.getElementById('rosie-code'), {path: '../blockly/', toolbox: toolbox7 } );
           break;  
         default:
-          Blockly.inject(document.getElementById('rosie-code'), {path: '../../blockly/', toolbox: toolbox1 } );
+          Blockly.inject(document.getElementById('rosie-code'), {path: '../blockly/', toolbox: toolbox1 } );
       }
       
-      //Blockly.inject(document.getElementById('rosie-code'), {path: '../../blockly/', toolbox: } );
+      //Blockly.inject(document.getElementById('rosie-code'), {path: '../blockly/', toolbox: } );
+      
+      
       
       document.getElementById('full_text_div').innerHTML= LEVELS_MSG[CURRENT_LEVEL - 1];
       document.getElementById('level-h').innerHTML= "Level " + CURRENT_LEVEL + " :";
@@ -416,7 +571,7 @@
 	function sendBlocklyCode() {
       if (!playing) {
         var code = Blockly.Generator.workspaceToCode('JavaScript');
-        Blockly.mainWorkspace.traceOn(true);
+        
         //--------------------------------------------------
         // error 1: no blocks on the screen
         //--------------------------------------------------
