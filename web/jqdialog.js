@@ -21,7 +21,7 @@
 
 		//________button / control labels
 		labels: {
-			ok: 'Ok',
+			ok: 'OK',
 			yes: 'Yes',
 			no: 'No',
 			cancel: 'Cancel'

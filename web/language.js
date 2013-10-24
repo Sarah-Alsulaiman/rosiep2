@@ -578,14 +578,14 @@ Blockly.Language.procedures_defnoreturn = {
   init: function() {
     this.setColour(290, .45, .65);
     var name = Blockly.Procedures.findLegalName(
-        Blockly.LANG_PROCEDURES_DEFNORETURN_PROCEDURE, this);
+        "name", this);
     this.appendDummyInput()
     	.appendTitle("Outfit Name: ")
         .appendTitle(new Blockly.FieldTextInput(name,
         Blockly.Procedures.rename), 'NAME') //------------------------------------------------------------------------------------
         .appendTitle('', 'PARAMS');
     this.appendStatementInput('STACK')
-        .appendTitle(Blockly.LANG_PROCEDURES_DEFNORETURN_DO);
+        .appendTitle("Wear");
     //this.setMutator(new Blockly.Mutator(['procedures_mutatorarg']));
     this.setTooltip(Blockly.LANG_PROCEDURES_DEFNORETURN_TOOLTIP);
     this.arguments_ = [];
@@ -778,7 +778,7 @@ Blockly.Language.procedures_callnoreturn = {
   init: function() {
     this.setColour(290, .45, .65);
     this.appendDummyInput()
-        .appendTitle(Blockly.LANG_PROCEDURES_CALLNORETURN_CALL)
+        .appendTitle("Wear")
         .appendTitle(Blockly.LANG_PROCEDURES_CALLNORETURN_PROCEDURE, 'NAME');
     this.setPreviousStatement(true);
     this.setNextStatement(true);

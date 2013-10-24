@@ -9,8 +9,8 @@
                         " Rosie wants to go to the gym. Jasmin invited her to go to brunch. Rosie is still hesitant on where to go. Help Rosie choose her outfit for both cases",
                         " Rosie want you to help her pick an outfit that would be her favorite to wear on formal occasions. define an outfit and use it",
                         " Rosie in invited to a formal event. She also has tickets for her favorite band concert.<BR/> Help Rosie on both cases",
-                        " Rosie likes to have her bag and shoe of the same color. She picked the bag but not the shoe, pick a shoe and give it the same color",
-                        " Rosie wore a top of a certain color, and wants you to pick a bottom that is different in color, pick a bottom and give it a different color"
+                        " Rosie likes to have her top and bottom of the same color. She picked the top but not the bottom, pick a bottom and give it the same color as the top (hint: check new blocks in the coloring section!)",
+                        " Rosie wore a top that is either black or purple, when she wears a black top, she doesn't want to wear another black as a bottom, otherwise she wants the bottom to be black. Pick a bottom so that she doesn't wear all black (hint: check new blocks in the control section!)"
                        ];
                        
     var colors = ['red', 'blue', 'gold', 'lime', 'black', 'pink', 'orange' , 'purple', 'grey'];
@@ -82,8 +82,159 @@
       }
     }
     
+    
+//---------------------------------------------------------------------------------------
+// Utility functions                                                                                   
+//---------------------------------------------------------------------------------------
+	
+	function setHtmlVisibility(id, visible) {
+		var el = document.getElementById(String(id));
+   	   	var variation = id.substring(0,1);
+      	variation = (variation == "t")? "top" : "bottom";
+  	   	
+  	   	for (var i=1; i<9; i++) {
+	    	for (var j=0; j < colors.length; j++) {
+	    		var item = variation.concat(i.toString(),"-",colors[j].toString());
+	    		console.log("item = " + item);
+	    		item = document.getElementById(item);
+	        	item.style.visibility = "hidden";
+	    	}
+	  	}	 
+  	 	
+  	  	
+      	if (el) {
+      		el.style.visibility = visible ? "visible" : "hidden";
+      	}
+   	}
+   
+   
+	function setHtmlOpacity(id, opacity) {
+		var el = document.getElementById(id);
+      	if (el) {
+      		if (opacity > 0) {
+      			el.style.zIndex = 100;
+         	} else {
+            	el.style.zIndex = -1; }
+        el.style.opacity = opacity;
+      	}
+   	}
+    
+    
+    function fadeOutAfterDelay(id, delay) {
+      window.setTimeout(function() { setHtmlOpacity(id, 0.0); }, delay);
+    }
+     
+    function hideText() {
+      document.getElementById('full_text_div').style.display='none';
+      document.getElementById('more_btn').style.display='none';
+      document.getElementById('part_text_div').style.display='inline';
+    }
+    
+    function showText() {
+      document.getElementById('more_btn').style.display='inline';
+      document.getElementById('full_text_div').style.display='inline';
+      document.getElementById('part_text_div').style.display='none';
+    }    
+   
+//---------------------------------------------------------------------------
+// Process dart event
+//---------------------------------------------------------------------------
+	var playing = false;
+    function processEvent(event) {
+      
+      if (event == "@blockly GOT IT!") {
+        console.log("HTML received message from dart " + event);
+      }
+      
+      else if (event == "@blockly DONE!") {
+        console.log("HTML received message from dart " + event);
+        playing = false;
+        window.setTimeout(function() { advanceLevel(); }, 500);
+      }
+      
+      else {		// received an outfit to display
+      		var check = event.substring(0,8);
+      		if ( check == "@blockly" ) {
+	      		console.log("HTML received message from dart for " + event);
+	      		var outfit = event.substring(9);
+	      		setHtmlVisibility(outfit, true);
+	      }
+      }
+    }
+       
+//---------------------------------------------------------------------------------------
+//  Check if blocks are connected (procedures are special case)                                                                               
+//---------------------------------------------------------------------------------------
+	function checkConnections(code) {
+      var connected = true;
+      var start = 0;
+      var newLine = 0;
+      while (start < code.length && start != -1) {
+        newLine = code.indexOf("\n",start);
+        var curlyBrace = code.indexOf("}" ,start);
+        console.log(newLine); console.log(curlyBrace);
+        if ( newLine > 0 ) {
+        	if ( curlyBrace > 0) {
+        		if ( newLine -1 != curlyBrace ) {
+            		connected = false;
+            		break;
+          		}
+          		else { start = newLine+2; }
+        	}
+        	else { connected = true; break; } ///++++++
+      	}
+      	else { break; } 
+      }
+      
+      return connected;
+    }
+    
+//---------------------------------------------------------------------------------------
+//  Send the generated Javascript code to dart for processing                                                                                  
+//---------------------------------------------------------------------------------------
+	function sendBlocklyCode() {
+      if (!playing) {
+        var code = Blockly.Generator.workspaceToCode('JavaScript');
+        
+        //--------------------------------------------------
+        // error 1: no blocks on the screen
+        //--------------------------------------------------
+        if (code.length == 0) {
+          setHtmlOpacity("hint1", 1.0);
+          fadeOutAfterDelay("hint1", 4000);
+        }
+        
+        else {
+          var connected = checkConnections(code);
+          
+          //--------------------------------------------------
+          // error 2: blocks aren't connected
+          //--------------------------------------------------
+          if (!connected) {
+            setHtmlOpacity("hint2", 1.0);
+            fadeOutAfterDelay("hint2", 4000);
+          }
+        
+          else {
+            code = code.replace(/\]\[/g, '], [');
+            code = (code.replace(/\)/g, '')).replace(/\(/g, '');
+            code = code.replace(/\;/g, '');
+            if (socket != null && socket.readyState == 1) {
+              alert(code);
+              socket.send('@dart '+ code);
+              playing = true;
+              //window.location.reload(true);
+            }
+          }
+        }
+      
+      }
+    }
+    
+    
 //----------------------------------------------------------------------------------------
 // Inject blockly to this page and display the message corrosponding to the current level
+// Blockly redefined functions
 //----------------------------------------------------------------------------------------
 	function inject() {
 	
@@ -480,167 +631,4 @@
       document.getElementById('full_text_div').innerHTML= LEVELS_MSG[CURRENT_LEVEL - 1];
       document.getElementById('level-h').innerHTML= "Level " + CURRENT_LEVEL + " :";
       populate();
-    }
-    
-//---------------------------------------------------------------------------------------
-// Utility functions                                                                                   
-//---------------------------------------------------------------------------------------
-	
-	function setHtmlVisibility(id, visible) {
-	  console.log("id = " + id);
-      var el = document.getElementById(String(id));
-      console.log("el = " + el);
-      var variation = id.substring(0,1);
-      variation = (variation == "t")? "top" : "bottom";
-  	  console.log("variation = " + variation);
-  	   
-  	   for (var i=1; i<9; i++) {
-	    for (var j=0; j < colors.length; j++) {
-	    	var item = variation.concat(i.toString(),"-",colors[j].toString());
-	    	console.log("item = " + item);
-	    	item = document.getElementById(item);
-	        item.style.visibility = "hidden";
-	    }
-	  } 
-  	 
-  	  
-      if (el) {
-         el.style.visibility = visible ? "visible" : "hidden";
-      }
-   }
-   
-   
-	function setHtmlOpacity(id, opacity) {
-      var el = document.getElementById(id);
-      if (el) {
-         if (opacity > 0) {
-            el.style.zIndex = 100;
-         } else {
-            el.style.zIndex = -1;
-         }
-         el.style.opacity = opacity;
-      }
-   	}
-    
-    
-    function fadeOutAfterDelay(id, delay) {
-      window.setTimeout(function() { setHtmlOpacity(id, 0.0); }, delay);
-    }
-     
-    function hideText() {
-      document.getElementById('full_text_div').style.display='none';
-      document.getElementById('more_btn').style.display='none';
-      document.getElementById('part_text_div').style.display='inline';
-    }
-    
-    function showText() {
-      document.getElementById('more_btn').style.display='inline';
-      document.getElementById('full_text_div').style.display='inline';
-      document.getElementById('part_text_div').style.display='none';
-    }    
-   
-//---------------------------------------------------------------------------
-// Process dart event
-//---------------------------------------------------------------------------
-	var playing = false;
-    function processEvent(event) {
-      //var button = document.getElementById("play-button");
-      if (event == "@blockly DONE" ||
-          event == "@blockly RESTARTED" ||
-          event == "@blockly PAUSED") {
-         //button.style.backgroundImage = 'url("images/play.png")';
-         //playing = false;
-         console.log("HTML received message from dart" + event);
-         
-      }
-      else if (event == "@blockly GOT IT!") {
-        console.log("HTML received message from dart " + event);
-        
-         //button.style.backgroundImage = 'url("images/pause.png")';
-         //playing = true;
-      }
-      
-      else if (event == "@blockly DONE!") {
-        console.log("HTML received message from dart " + event);
-        playing = false;
-        window.setTimeout(function() { advanceLevel(); }, 500);
-      }
-      
-      else {		// received an outfit to display
-      		var check = event.substring(0,8);
-      		if ( check == "@blockly" ) {
-	      		console.log("HTML received message from dart for " + event);
-	      		var outfit = event.substring(9);
-	      		setHtmlVisibility(outfit, true);
-	      }
-      }
-    }
-       
-//---------------------------------------------------------------------------------------
-//  Check if blocks are connected (procedures are special case)                                                                               
-//---------------------------------------------------------------------------------------
-	function checkConnections(code) {
-      var connected = true;
-      var start = 0;
-      var newLine = 0;
-      while (start < code.length && start != -1) {
-        newLine = code.indexOf("\n",start);
-        var curlyBrace = code.indexOf("}" ,start);
-        console.log(newLine); console.log(curlyBrace);
-        if ( newLine > 0 ) {
-        	if ( curlyBrace > 0) {
-        		if ( newLine -1 != curlyBrace ) {
-            		connected = false;
-            		break;
-          		}
-          		else { start = newLine+2; }
-        	}
-        	else { connected = false; break; }
-      	}
-      	else { break; } 
-      }
-      
-      return connected;
-    }
-    
-//---------------------------------------------------------------------------------------
-//  Send the generated Javascript code to dart for processing                                                                                  
-//---------------------------------------------------------------------------------------
-	function sendBlocklyCode() {
-      if (!playing) {
-        var code = Blockly.Generator.workspaceToCode('JavaScript');
-        
-        //--------------------------------------------------
-        // error 1: no blocks on the screen
-        //--------------------------------------------------
-        if (code.length == 0) {
-          setHtmlOpacity("hint1", 1.0);
-          fadeOutAfterDelay("hint1", 4000);
-        }
-        
-        else {
-          var connected = checkConnections(code);
-          
-          //--------------------------------------------------
-          // error 2: blocks aren't connected
-          //--------------------------------------------------
-          if (!connected) {
-            setHtmlOpacity("hint2", 1.0);
-            fadeOutAfterDelay("hint2", 4000);
-          }
-        
-          else {
-            code = code.replace(/\]\[/g, '], [');
-            code = (code.replace(/\)/g, '')).replace(/\(/g, '');
-            code = code.replace(/\;/g, '');
-            if (socket != null && socket.readyState == 1) {
-              alert(code);
-              socket.send('@dart '+ code);
-              playing = true;
-              //window.location.reload(true);
-            }
-          }
-        }
-      
-      }
     }
