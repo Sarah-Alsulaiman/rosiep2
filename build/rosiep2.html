@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv='cache-control' content='no-cache'>
+    <meta http-equiv='expires' content='0'>
+    <meta http-equiv='pragma' content='no-cache'>
+
+    <title>Rosie P2</title>
+    <link rel="stylesheet" href="rosieP2.css">
+    <link rel="stylesheet" type="text/css" href="jqdialog.css"/>
+    
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="jqdialog.min.js"></script>
+    
+    <script type="text/javascript" src="../../blockly/blockly_compressed.js"></script>
+    <script type="text/javascript" src="../../blockly/language/en/_messages.js"></script>
+    <script type="text/javascript" src="../../blockly/generators/javascript.js"></script>
+    
+    <script type="text/javascript" src="language.js"></script>
+    <script type="text/javascript" src="generator.js"></script>
+    
+    <script type="text/javascript" src="rosiep2.js"></script>
+       
+  </head>
+  <body>
+    <img src="images/rosie.png" id="title">
+    
+    <div class="level-text">
+      <div id="level-h" style="display:inline;"> </div> 
+      <div id="full_text_div"  style="display:inline;"> </div>
+      <!--<div id="more_btn"  style="display:inline;">
+          <a href="JavaScript:void()"  onClick="hideText()" /> Show less...</a>
+      </div>
+
+      <div id="part_text_div"  style="display:none" > Level1
+      <a href="JavaScript:void()"  onClick="showText()" /> Show more...</a>
+      </div>-->
+
+    </div>
+       
+    <div id="rosie-code" style="width: 900px; height: 815px;"></div>
+    
+    <!-- POPUP HINT TEXT -->
+    <img src="images/hint1.png" id="hint1" class="hint">
+    <img src="images/hint2.png" id="hint2" class="hint">
+      
+    <div id="images"> </div>
+      
+    <div id="rosie-output"> </div>
+
+    <!-- TOOLBAR -->
+    <div id="rosie-toolbar">
+      <div>
+        <button id="play-button" onclick="sendBlocklyCode();"></button>
+      </div>
+    </div>
+    
+    <script type="application/dart" src="rosieP2.dart"></script>
+    <script src="packages/browser/dart.js"></script>
+    <script type="text/javascript" >
+      inject();
+      </script>
+  </body>
+</html>
