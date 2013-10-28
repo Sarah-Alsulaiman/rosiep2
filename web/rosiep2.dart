@@ -43,6 +43,24 @@ String CURRENT_COLOR;
 /** Colors available for each outfit **/
 List colors = ['red', 'blue', 'gold', 'lime', 'black', 'pink', 'orange' , 'purple', 'grey'];
 
+bool if_block = false;
+bool repeat_block = false;
+bool get_input_block = false;
+bool get_var_block = false;
+bool call_block = false;
+bool set_block = false;
+bool color_block = false;
+bool going_block = false;
+bool top_block = false;
+bool bottom_block = false;
+bool then_block = false;
+bool other_block = false;
+bool func_block = false;
+
+//List level1 = [top_block, bottom_block];
+
+Map level1 = new Map <String,bool>();
+Map block_name = new Map <int, String>();
 //----------------------------------------------------------------------
 // Main function
 //----------------------------------------------------------------------
@@ -55,6 +73,12 @@ void main() {
   originals['top2'] = 'blue';
   originals['bottom1'] = 'red';
   originals['bottom2'] = 'blue';
+  
+  block_name[1] = 'top_block';
+  
+  
+  
+  //originals.containsValue(value)
   
 }
 
@@ -108,6 +132,7 @@ void compile(String json) {
   var function_end = json.lastIndexOf('}');
   
   if (function_end != -1 && function_begin != -1 ) {
+    func_block = true; print("FUNC FOUND");
     var functionsLine = json.substring(function_begin, function_end+1);
     functionsLine = (((functionsLine.replaceAll('{', '')).replaceAll('}', ''))
                       .replaceAll('\n', '')).replaceAll('][', '], [');
@@ -120,6 +145,18 @@ void compile(String json) {
   
   commands = parseCode(script);
   //print(commands);
+  
+  // Validate user answers here... TODO
+  
+  for (var i=0; i<level1.length; i++) {
+    if (! level1[i]) {
+      print(level1[i].toString() + " NOT FOUND");
+    }
+    
+  }
+  
+  
+  
   interpret(commands);
 }
 
@@ -270,8 +307,16 @@ void interpret (List commands) {
         var color = nested[1];
         if (color == 'current_color') {
           color = CURRENT_COLOR;
+          get_var_block = true; print("GET VAR FOUND");
         }
         var outfit = part+color;
+        
+        if (color == "purple")
+          {color_block = true; print("COLOR BLOCK");}
+        if (part.startsWith("top"))
+          {top_block = true; print("TOP");}
+        else if (part.startsWith("bottom"))
+          {bottom_block = true; print("BOTTOM");}
         outfits.add(outfit);}
      }
    }
@@ -315,6 +360,7 @@ void processCall(List nested) {
   var block;
   var outfit;
   
+  call_block = true; print("CALL FOUND");
   for (int i=0; i < subroutines.length; i++) {
     if (funcName == subroutines[i][0]) {
       block = subroutines[i][1];
@@ -374,19 +420,26 @@ void processIf(List nested) {
   List result;
   var outfit;
   
+  if_block = true; print("IF FOUND");
+  
+  if (then.length != 0) {then_block = true; print("THEN POPULATED");}
+  if (other.length != 0) {other_block = true; print("OTHER POPULATED");}
+  
   if (condition != 0) {
     if (condition == "Going") { //GOING TO block is connected to IF block
       result = (nested[1][1] == CURRENT_PLACE)? then : other;
+      going_block = true; print("GOING FOUND");
       //result could be empty!
       if (result.length != 0)
         addOutfit(result);
-        print("result = " + result.length.toString());
+        //print("result = " + result.length.toString());
         //result could also be SET or REPEAT
         
     }
       
      
     else  {  //GET block is connected to IF block ==> for unkown color levels
+      get_input_block = true; print("GET INPUT FOUND");
       var part = nested[1][0][1][0];
       var color = nested[1][0][1][1] ;
       result = (color == CURRENT_COLOR)? then : other;

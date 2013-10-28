@@ -95,7 +95,7 @@
   	   	for (var i=1; i<9; i++) {
 	    	for (var j=0; j < colors.length; j++) {
 	    		var item = variation.concat(i.toString(),"-",colors[j].toString());
-	    		console.log("item = " + item);
+	    		//console.log("item = " + item);
 	    		item = document.getElementById(item);
 	        	item.style.visibility = "hidden";
 	    	}
@@ -540,8 +540,6 @@
       
       //------------------------------------------------------------------------------
       var toolbox6 = '<xml> <category></category> ';
-      toolbox6 += '  <category name="+ Tops"> <block type="top1"></block> <block type="top2"></block> <block type="top3"></block> <block type="top4"></block> <block type="top5"></block> <block type="top6"></block> <block type="top7"></block>';
-      toolbox6 += '</category> <category> </category>'; //close tops
       
       toolbox6 += '<category name="+ Bottoms"> <block type="bottom1"></block> <block type="bottom2"></block> <block type="bottom3"></block> <block type="bottom4"></block> <block type="bottom5"></block> <block type="bottom6"></block> <block type="bottom7"></block>';
       
