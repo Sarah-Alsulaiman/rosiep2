@@ -43,21 +43,46 @@ String CURRENT_COLOR;
 /** Colors available for each outfit **/
 List colors = ['red', 'blue', 'gold', 'lime', 'black', 'pink', 'orange' , 'purple', 'grey'];
 
-bool if_block = false;
-bool repeat_block = false;
-bool get_input_block = false;
-bool get_var_block = false;
-bool call_block = false;
-bool set_block = false;
-bool color_block = false;
-bool going_block = false;
+
+bool check_input = false;
+
 bool top_block = false;
 bool bottom_block = false;
+
+bool top_purple_block = false;
+bool bottom_purple_block = false;
+
+bool if_block = false;
 bool then_block = false;
 bool other_block = false;
+
+bool going_block = false;
+
 bool func_block = false;
+bool call_block = false;
+
+bool get_input_block = false;
+bool get_var_block = false;
+
+bool color_block = false;
+
+bool repeat_block = false;
+bool set_block = false;
+
+//format [ [blockName, value, levels] ]
+List blocks = [  ['top', top_block, 1, 2, 3, 4, 5], ['bottom', bottom_block, 1, 2, 3, 4, 5, 6, 7], ['top_purple', top_purple_block, 2], ['bottom_purple', bottom_purple_block, 2],
+                 ['if', if_block, 3, 5, 7], ['then', then_block, 3, 5, 7], ['other', other_block, 3, 5, 7], ['going', going_block, 3],
+                 ['func', func_block, 4, 5], ['call', call_block, 4, 5],
+                 ['get', get_input_block, 7]
+              ];
+
+
+var CURRENT_LEVEL = 1;
+String ERR_MSG = '';
 
 //List level1 = [top_block, bottom_block];
+
+// write blocks[top] = true and then another map uses[top] = levels...
 
 Map level1 = new Map <String,bool>();
 Map block_name = new Map <int, String>();
@@ -95,10 +120,12 @@ void initWebsocket() {
   
   ws.onMessage.listen((evt) {
     if (evt.data.startsWith("@dart")) {
+      CURRENT_LEVEL = evt.data.substring(5,6);
+      print("CURRENT LEVEL = " + CURRENT_LEVEL);
       compile(evt.data.substring(6)); 
       print('Dart received code from HTML ');
       
-      if (outfits.length != 0) {
+      if (outfits.length != 0 && check_input) {
         Timer.run(() => display());
       }
       
@@ -108,6 +135,7 @@ void initWebsocket() {
           sendMessage("DONE!");
         }
         else {
+          if (check_input)
           display();
         }
         });
@@ -123,7 +151,11 @@ void initWebsocket() {
 //--------------------------------------------------------------------------
 void compile(String json) {
   outfits.clear();
+  clearBlocks();
   
+  ERR_MSG = '';
+  
+  check_input = false;
   hideAll();          //for option1
   //prepareCanvas();  //for option2
   //removeAll();      //for option3
@@ -146,18 +178,37 @@ void compile(String json) {
   commands = parseCode(script);
   //print(commands);
   
-  // Validate user answers here... TODO
-  
-  for (var i=0; i<level1.length; i++) {
-    if (! level1[i]) {
-      print(level1[i].toString() + " NOT FOUND");
-    }
-    
-  }
-  
-  
   
   interpret(commands);
+  
+  print("INTERPRET FINISHED");
+  // Validate user answers here... TODO
+  //format blocks = [ [blockName, value, levels] ]
+  
+  for (var i=0; i<blocks.length; i++) {
+    var num_level = (blocks[i].length); 
+    //print("NUM LEVEL = " + num_level.toString());
+    for (var j=2; j< num_level; j++) { // first two elements are not levels
+      if (blocks[i][j].toString() == CURRENT_LEVEL ) { // if current level needs this block
+        print("CURRENT LEVEL NEEDS " + blocks[i][0]);
+        if (! blocks[i][1]) {
+          print( blocks[i][1].toString());
+          ERR_MSG = blocks[i][0];
+          break;
+        }
+        
+      }
+    }
+    if (! ERR_MSG.isEmpty)
+      break;
+  }
+  
+  if (! ERR_MSG.isEmpty) {
+    
+    print (ERR_MSG + " NOT FOUND");
+  }
+  
+  check_input = true;
 }
 
 //--------------------------------------------------------------------------
@@ -314,9 +365,9 @@ void interpret (List commands) {
         if (color == "purple")
           {color_block = true; print("COLOR BLOCK");}
         if (part.startsWith("top"))
-          {top_block = true; print("TOP");}
+          {top_block = true; blocks[0][1]= true; print("TOP block now true"); if (color == "purple") top_purple_block = true;}
         else if (part.startsWith("bottom"))
-          {bottom_block = true; print("BOTTOM");}
+          {bottom_block = true; blocks[1][1]= true; print("BOTTOM block now true"); if (color == "purple") bottom_purple_block = true;}
         outfits.add(outfit);}
      }
    }
@@ -467,6 +518,30 @@ void randomize() {
   
 }
 
+
+
+//--------------------------------------------------------------------------
+// Clear blocks
+//--------------------------------------------------------------------------
+void clearBlocks() {
+  if_block = false;
+  repeat_block = false;
+  get_input_block = false;
+  get_var_block = false;
+  call_block = false;
+  set_block = false;
+  color_block = false;
+  going_block = false;
+  top_block = false;
+  bottom_block = false;
+  then_block = false;
+  other_block = false;
+  func_block = false;
+  top_purple_block = false;
+  bottom_purple_block = false;
+  
+  print("BLOCKS CLEAERD");
+}  
 
 //--------------------------------------------------------------------------
 // Send a message to the javascript blockly window

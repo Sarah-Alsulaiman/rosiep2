@@ -5,7 +5,7 @@
     var MIN_LEVEL = 1;
     var CURRENT_LEVEL = getLevel();
     var LEVELS_MSG = [" Rosie is going to a resturant with her friend, Jasmin. <BR/> &nbsp;&nbsp;&nbsp;&nbsp; Help her decide what to wear. ",
-                        " Rosie is invited to a party. Dress code is white. <BR/> &nbsp;&nbsp;&nbsp;&nbsp; Help Rosie decide what to wear. ",
+                        " Rosie is invited to a party. Dress code is purple. <BR/> &nbsp;&nbsp;&nbsp;&nbsp; Help Rosie decide what to wear. ",
                         " Rosie wants to go to the gym. Jasmin invited her to go to brunch. Rosie is still hesitant on where to go. Help Rosie choose her outfit for both cases",
                         " Rosie want you to help her pick an outfit that would be her favorite to wear on formal occasions. define an outfit and use it",
                         " Rosie in invited to a formal event. She also has tickets for her favorite band concert.<BR/> Help Rosie on both cases",
@@ -71,7 +71,7 @@
           imgT.className = 'top';
           document.getElementById("images").appendChild(imgT);
           
-          var imgB=document.createElement("img");
+          var imgB= document.createElement("img");
           imgB.src = 'images/bottom'+ i + '-' + COLORS[j] +'.png';
           imgB.id = 'bottom'+ i + '-' + COLORS[j];
           imgB.className = 'bottom';
@@ -80,6 +80,15 @@
           
         }
       }
+      
+      var img_blank = document.createElement("img");
+      img_blank.src = 'images/blank.png';
+      img_blank.id = 'blank';
+      img_blank.className = 'top';
+      document.getElementById("images").appendChild(img_blank);
+      
+      if (CURRENT_LEVEL == 7)
+      	img_blank.style.visibility = "visible";
     }
     
     
@@ -221,7 +230,7 @@
             code = code.replace(/\;/g, '');
             if (socket != null && socket.readyState == 1) {
               alert(code);
-              socket.send('@dart '+ code);
+              socket.send('@dart'+ CURRENT_LEVEL + code);
               playing = true;
               //window.location.reload(true);
             }
@@ -559,9 +568,7 @@
       
       //------------------------------------------------------------------------------
       var toolbox7 = '<xml> <category></category> ';
-      toolbox7 += '  <category name="+ Tops"> <block type="top1"></block> <block type="top2"></block> <block type="top3"></block> <block type="top4"></block> <block type="top5"></block> <block type="top6"></block> <block type="top7"></block> <block type="top8"></block>';
-      toolbox7 += '</category> <category> </category>'; //close tops
-      
+     
       toolbox7 += '<category name="+ Bottoms"> <block type="bottom1"></block> <block type="bottom2"></block> <block type="bottom3"></block> <block type="bottom4"></block> <block type="bottom5"></block> <block type="bottom6"></block> <block type="bottom7"></block> <block type="bottom8"></block>';
       
       toolbox7 += '</category> <category> </category>'; //close bottoms
