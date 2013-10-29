@@ -100,7 +100,7 @@
       document.getElementById("images").appendChild(img_blank);
       
       if (CURRENT_LEVEL == 7)
-      	img_blank.style.visibility = "visible";
+      	img_blank.style.visibility = "hidden";
     }
     
     
@@ -597,7 +597,7 @@
                     '<block type="lime"></block> <block type="gold"></block>' ;
       toolbox7 += '</category> <category> </category>'; //close coloring
       
-      toolbox7 += '<category name = "+ Controls"> <block type = "control_if"></block> <block type="going_to"></block> <block type="get_color_input"></block> <block type="control_repeat"></block>';
+      toolbox7 += '<category name = "+ Controls"> <block type = "control_if"></block> <block type="get_color_input"></block> <block type="control_repeat"></block>';
       toolbox7 += '</category> <category> </category>'; //close controls
       
       toolbox7 += '<category name = "+ Outfit Definitions" custom="PROCEDURE"></category>';

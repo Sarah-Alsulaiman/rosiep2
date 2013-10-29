@@ -272,13 +272,9 @@ Blockly.JavaScript.control_if = function() {
   var condition = Blockly.JavaScript.valueToCode(this, 'CONDITION', Blockly.JavaScript.ORDER_NONE) || '0';
   var then = Blockly.JavaScript.statementToCode(this, 'THEN');
   var other = Blockly.JavaScript.statementToCode(this, 'ELSE');
-  if (condition == '0') {
-  	code =  other ;
   
-  }
-  else {
   code = '["if", [' + condition + '], [ ' + then + ' ], [' + other + '] ]';
-  }
+  
  
   return code ;
 };

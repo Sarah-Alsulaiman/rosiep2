@@ -72,10 +72,12 @@ bool repeat_block = false;
 bool set_block = false;
 
 //format [ [blockName, value, levels] ]
-List blocks = [  ['top', top_block, 1, 2, 3, 4, 5], ['bottom', bottom_block, 1, 2, 3, 4, 5, 6, 7], ['top_purple', top_purple_block, 2], ['bottom_purple', bottom_purple_block, 2],
-                 ['if', if_block, 3, 5, 7], ['then', then_block, 3, 5, 7], ['other', other_block, 3, 5, 7], ['going', going_block, 3],
-                 ['func', func_block, 4, 5], ['call', call_block, 4, 5], ['abstraction', abstraction_block, 4, 5],
-                 ['get', get_input_block, 7], ['color', color_block, 7], ['black', black_block, 7]
+List blocks = [  ['black', black_block, 7], ['top', top_block, 1, 2, 3, 4, 5], ['bottom', bottom_block, 1, 2, 3, 4, 5, 6, 7], 
+                 ['top_purple', top_purple_block, 2], ['bottom_purple', bottom_purple_block, 2],
+                 ['other', other_block, 3, 5, 7], ['then', then_block, 3, 5, 7],
+                 ['color', color_block, 7], ['get', get_input_block, 7], ['going', going_block, 3], ['if', if_block, 3, 5, 7], 
+                 ['abstraction', abstraction_block, 4, 5], ['call', call_block, 4, 5], ['func', func_block, 4, 5], 
+                 
               ];
 
 
@@ -103,24 +105,23 @@ void main() {
   originals['bottom1'] = 'red';
   originals['bottom2'] = 'blue';
   
-  block_name['top'] = 0;
-  block_name['bottom'] = 1;
-  block_name['top_purple'] = 2;
-  block_name['bottom_purple'] = 3;
+  block_name['black'] = 0;
   
-  block_name['if'] = 4;
-  block_name['then'] = 5;
-  block_name['other'] = 6;
-  block_name['going'] = 7;
+  block_name['top'] = 1;
+  block_name['bottom'] = 2;
+  block_name['top_purple'] = 3;
+  block_name['bottom_purple'] = 4;
   
-  block_name['func'] = 8;
-  block_name['call'] = 9;
-  block_name['abstraction'] = 10;
+  block_name['other'] = 5;
+  block_name['then'] = 6;
+  block_name['color'] = 7;
+  block_name['get'] = 8;
+  block_name['going'] = 9;
+  block_name['if'] = 10;
   
-  block_name['get'] = 11;
-  block_name['color'] = 12;
-  block_name['black'] = 13;
-  
+  block_name['abstraction'] = 11;
+  block_name['call'] = 12;
+  block_name['func'] = 13;
   
   //originals.containsValue(value)
   
@@ -141,6 +142,13 @@ void initWebsocket() {
     if (evt.data.startsWith("@dart")) {
       CURRENT_LEVEL = evt.data.substring(5,6);
       print("CURRENT LEVEL = " + CURRENT_LEVEL);
+      
+      if (CURRENT_LEVEL == "7") {
+        var level7_top = "top2-";
+        level7_top += CURRENT_COLOR;
+        sendMessage("outfit " + level7_top);
+      }
+      
       compile(evt.data.substring(6)); 
       print('Dart received code from HTML ');
       
@@ -203,10 +211,10 @@ void compile(String json) {
   
   interpret(commands);
   
-  // Validate user answers here... TODO
+  // Validate user answers here...
   //format blocks = [ [blockName, value, levels] ]
   
-  for (var i=0; i<blocks.length; i++) {
+  for (var i= (blocks.length) - 1; i >= 0 ; i--) {
     var num_level = (blocks[i].length); 
     //print("NUM LEVEL = " + num_level.toString());
     for (var j=2; j< num_level; j++) { // first two elements are not levels
@@ -229,6 +237,7 @@ void compile(String json) {
     check_input = false;
   }
   
+ 
  
 }
 
@@ -441,7 +450,7 @@ void processCall(List nested) {
   for (int i=0; i < subroutines.length; i++) {
     if (funcName == subroutines[i][0]) {
       block = subroutines[i][1];
-      if (block.length >= 2) {blocks[block_name['abstraction']][1] = true;}
+      if (block.length >= 1) {blocks[block_name['abstraction']][1] = true;}
       addOutfit(block);
     }
   }
@@ -501,17 +510,8 @@ void processIf(List nested) {
   if_block = true;
   blocks[block_name['if']][1] = true;
   
-  if (CURRENT_LEVEL !=  7.toString()) {
-    if (then.length >= 2 ) {blocks[block_name['then']][1] = true; print("THEN POPULATED");}
-    if (other.length >= 2) {blocks[block_name['other']][1] = true; print("OTHER POPULATED");}
-    
-  }
-  
-  else {
-    if (then.length >= 1 ) {blocks[block_name['then']][1] = true; print("THEN POPULATED");}
-    if (other.length >= 1) {blocks[block_name['other']][1] = true; print("OTHER POPULATED");}
-    
-  }
+  if (then.length >= 1 ) {blocks[block_name['then']][1] = true; print("THEN POPULATED");}
+  if (other.length >= 1) {blocks[block_name['other']][1] = true; print("OTHER POPULATED");}
   
   if (condition != 0) {
     if (condition == "Going") { //GOING TO block is connected to IF block
@@ -531,9 +531,55 @@ void processIf(List nested) {
       var part = nested[1][0][1][0];
       var color = nested[1][0][1][1] ;
       
-      if (color != 0) { blocks[block_name['color']][1] = true; print("COLOR CONNECTED");}
+      if (color == "black" || color == "purple") { blocks[block_name['color']][1] = true; print("COLOR CONNECTED");}
       result = (color == CURRENT_COLOR)? then : other;
       addOutfit(result);
+      
+      var sameColor = false;
+      
+      
+      if (color == CURRENT_COLOR) {
+          sameColor = true; print ("TOP IS SAME COLOR AS SELECTED");
+          
+          if (color == "black") { //bottom must not be black
+            if ( then[0][1] == "black") {
+              print("NO! YOU MADE ALL BLACK");
+            } 
+            
+          }
+          
+          else if (color == "purple") {
+            if (then[0][1] != "black") {
+              print ("WHY THEN NOT BLACK?!");
+            }
+            
+          }
+          
+          if (other[0][1] != "black")
+            print("WHY OTHER NOT black?");
+        
+      }
+      
+      
+      else {  // TOP COLOR != USER COLOR
+        
+        if (color == "black") {
+          if (other[0][1] != "black")
+            print ("WHY OTHER NOT BLACK");
+        }
+        
+        else if (color == "purple") {
+          if (then[0][1] != "black")
+            print("WHY THEN NOT BLACK");
+          
+        }
+        
+       // if (then[0][1] != "purple")
+         // print("WHY THEN NOT PURPLE?");
+      
+      
+      }
+      
     }
     
   }
@@ -550,8 +596,10 @@ void randomize() {
   
   CURRENT_PLACE = places[x];
   
+  var colors = ['black', 'purple'];
+  
   rnd = new Random();
-  x = rnd.nextInt(9);
+  x = rnd.nextInt(2);
   
   CURRENT_COLOR = colors[x];
   

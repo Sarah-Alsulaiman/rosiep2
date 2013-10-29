@@ -282,10 +282,10 @@ Blockly.Language.set_color = {
 Blockly.Language.get_color_input = {
   helpUrl: 'http://www.example.com/',
   init: function() {
-    this.setColour(290, .45, .65);
+    this.setColour(34, .66, .95);
     this.appendValueInput("GET")
         .setCheck([Boolean, "equal", String])
-        .appendTitle("GET COLOR OF")
+        .appendTitle("COLOR OF")
         .appendTitle(new Blockly.FieldDropdown(GET_options()), "part")
         .appendTitle("EQUALS");
     this.setOutput(true, "input");
@@ -513,7 +513,7 @@ Blockly.Language.color_dress1 = {
 Blockly.Language.control_repeat = {
   helpUrl: 'http://www.example.com/',
   init: function() {
-    this.setColour(240, .10, .61);
+    this.setColour(76, .45, .65);
     this.appendDummyInput()
         .appendTitle("    REPEAT")
         .appendTitle(new Blockly.FieldDropdown([["2", "2"], ["3", "3"], ["4", "4"]]), "COUNT");
