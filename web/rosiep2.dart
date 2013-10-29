@@ -144,15 +144,17 @@ void initWebsocket() {
       compile(evt.data.substring(6)); 
       print('Dart received code from HTML ');
       
-      if (outfits.length != 0 && check_input) {
+      if (outfits.length != 0) {
         Timer.run(() => display());
       }
       
       timer = new Timer.periodic(new Duration(milliseconds: 1000), (Timer t) {
-        if (outfits.length == 0 || ! check_input) {
+        if (outfits.length == 0) {
           timer.cancel();
           if (check_input)
             sendMessage("DONE!");
+          else
+            sendMessage("error " + ERR_MSG);
         }
         else {
           //if (check_input)
@@ -223,7 +225,6 @@ void compile(String json) {
   }
   
   if (! ERR_MSG.isEmpty) {
-    sendMessage("error " + ERR_MSG);
     print (ERR_MSG + " NOT FOUND");
     check_input = false;
   }
