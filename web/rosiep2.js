@@ -14,7 +14,8 @@
                        ];
                        
     var colors = ['red', 'blue', 'gold', 'lime', 'black', 'pink', 'orange' , 'purple', 'grey'];
-    
+    var playing = false;
+    var error = '';
     
 //------------------------------------------------------------------------------------------
 // Attempt to open a web socket connection
@@ -57,7 +58,18 @@
         $.jqDialog.alert("End of game", function() { }); // callback function for 'OK' button
       }   
     }
-    
+ 
+ 
+
+//---------------------------------------------------------------------------
+// Show error message
+//---------------------------------------------------------------------------
+	function showError () {
+	
+		$.jqDialog.alert("Are you missing something?<br>" + error, function() { }); // callback function for 'OK' button
+      
+    }
+   
 //---------------------------------------------------------------------------
 // Populate images
 //---------------------------------------------------------------------------
@@ -148,29 +160,36 @@
 //---------------------------------------------------------------------------
 // Process dart event
 //---------------------------------------------------------------------------
-	var playing = false;
+	
     function processEvent(event) {
-      
-      if (event == "@blockly GOT IT!") {
-        console.log("HTML received message from dart " + event);
-      }
-      
-      else if (event == "@blockly DONE!") {
-        console.log("HTML received message from dart " + event);
-        playing = false;
-        window.setTimeout(function() { advanceLevel(); }, 500);
-      }
-      
-      else {		// received an outfit to display
-      		var check = event.substring(0,8);
-      		if ( check == "@blockly" ) {
-	      		console.log("HTML received message from dart for " + event);
-	      		var outfit = event.substring(9);
-	      		setHtmlVisibility(outfit, true);
-	      }
-      }
-    }
-       
+      var check = event.substring(0,8);
+      if ( check == "@blockly" ) {
+      	
+      	if (event.substring(9, 15) == "error ") {
+      		playing = false;
+      		error = event.substring(15);
+      		showError();
+      	
+      	}
+      	
+      	else if (event == "@blockly GOT IT!") {
+        	console.log("HTML received message from dart " + event);
+      	}
+      	
+      	else if (event == "@blockly DONE!") {
+        	console.log("HTML received message from dart " + event);
+        	playing = false;
+        	window.setTimeout(function() { advanceLevel(); }, 500);
+      	}
+      	
+      	else {		// received an outfit to display
+      		console.log("HTML received message from dart for " + event);
+	      	var outfit = event.substring(9);
+	      	setHtmlVisibility(outfit, true);
+	      
+      	}
+      }	
+    }   
 //---------------------------------------------------------------------------------------
 //  Check if blocks are connected (procedures are special case)                                                                               
 //---------------------------------------------------------------------------------------

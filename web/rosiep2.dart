@@ -60,11 +60,13 @@ bool going_block = false;
 
 bool func_block = false;
 bool call_block = false;
+bool abstraction_block = false;
 
 bool get_input_block = false;
 bool get_var_block = false;
 
 bool color_block = false;
+bool black_block = false;
 
 bool repeat_block = false;
 bool set_block = false;
@@ -72,12 +74,13 @@ bool set_block = false;
 //format [ [blockName, value, levels] ]
 List blocks = [  ['top', top_block, 1, 2, 3, 4, 5], ['bottom', bottom_block, 1, 2, 3, 4, 5, 6, 7], ['top_purple', top_purple_block, 2], ['bottom_purple', bottom_purple_block, 2],
                  ['if', if_block, 3, 5, 7], ['then', then_block, 3, 5, 7], ['other', other_block, 3, 5, 7], ['going', going_block, 3],
-                 ['func', func_block, 4, 5], ['call', call_block, 4, 5],
-                 ['get', get_input_block, 7]
+                 ['func', func_block, 4, 5], ['call', call_block, 4, 5], ['abstraction', abstraction_block, 4, 5],
+                 ['get', get_input_block, 7], ['color', color_block, 7], ['black', black_block, 7]
               ];
 
 
 var CURRENT_LEVEL = 1;
+var CURRENT_block;
 String ERR_MSG = '';
 
 //List level1 = [top_block, bottom_block];
@@ -85,7 +88,8 @@ String ERR_MSG = '';
 // write blocks[top] = true and then another map uses[top] = levels...
 
 Map level1 = new Map <String,bool>();
-Map block_name = new Map <int, String>();
+Map block_name = new Map <String, int>();
+
 //----------------------------------------------------------------------
 // Main function
 //----------------------------------------------------------------------
@@ -99,8 +103,23 @@ void main() {
   originals['bottom1'] = 'red';
   originals['bottom2'] = 'blue';
   
-  block_name[1] = 'top_block';
+  block_name['top'] = 0;
+  block_name['bottom'] = 1;
+  block_name['top_purple'] = 2;
+  block_name['bottom_purple'] = 3;
   
+  block_name['if'] = 4;
+  block_name['then'] = 5;
+  block_name['other'] = 6;
+  block_name['going'] = 7;
+  
+  block_name['func'] = 8;
+  block_name['call'] = 9;
+  block_name['abstraction'] = 10;
+  
+  block_name['get'] = 11;
+  block_name['color'] = 12;
+  block_name['black'] = 13;
   
   
   //originals.containsValue(value)
@@ -164,7 +183,7 @@ void compile(String json) {
   var function_end = json.lastIndexOf('}');
   
   if (function_end != -1 && function_begin != -1 ) {
-    func_block = true; print("FUNC FOUND");
+    blocks[block_name['func']][1] = true; print("FUNC FOUND");
     var functionsLine = json.substring(function_begin, function_end+1);
     functionsLine = (((functionsLine.replaceAll('{', '')).replaceAll('}', ''))
                       .replaceAll('\n', '')).replaceAll('][', '], [');
@@ -180,8 +199,7 @@ void compile(String json) {
   
   
   interpret(commands);
-  
-  print("INTERPRET FINISHED");
+  check_input = true;
   // Validate user answers here... TODO
   //format blocks = [ [blockName, value, levels] ]
   
@@ -190,9 +208,9 @@ void compile(String json) {
     //print("NUM LEVEL = " + num_level.toString());
     for (var j=2; j< num_level; j++) { // first two elements are not levels
       if (blocks[i][j].toString() == CURRENT_LEVEL ) { // if current level needs this block
-        print("CURRENT LEVEL NEEDS " + blocks[i][0]);
+        //print("CURRENT LEVEL NEEDS " + blocks[i][0]);
         if (! blocks[i][1]) {
-          print( blocks[i][1].toString());
+          //print( blocks[i][1].toString());
           ERR_MSG = blocks[i][0];
           break;
         }
@@ -204,11 +222,12 @@ void compile(String json) {
   }
   
   if (! ERR_MSG.isEmpty) {
-    
+    sendMessage("error " + ERR_MSG);
     print (ERR_MSG + " NOT FOUND");
+    check_input = false;
   }
   
-  check_input = true;
+  
 }
 
 //--------------------------------------------------------------------------
@@ -239,7 +258,7 @@ void display() {
      *--------------------------------------------------------------------------------------*/
     //setHtmlVisibility(outfit, true);
     
-    sendMessage(outfit);
+    sendMessage("outfit " + outfit);
     
     /**-------------------------------------------------------------------------------------
      * option2: Draw images on a Canvas (Add a canvas inside rosie-output div)
@@ -364,10 +383,14 @@ void interpret (List commands) {
         
         if (color == "purple")
           {color_block = true; print("COLOR BLOCK");}
-        if (part.startsWith("top"))
-          {top_block = true; blocks[0][1]= true; print("TOP block now true"); if (color == "purple") top_purple_block = true;}
-        else if (part.startsWith("bottom"))
-          {bottom_block = true; blocks[1][1]= true; print("BOTTOM block now true"); if (color == "purple") bottom_purple_block = true;}
+        if (part.startsWith("top")) { 
+          top_block = true; blocks[block_name['top']][1]= true; print("TOP block now true"); 
+          if (color == "purple")  blocks[block_name['top_purple']][1]= true;}
+        
+        else if (part.startsWith("bottom")) {
+          bottom_block = true; blocks[block_name['bottom']][1]= true; print("BOTTOM block now true"); 
+          if (color == "purple") blocks[block_name['bottom_purple']][1] = true;
+          else if (color == "black") blocks[block_name['black']][1] = true;}
         outfits.add(outfit);}
      }
    }
@@ -384,6 +407,7 @@ void addOutfit(block) {
       outfit = block[j][0];
       outfit = outfit+block[j][1];
       outfits.add(outfit); // add to our global list of outfits 
+      print("ADD OUTFIT FUNCTION");
     }
   }
   else { interpret(block); }
@@ -411,10 +435,11 @@ void processCall(List nested) {
   var block;
   var outfit;
   
-  call_block = true; print("CALL FOUND");
+  blocks[block_name['call']][1] = true; print("CALL FOUND");
   for (int i=0; i < subroutines.length; i++) {
     if (funcName == subroutines[i][0]) {
       block = subroutines[i][1];
+      if (block.length >= 2) {blocks[block_name['abstraction']][1] = true;}
       addOutfit(block);
     }
   }
@@ -471,15 +496,25 @@ void processIf(List nested) {
   List result;
   var outfit;
   
-  if_block = true; print("IF FOUND");
+  if_block = true;
+  blocks[block_name['if']][1] = true;
   
-  if (then.length != 0) {then_block = true; print("THEN POPULATED");}
-  if (other.length != 0) {other_block = true; print("OTHER POPULATED");}
+  if (CURRENT_LEVEL !=  7.toString()) {
+    if (then.length >= 2 ) {blocks[block_name['then']][1] = true; print("THEN POPULATED");}
+    if (other.length >= 2) {blocks[block_name['other']][1] = true; print("OTHER POPULATED");}
+    
+  }
+  
+  else {
+    if (then.length >= 1 ) {blocks[block_name['then']][1] = true; print("THEN POPULATED");}
+    if (other.length >= 1) {blocks[block_name['other']][1] = true; print("OTHER POPULATED");}
+    
+  }
   
   if (condition != 0) {
     if (condition == "Going") { //GOING TO block is connected to IF block
       result = (nested[1][1] == CURRENT_PLACE)? then : other;
-      going_block = true; print("GOING FOUND");
+      blocks[block_name['going']][1] = true; 
       //result could be empty!
       if (result.length != 0)
         addOutfit(result);
@@ -490,9 +525,11 @@ void processIf(List nested) {
       
      
     else  {  //GET block is connected to IF block ==> for unkown color levels
-      get_input_block = true; print("GET INPUT FOUND");
+      blocks[block_name['get']][1] = true; 
       var part = nested[1][0][1][0];
       var color = nested[1][0][1][1] ;
+      
+      if (color != 0) { blocks[block_name['color']][1] = true; print("COLOR CONNECTED");}
       result = (color == CURRENT_COLOR)? then : other;
       addOutfit(result);
     }
@@ -524,21 +561,30 @@ void randomize() {
 // Clear blocks
 //--------------------------------------------------------------------------
 void clearBlocks() {
-  if_block = false;
-  repeat_block = false;
-  get_input_block = false;
+  blocks[block_name['top']][1] = false;
+  blocks[block_name['bottom']][1] = false;
+  blocks[block_name['top_purple']][1] = false;
+  blocks[block_name['bottom_purple']][1] = false;
+  
+  blocks[block_name['if']][1] = false;
+  blocks[block_name['then']][1] = false;
+  blocks[block_name['other']][1] = false;
+  blocks[block_name['going']][1] = false;
+  
+  blocks[block_name['func']][1] = false;
+  blocks[block_name['call']][1] = false;
+  blocks[block_name['abstraction']][1] = false;
+  
+  blocks[block_name['get']][1] = false;
+  blocks[block_name['color']][1] = false;
+  blocks[block_name['black']][1] = false;
+  
+  //blocks[block_name['repeat']][1] = false;
+  
   get_var_block = false;
-  call_block = false;
+  
   set_block = false;
   color_block = false;
-  going_block = false;
-  top_block = false;
-  bottom_block = false;
-  then_block = false;
-  other_block = false;
-  func_block = false;
-  top_purple_block = false;
-  bottom_purple_block = false;
   
   print("BLOCKS CLEAERD");
 }  
