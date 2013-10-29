@@ -184,7 +184,7 @@
       	
       	else {		// received an outfit to display
       		console.log("HTML received message from dart for " + event);
-	      	var outfit = event.substring(9);
+	      	var outfit = event.substring(16);
 	      	setHtmlVisibility(outfit, true);
 	      
       	}

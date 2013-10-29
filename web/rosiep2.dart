@@ -149,12 +149,13 @@ void initWebsocket() {
       }
       
       timer = new Timer.periodic(new Duration(milliseconds: 1000), (Timer t) {
-        if (outfits.length == 0) {
+        if (outfits.length == 0 || ! check_input) {
           timer.cancel();
-          sendMessage("DONE!");
+          if (check_input)
+            sendMessage("DONE!");
         }
         else {
-          if (check_input)
+          //if (check_input)
           display();
         }
         });
@@ -174,7 +175,7 @@ void compile(String json) {
   
   ERR_MSG = '';
   
-  check_input = false;
+  check_input = true;
   hideAll();          //for option1
   //prepareCanvas();  //for option2
   //removeAll();      //for option3
@@ -199,7 +200,7 @@ void compile(String json) {
   
   
   interpret(commands);
-  check_input = true;
+  
   // Validate user answers here... TODO
   //format blocks = [ [blockName, value, levels] ]
   
@@ -227,7 +228,7 @@ void compile(String json) {
     check_input = false;
   }
   
-  
+ 
 }
 
 //--------------------------------------------------------------------------
