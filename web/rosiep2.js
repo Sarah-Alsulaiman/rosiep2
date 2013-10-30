@@ -16,6 +16,7 @@
     var colors = ['red', 'blue', 'gold', 'lime', 'black', 'pink', 'orange' , 'purple', 'grey'];
     var playing = false;
     var error = '';
+    var img_blank;
     
 //------------------------------------------------------------------------------------------
 // Attempt to open a web socket connection
@@ -93,14 +94,14 @@
         }
       }
       
-      var img_blank = document.createElement("img");
+      img_blank = document.createElement("img");
       img_blank.src = 'images/blank.png';
       img_blank.id = 'blank';
       img_blank.className = 'top';
       document.getElementById("images").appendChild(img_blank);
       
       if (CURRENT_LEVEL == 7)
-      	img_blank.style.visibility = "hidden";
+      	img_blank.style.visibility = "visible";
     }
     
     
@@ -122,6 +123,7 @@
 	    	}
 	  	}	 
   	 	
+  	  	img_blank.style.visibility = "hidden";
   	  	
       	if (el) {
       		el.style.visibility = visible ? "visible" : "hidden";

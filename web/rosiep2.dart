@@ -537,50 +537,24 @@ void processIf(List nested) {
       
       var sameColor = false;
       
-      
-      if (color == CURRENT_COLOR) {
-          sameColor = true; print ("TOP IS SAME COLOR AS SELECTED");
-          
-          if (color == "black") { //bottom must not be black
-            if ( then[0][1] == "black") {
-              print("NO! YOU MADE ALL BLACK");
-            } 
-            
-          }
-          
-          else if (color == "purple") {
-            if (then[0][1] != "black") {
-              print ("WHY THEN NOT BLACK?!");
-            }
-            
-          }
+      if (color == "black") {
+           if ( then[0][1] == "black")
+            print("NO! YOU MADE ALL BLACK");
           
           if (other[0][1] != "black")
-            print("WHY OTHER NOT black?");
-        
+            print("WHY OTHER NOT BLACK?");
       }
       
-      
-      else {  // TOP COLOR != USER COLOR
+      else if (color == "purple") {
+        if ( then[0][1] != "black")
+          print("WHY THEN NOT BLACK");
         
-        if (color == "black") {
-          if (other[0][1] != "black")
-            print ("WHY OTHER NOT BLACK");
-        }
+        if (other[0][1] == "black")
+          print("NO! YOU MADE ALL BLACK");
         
-        else if (color == "purple") {
-          if (then[0][1] != "black")
-            print("WHY THEN NOT BLACK");
-          
-        }
-        
-       // if (then[0][1] != "purple")
-         // print("WHY THEN NOT PURPLE?");
-      
-      
       }
-      
-    }
+       
+    } 
     
   }
 }
