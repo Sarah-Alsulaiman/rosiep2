@@ -56,7 +56,7 @@
       }
       
       else {
-        $.jqDialog.alert("End of game", function() { }); // callback function for 'OK' button
+        $.jqDialog.alert("<br>End of game", function() { }); // callback function for 'OK' button
       }   
     }
  
@@ -67,7 +67,7 @@
 //---------------------------------------------------------------------------
 	function showError () {
 	
-		$.jqDialog.alert("Are you missing something?<br>" + error, function() { }); // callback function for 'OK' button
+		$.jqDialog.alert("Are you missing something?<br><br>" + error, function() { }); // callback function for 'OK' button
       
     }
    

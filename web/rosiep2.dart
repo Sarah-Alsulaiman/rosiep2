@@ -85,12 +85,9 @@ var CURRENT_LEVEL = 1;
 var CURRENT_block;
 String ERR_MSG = '';
 
-//List level1 = [top_block, bottom_block];
-
 // write blocks[top] = true and then another map uses[top] = levels...
-
-Map level1 = new Map <String,bool>();
 Map block_name = new Map <String, int>();
+Map text = new Map <String, String> ();
 
 //----------------------------------------------------------------------
 // Main function
@@ -99,11 +96,6 @@ void main() {
   
   initWebsocket();
   randomize();
-  
-  originals['top1'] = 'red';
-  originals['top2'] = 'blue';
-  originals['bottom1'] = 'red';
-  originals['bottom2'] = 'blue';
   
   block_name['black'] = 0;
   
@@ -123,7 +115,25 @@ void main() {
   block_name['call'] = 12;
   block_name['func'] = 13;
   
-  //originals.containsValue(value)
+  text['black'] = "Make sure you choose the color black for one of the bottoms!";
+  
+  text['top'] = "Make sure you choose both a top and a bottom";
+  text['bottom'] = "Make sure you choose both a top and a bottom";
+  
+  text['top_purple'] = "Remember, dress code is purple! <br> you can change the outfit color from the coloring menu";
+  text['bottom_purple'] = "Remember, dress code is purple! <br> you can change the outfit color from the coloring menu";
+  
+  text['other'] = "Make sure you choose an outfit for each case";
+  text['then'] = "Make sure you choose an outfit for each case";
+  text['color'] = "Remember, top will only be either black or purple";
+  text['get'] = "Choose a block to help you decide ";
+  text['going'] = "Remember, there are two occasions";
+  text['if'] = "Choose a block to help you decide";
+  
+  text['abstraction'] = "Make sure you fill the definition";
+  text['call'] = "You created a definition but didn't use it!";
+  text['fun'] = "Outfit definitions menu help you create a shortcut";
+  
   
 }
 
@@ -162,7 +172,7 @@ void initWebsocket() {
           if (check_input)
             sendMessage("DONE!");
           else
-            sendMessage("error " + ERR_MSG);
+            sendMessage("error " + text[ERR_MSG]);
         }
         else {
           //if (check_input)
@@ -402,6 +412,7 @@ void interpret (List commands) {
           bottom_block = true; blocks[block_name['bottom']][1]= true; print("BOTTOM block now true"); 
           if (color == "purple") blocks[block_name['bottom_purple']][1] = true;
           else if (color == "black") blocks[block_name['black']][1] = true;}
+        
         outfits.add(outfit);}
      }
    }
