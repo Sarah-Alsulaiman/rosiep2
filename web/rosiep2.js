@@ -120,7 +120,7 @@
    	   	var variations = id.substring(0,3);
       	
       	if (variations == "top") variations = "top";
-      	else if (variations == "bott") variations = "bottom";
+      	else if (variations == "bot") variations = "bottom";
       	else variations = "background";
       	
   	   	hideVariations(variations);

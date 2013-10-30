@@ -74,9 +74,9 @@ bool set_block = false;
 //format [ [blockName, value, levels] ]
 List blocks = [  ['black', black_block, 7], ['top', top_block, 1, 2, 3, 4, 5], ['bottom', bottom_block, 1, 2, 3, 4, 5, 6, 7], 
                  ['top_purple', top_purple_block, 2], ['bottom_purple', bottom_purple_block, 2],
+                 ['abstraction', abstraction_block, 4, 5], ['call', call_block, 4, 5], ['func', func_block, 4, 5],
                  ['other', other_block, 3, 5, 7], ['then', then_block, 3, 5, 7],
-                 ['color', color_block, 7], ['get', get_input_block, 7], ['going', going_block, 3], ['if', if_block, 3, 5, 7], 
-                 ['abstraction', abstraction_block, 4, 5], ['call', call_block, 4, 5], ['func', func_block, 4, 5], 
+                 ['color', color_block, 7], ['get', get_input_block, 7], ['going', going_block, 3], ['if', if_block, 3, 5, 7],
                  
               ];
 
@@ -103,16 +103,18 @@ void main() {
   block_name['top_purple'] = 3;
   block_name['bottom_purple'] = 4;
   
-  block_name['other'] = 5;
-  block_name['then'] = 6;
-  block_name['color'] = 7;
-  block_name['get'] = 8;
-  block_name['going'] = 9;
-  block_name['if'] = 10;
+  block_name['abstraction'] = 5;
+  block_name['call'] = 6;
+  block_name['func'] = 7;
   
-  block_name['abstraction'] = 11;
-  block_name['call'] = 12;
-  block_name['func'] = 13;
+  block_name['other'] = 8;
+  block_name['then'] = 9;
+  block_name['color'] = 10;
+  block_name['get'] = 11;
+  block_name['going'] = 12;
+  block_name['if'] = 13;
+  
+  
   
   text['black'] = "Make sure you choose the color black for one of the bottoms!";
   
@@ -131,7 +133,7 @@ void main() {
   
   text['abstraction'] = "Make sure you fill the definition";
   text['call'] = "You created a definition but didn't use it!";
-  text['fun'] = "Outfit definitions menu help you create a shortcut";
+  text['func'] = "Outfit definitions menu help you create a shortcut";
   
   
 }
