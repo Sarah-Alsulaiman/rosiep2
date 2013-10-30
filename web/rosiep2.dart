@@ -44,6 +44,7 @@ String CURRENT_COLOR;
 List colors = ['red', 'blue', 'gold', 'lime', 'black', 'pink', 'orange' , 'purple', 'grey'];
 
 
+bool consider = true;
 bool check_input = false;
 
 bool top_block = false;
@@ -116,13 +117,13 @@ void main() {
   
   
   
-  text['black'] = "Make sure you choose the color black for one of the bottoms!";
+  text['black'] = "Make sure you choose the color black <br> for one of the bottoms!";
   
   text['top'] = "Make sure you choose both a top and a bottom";
   text['bottom'] = "Make sure you choose both a top and a bottom";
   
-  text['top_purple'] = "Remember, dress code is purple! <br> you can change the outfit color from the coloring menu";
-  text['bottom_purple'] = "Remember, dress code is purple! <br> you can change the outfit color from the coloring menu";
+  text['top_purple'] = "Remember, dress code is purple! <br/> you can change the outfit color from the coloring menu<br>";
+  text['bottom_purple'] = "Remember, dress code is purple! <br> you can change the outfit color from the coloring menu<br>";
   
   text['other'] = "Make sure you choose an outfit for each case";
   text['then'] = "Make sure you choose an outfit for each case";
@@ -134,6 +135,9 @@ void main() {
   text['abstraction'] = "Make sure you fill the definition";
   text['call'] = "You created a definition but didn't use it!";
   text['func'] = "Outfit definitions menu help you create a shortcut";
+  
+  text['all_black'] = "Remember, Rosie doesn't want to wear all black!";
+  text['not_black'] = "Remember, Rosie wants a black bottom <br> if the top is not black";
   
   
 }
@@ -153,7 +157,7 @@ void initWebsocket() {
     if (evt.data.startsWith("@dart")) {
       CURRENT_LEVEL = evt.data.substring(5,6);
       print("CURRENT LEVEL = " + CURRENT_LEVEL);
-      
+      randomize();
       if (CURRENT_LEVEL == "7") {
         var level7_top = "top2-";
         level7_top += CURRENT_COLOR;
@@ -199,7 +203,7 @@ void initWebsocket() {
 void compile(String json) {
   outfits.clear();
   clearBlocks();
-  randomize();
+  
   ERR_MSG = '';
   
   check_input = true;
@@ -231,6 +235,15 @@ void compile(String json) {
   // Validate user answers here...
   //format blocks = [ [blockName, value, levels] ]
   
+  if (ERR_MSG.isEmpty)
+    validate();
+  
+  else
+    check_input = false;
+}
+
+
+void validate() {
   for (var i= (blocks.length) - 1; i >= 0 ; i--) {
     var num_level = (blocks[i].length); 
     //print("NUM LEVEL = " + num_level.toString());
@@ -245,19 +258,20 @@ void compile(String json) {
         
       }
     }
-    if (! ERR_MSG.isEmpty)
+    if (! ERR_MSG.isEmpty) {
+      print (ERR_MSG + " NOT FOUND");
+      check_input = false;
       break;
+    }
+      
   }
   
-  if (! ERR_MSG.isEmpty) {
+  /*if (! ERR_MSG.isEmpty) {
     print (ERR_MSG + " NOT FOUND");
     check_input = false;
-  }
-  
- 
+  }*/
  
 }
-
 //--------------------------------------------------------------------------
 // Parse JSON returned from the program
 //--------------------------------------------------------------------------
@@ -409,21 +423,25 @@ void interpret (List commands) {
           get_var_block = true; print("GET VAR FOUND");
         }
         var outfit = part+color;
-        
+          
         if (part.startsWith("top")) { 
           blocks[block_name['top']][1]= true; print("TOP block now true"); 
           if (color == "purple")  blocks[block_name['top_purple']][1]= true;
           else blocks[block_name['top_purple']][1] = false;
         }
-        
+          
         else if (part.startsWith("bottom")) {
-          bottom_block = true; blocks[block_name['bottom']][1]= true; print("BOTTOM block now true"); 
+          blocks[block_name['bottom']][1]= true; print("BOTTOM block now true"); 
           if (color == "purple") blocks[block_name['bottom_purple']][1] = true;
-          else if (color == "black") blocks[block_name['black']][1] = true;
+          else if (color == "black") {blocks[block_name['black']][1] = true; print("BLACK!!!!!");} 
           else blocks[block_name['bottom_purple']][1] = false;
         }
         
-        outfits.add(outfit);}
+        if (consider)
+          outfits.add(outfit);
+          
+  
+      }
      }
    }
     
@@ -472,6 +490,7 @@ void processCall(List nested) {
     if (funcName == subroutines[i][0]) {
       block = subroutines[i][1];
       if (block.length >= 1) {blocks[block_name['abstraction']][1] = true;}
+      
       addOutfit(block);
     }
   }
@@ -536,8 +555,14 @@ void processIf(List nested) {
   
   if (condition != 0) {
     if (condition == "Going") { //GOING TO block is connected to IF block
+      blocks[block_name['going']][1] = true;
+      
+      consider = false;
+      addOutfit(then);
+      addOutfit(other);
+      
+      consider = true;
       result = (nested[1][1] == CURRENT_PLACE)? then : other;
-      blocks[block_name['going']][1] = true; 
       //result could be empty!
       if (result.length != 0)
         addOutfit(result);
@@ -553,6 +578,13 @@ void processIf(List nested) {
       var color = nested[1][0][1][1] ;
       
       if (color == "black" || color == "purple") { blocks[block_name['color']][1] = true; print("COLOR CONNECTED");}
+      
+      
+      consider = false;
+      addOutfit(then);
+      addOutfit(other);
+      
+      consider = true;
       result = (color == CURRENT_COLOR)? then : other;
       addOutfit(result);
       
@@ -560,18 +592,20 @@ void processIf(List nested) {
       
       if (color == "black") {
            if ( then[0][1] == "black")
-            print("NO! YOU MADE ALL BLACK");
+             ERR_MSG = "all_black";
+            //print("NO! YOU MADE ALL BLACK");
           
           if (other[0][1] != "black")
-            print("WHY OTHER NOT BLACK?");
+            ERR_MSG = "not_black";
+            //print("WHY OTHER NOT BLACK?");
       }
       
       else if (color == "purple") {
         if ( then[0][1] != "black")
-          print("WHY THEN NOT BLACK");
+          ERR_MSG = "not_black";
         
         if (other[0][1] == "black")
-          print("NO! YOU MADE ALL BLACK");
+          ERR_MSG = "all_black";
         
       }
        
