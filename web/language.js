@@ -558,7 +558,7 @@ Blockly.Language.going_to = {
     this.setColour(34, .66, .95);
     this.appendDummyInput()
         .appendTitle("Going To")
-        .appendTitle(new Blockly.FieldDropdown([["party", "party"], ["gym", "gym"], ["resturant", "resturant"], ["school", "school"]]), "place");
+        .appendTitle(new Blockly.FieldDropdown([["gym", "gym"], ["formal event", "formal event"], ["restaurant", "restaurant"], ["concert", "concert"]]), "place");
     this.setOutput(true, "going_to");
     this.setTooltip('');
   }

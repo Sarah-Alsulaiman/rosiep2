@@ -95,7 +95,6 @@ Map text = new Map <String, String> ();
 void main() {
   
   initWebsocket();
-  randomize();
   
   block_name['black'] = 0;
   
@@ -169,8 +168,14 @@ void initWebsocket() {
       timer = new Timer.periodic(new Duration(milliseconds: 1000), (Timer t) {
         if (outfits.length == 0) {
           timer.cancel();
-          if (check_input)
+          if (check_input) {
+            if (CURRENT_LEVEL == "3" || CURRENT_LEVEL == "5") {
+              String background = CURRENT_PLACE;
+              sendMessage("bg " + background);
+            }
             sendMessage("DONE!");
+          }
+            
           else
             sendMessage("error " + text[ERR_MSG]);
         }
@@ -192,7 +197,7 @@ void initWebsocket() {
 void compile(String json) {
   outfits.clear();
   clearBlocks();
-  
+  randomize();
   ERR_MSG = '';
   
   check_input = true;
@@ -293,7 +298,8 @@ void display() {
     /* addImageElement(outfit); */
     
     
-  outfits.removeAt(0);  
+  outfits.removeAt(0);
+  
 }
 
 //--------------------------------------------------------------------------
@@ -402,16 +408,18 @@ void interpret (List commands) {
         }
         var outfit = part+color;
         
-        if (color == "purple")
-          {color_block = true; print("COLOR BLOCK");}
         if (part.startsWith("top")) { 
-          top_block = true; blocks[block_name['top']][1]= true; print("TOP block now true"); 
-          if (color == "purple")  blocks[block_name['top_purple']][1]= true;}
+          blocks[block_name['top']][1]= true; print("TOP block now true"); 
+          if (color == "purple")  blocks[block_name['top_purple']][1]= true;
+          else blocks[block_name['top_purple']][1] = false;
+        }
         
         else if (part.startsWith("bottom")) {
           bottom_block = true; blocks[block_name['bottom']][1]= true; print("BOTTOM block now true"); 
           if (color == "purple") blocks[block_name['bottom_purple']][1] = true;
-          else if (color == "black") blocks[block_name['black']][1] = true;}
+          else if (color == "black") blocks[block_name['black']][1] = true;
+          else blocks[block_name['bottom_purple']][1] = false;
+        }
         
         outfits.add(outfit);}
      }
@@ -574,10 +582,19 @@ void processIf(List nested) {
 // Generate random place and color
 //--------------------------------------------------------------------------
 void randomize() {
-  var places = ['party', 'gym', 'resturant', 'school'];
+  
+  var places;
+  if (CURRENT_LEVEL == "3") {
+    places = ['gym', 'restaurant'];
+  }
+  
+  else {
+    places = ['formal', 'concert'];
+  }
+  
   
   Random rnd = new Random();
-  var x = rnd.nextInt(4);
+  var x = rnd.nextInt(2);
   
   CURRENT_PLACE = places[x];
   

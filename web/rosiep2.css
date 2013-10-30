@@ -116,6 +116,19 @@ button {
 #play-button:active { background-position: 8px 8px; }
 
 
+.background {
+  position: absolute;
+  transition: opacity .25s ease-in-out;
+  -moz-transition: opacity .25s ease-in-out;
+  -webkit-transition: opacity .25s ease-in-out;
+  opacity: 100;
+  z-index: 2;
+  visibility : hidden;
+  left: 1250px;
+  top: 100px;
+  
+}
+
 .top {
    position: absolute;
    transition: opacity .25s ease-in-out;

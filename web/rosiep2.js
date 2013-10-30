@@ -75,61 +75,85 @@
 // Populate images
 //---------------------------------------------------------------------------
 	function populate() {
-      var COLORS = ['red', 'blue', 'gold', 'lime', 'black', 'pink', 'orange' , 'purple', 'grey'];
-      for (var i=1; i < 9; i++ ) {
-        for (var j=0; j < COLORS.length; j++ ) {
-          var imgT=document.createElement("img");
-          imgT.src = 'images/top'+ i + '-' + COLORS[j] +'.png';
-          imgT.id = 'top'+ i + '-' + COLORS[j];
-          imgT.className = 'top';
-          document.getElementById("images").appendChild(imgT);
-          
-          var imgB= document.createElement("img");
-          imgB.src = 'images/bottom'+ i + '-' + COLORS[j] +'.png';
-          imgB.id = 'bottom'+ i + '-' + COLORS[j];
-          imgB.className = 'bottom';
-          document.getElementById("images").appendChild(imgB);
-          //console.log(img.src);
-          
-        }
-      }
-      
-      img_blank = document.createElement("img");
-      img_blank.src = 'images/blank.png';
-      img_blank.id = 'blank';
-      img_blank.className = 'top';
-      document.getElementById("images").appendChild(img_blank);
-      
-      if (CURRENT_LEVEL == 7)
-      	img_blank.style.visibility = "visible";
-    }
-    
-    
+		
+		/*var bgImg = document.createElement("img");
+        bgImg.src = 'images/gym.png';
+        bgImg.id = 'gym';
+        bgImg.className = 'background';
+        document.getElementById("images").appendChild(bgImg);*/
+		
+      	var COLORS = ['red', 'blue', 'gold', 'lime', 'black', 'pink', 'orange' , 'purple', 'grey'];
+      	for (var i=1; i < 9; i++ ) {
+        	for (var j=0; j < COLORS.length; j++ ) {
+          		var imgT=document.createElement("img");
+          		imgT.src = 'images/top'+ i + '-' + COLORS[j] +'.png';
+          		imgT.id = 'top'+ i + '-' + COLORS[j];
+          		imgT.className = 'top';
+          		document.getElementById("images").appendChild(imgT);
+          		
+          		var imgB= document.createElement("img");
+          		imgB.src = 'images/bottom'+ i + '-' + COLORS[j] +'.png';
+          		imgB.id = 'bottom'+ i + '-' + COLORS[j];
+          		imgB.className = 'bottom';
+          		document.getElementById("images").appendChild(imgB);
+          		//console.log(img.src);
+          		
+        	}
+      	}
+      	
+      	img_blank = document.createElement("img");
+      	img_blank.src = 'images/blank.png';
+      	img_blank.id = 'blank';
+      	img_blank.className = 'top';
+      	document.getElementById("images").appendChild(img_blank);
+      	
+      	if (CURRENT_LEVEL == 7)
+      		img_blank.style.visibility = "visible";
+    }	
+    	
 //---------------------------------------------------------------------------------------
 // Utility functions                                                                                   
 //---------------------------------------------------------------------------------------
 	
 	function setHtmlVisibility(id, visible) {
 		var el = document.getElementById(String(id));
-   	   	var variation = id.substring(0,1);
-      	variation = (variation == "t")? "top" : "bottom";
-  	   	
-  	   	for (var i=1; i<9; i++) {
-	    	for (var j=0; j < colors.length; j++) {
-	    		var item = variation.concat(i.toString(),"-",colors[j].toString());
-	    		//console.log("item = " + item);
-	    		item = document.getElementById(item);
-	        	item.style.visibility = "hidden";
-	    	}
-	  	}	 
-  	 	
-  	  	img_blank.style.visibility = "hidden";
+   	   	var variations = id.substring(0,3);
+      	
+      	if (variations == "top") variations = "top";
+      	else if (variations == "bott") variations = "bottom";
+      	else variations = "background";
+      	
+  	   	hideVariations(variations);
+  	   	 
+  	   	img_blank.style.visibility = "hidden";
   	  	
       	if (el) {
       		el.style.visibility = visible ? "visible" : "hidden";
       	}
    	}
-   
+   	
+   	function hideVariations (variation) {
+   		if (variation == "top" || variation == "bottom") {
+   			for (var i=1; i<9; i++) {
+   				for (var j=0; j < colors.length; j++) {
+   					var item = variation.concat(i.toString(),"-",colors[j].toString());
+	    			//console.log("item = " + item);
+	    			item = document.getElementById(item);
+	        		item.style.visibility = "hidden";
+	    		}
+	  		}	 
+  	 	}
+   		
+   		
+   			
+   			var places = ['gym', 'formal', 'restaurant', 'concert'];
+   			
+   			for ( var i=0; i < places.length; i++) {
+   				var bg = document.getElementById(places[i]);
+   				bg.style.visibility = "hidden";
+   			}
+   			
+   	}
    
 	function setHtmlOpacity(id, opacity) {
 		var el = document.getElementById(id);
@@ -171,7 +195,6 @@
       		playing = false;
       		error = event.substring(15);
       		showError();
-      	
       	}
       	
       	else if (event == "@blockly GOT IT!") {
@@ -184,8 +207,14 @@
         	window.setTimeout(function() { advanceLevel(); }, 500);
       	}
       	
+      	else if (event.substring(9, 12) == "bg ") {  //received bg to display
+      		console.log("HTML received message from dart for background " + event);
+	      	var bg = event.substring(12);
+	      	setHtmlVisibility(bg, true);
+      	}
+      	
       	else {		// received an outfit to display
-      		console.log("HTML received message from dart for " + event);
+      		console.log("HTML received message from dart for outfit " + event);
 	      	var outfit = event.substring(16);
 	      	setHtmlVisibility(outfit, true);
 	      
