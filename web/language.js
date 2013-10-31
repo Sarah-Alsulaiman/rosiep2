@@ -285,9 +285,9 @@ Blockly.Language.get_color_input = {
     this.setColour(34, .66, .95);
     this.appendValueInput("GET")
         .setCheck([Boolean, "equal", String])
-        .appendTitle("COLOR OF")
-        .appendTitle(new Blockly.FieldDropdown(GET_options()), "part")
-        .appendTitle("EQUALS");
+        .appendTitle("COLOR OF TOP")
+        //.appendTitle(new Blockly.FieldDropdown(GET_options()), "part")
+        .appendTitle("IS ");
     this.setOutput(true, "input");
     this.setTooltip('');
   }

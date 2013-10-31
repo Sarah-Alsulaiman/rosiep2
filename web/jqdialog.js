@@ -22,8 +22,9 @@
 		//________button / control labels
 		labels: {
 			ok: 'OK',
-			yes: 'Yes',
 			no: 'No',
+			yes: 'Yes',
+			
 			cancel: 'Cancel'
 		},
 
@@ -32,8 +33,8 @@
 			div_box:	'jqDialog_box',
 			div_content:	'jqDialog_content',
 			div_options: 'jqDialog_options',
-			bt_yes: 'jqDialog_yes',
 			bt_no: 'jqDialog_no',
+			bt_yes: 'jqDialog_yes',
 			bt_ok: 'jqDialog_ok',
 			bt_ancel: 'jqDialog_ok',
 			input: 'jqDialog_input'
@@ -46,8 +47,8 @@
 			t.parts.bt_ok.hide();
 			t.parts.bt_cancel.hide();
 			
-			t.parts.bt_yes.show();
 			t.parts.bt_no.show();
+			t.parts.bt_yes.show();
 			t.parts.bt_yes.focus();
 			
 			// just redo this everytime in case a new callback is presented
@@ -204,9 +205,10 @@
 			t.parts.div_box = $("<div>").attr({ id: t.ids.div_box });
 			t.parts.div_content = $("<div>").attr({ id: t.ids.div_content });
 			t.parts.div_options = $("<div>").attr({ id: t.ids.div_options });
-
-			t.parts.bt_yes = $("<button>").attr({ id: t.ids.bt_yes }).append( t.labels.yes );
+			
 			t.parts.bt_no = $("<button>").attr({ id: t.ids.bt_no }).append( t.labels.no );
+			t.parts.bt_yes = $("<button>").attr({ id: t.ids.bt_yes }).append( t.labels.yes );
+			
 			t.parts.bt_ok = $("<button>").attr({ id: t.ids.bt_ok }).append( t.labels.ok );
 			t.parts.bt_cancel = $("<button>").attr({ id: t.ids.bt_cancel }).append( t.labels.cancel );
 
@@ -215,8 +217,8 @@
 			// assemble the parts
 			t.parts.div_box.append( t.parts.div_content )
 					.append(
-						t.parts.div_options.append(t.parts.bt_yes)
-										   .append(t.parts.bt_no)
+						t.parts.div_options.append(t.parts.bt_no)
+										   .append(t.parts.bt_yes)
 										   .append(t.parts.bt_ok)
 										   .append(t.parts.bt_cancel)
 					);
