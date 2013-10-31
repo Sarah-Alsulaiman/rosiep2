@@ -516,7 +516,8 @@ Blockly.Language.control_repeat = {
     this.setColour(76, .45, .65);
     this.appendDummyInput()
         .appendTitle("    REPEAT")
-        .appendTitle(new Blockly.FieldDropdown([["2", "2"], ["3", "3"], ["4", "4"]]), "COUNT");
+        .appendTitle(new Blockly.FieldTextInput("5"), "COUNT")
+        .appendTitle("TIMES")
     this.appendDummyInput();
     this.appendStatementInput("DO");
     this.appendDummyInput();

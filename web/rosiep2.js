@@ -9,7 +9,7 @@
                         " Rosie wants to go to the gym. Jasmin invited her to go to brunch. Rosie is still hesitant on where to go. Help Rosie choose her outfit for both cases",
                         " Rosie want you to help her pick an outfit that would be her favorite to wear on formal occasions. define an outfit and use it",
                         " Rosie in invited to a formal event. She also has tickets for her favorite band concert.<BR/> Help Rosie on both cases",
-                        " Rosie likes to have her top and bottom of the same color. She picked the top but not the bottom, pick a bottom and give it the same color as the top (hint: check new blocks in the coloring section!)",
+                        " Rosie is wearing a top and wants to wear a matching bottom that comes in black, grey and pink, she wants to try them all",
                         " Rosie wore a top that is either black or purple, when she wears a black top, she doesn't want to wear another black as a bottom, otherwise she wants the bottom to be black. Pick a bottom so that she doesn't wear all black (hint: check new blocks in the control section!)"
                        ];
                        
@@ -107,8 +107,16 @@
       	img_blank.className = 'top';
       	document.getElementById("images").appendChild(img_blank);
       	
-      	if (CURRENT_LEVEL == 7)
+      	if (CURRENT_LEVEL == 6)
+      		document.getElementById('top5-black').style.visibility = "visible";
+      	else if (CURRENT_LEVEL == 7)
       		img_blank.style.visibility = "visible";
+      		
+      	
+      	
+      	
+      		
+      		
     }	
     	
 //---------------------------------------------------------------------------------------
@@ -124,7 +132,10 @@
       	else variations = "background";
       	
   	   	hideVariations(variations);
-  	   	 
+  	   	
+  	   	if (CURRENT_LEVEL == 6)
+      		document.getElementById('top5-black').style.visibility = "visible";
+      		
   	   	img_blank.style.visibility = "hidden";
   	  	
       	if (el) {
@@ -137,9 +148,10 @@
    			for (var i=1; i<9; i++) {
    				for (var j=0; j < colors.length; j++) {
    					var item = variation.concat(i.toString(),"-",colors[j].toString());
-	    			//console.log("item = " + item);
+	    			console.log("item = " + item);
 	    			item = document.getElementById(item);
 	        		item.style.visibility = "hidden";
+	        		
 	    		}
 	  		}	 
   	 	}
@@ -551,7 +563,7 @@
                     '<block type="lime"></block> <block type="gold"></block>' ;
       toolbox3 += '</category> <category> </category>'; //close coloring
       
-      toolbox3 += '<category name = "+ Controls">  <block type = "control_if"></block> <block type="going_to"></block>  <block type="control_repeat"></block>';
+      toolbox3 += '<category name = "+ Controls">  <block type = "control_if"></block> <block type="going_to"></block> ';
       toolbox3 += '</category> <category> </category>'; //close controls
       toolbox3 += '</xml>';
       
@@ -569,7 +581,7 @@
                     '<block type="lime"></block> <block type="gold"></block>' ;
       toolbox4 += '</category> <category> </category>'; //close coloring
       
-      toolbox4 += '<category name = "+ Controls"> <block type = "control_if"></block> <block type="going_to"></block> <block type="control_repeat"></block>';
+      toolbox4 += '<category name = "+ Controls"> <block type = "control_if"></block> <block type="going_to"></block>';
       toolbox4 += '</category> <category> </category>'; //close controls
       
       toolbox4 += '<category name = "+ Outfit Definitions" custom="PROCEDURE"></category>';
@@ -600,16 +612,15 @@
       //------------------------------------------------------------------------------
       var toolbox6 = '<xml> <category></category> ';
       
-      toolbox6 += '<category name="+ Bottoms"> <block type="bottom1"></block> <block type="bottom2"></block> <block type="bottom3"></block> <block type="bottom4"></block> <block type="bottom5"></block> <block type="bottom6"></block> <block type="bottom7"></block>';
+      toolbox6 += '<category name="+ Bottoms"> <block type="bottom1"></block>';
       
       toolbox6 += '</category> <category> </category>'; //close bottoms
       
-      toolbox6 += '<category name="+ Coloring"> <block type="get_color_var"></block> <block type="red"></block> <block type="blue"></block>' + 
-                    '<block type="black"></block> <block type="pink"></block> <block type="grey"></block> <block type="orange"></block> <block type="purple"></block>' +
-                    '<block type="lime"></block> <block type="gold"></block>' ;
+      toolbox6 += '<category name="+ Coloring"> <block type="black"></block> <block type="pink"></block> <block type="grey"></block> ';
+                   
       toolbox6 += '</category> <category> </category>'; //close coloring
       
-      toolbox6 += '<category name = "+ Controls"> <block type = "control_if"></block> <block type="going_to"></block> <block type="control_repeat"></block>';
+      toolbox6 += '<category name = "+ Controls"> <block type="control_repeat"></block>';
       toolbox6 += '</category> <category> </category>'; //close controls
       
       toolbox6 += '<category name = "+ Outfit Definitions" custom="PROCEDURE"></category>';
