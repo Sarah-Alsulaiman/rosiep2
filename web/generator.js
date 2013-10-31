@@ -260,7 +260,7 @@ Blockly.JavaScript.going_to = function() {
 
 
 Blockly.JavaScript.control_repeat = function() {
-  var count = this.getTitleValue('COUNT');
+  var count = this.getTitleValue('COUNT') || '50';
   var branch = Blockly.JavaScript.statementToCode(this, 'DO');
   
   return '[ "repeat", ' + count + ', [ ' + branch + '] ]';
