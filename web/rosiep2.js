@@ -17,7 +17,39 @@
     var playing = false;
     var error = '';
     var img_blank;
+    //var xml_text1 = '<xml> <block type="procedures_defnoreturn" x="351" y="285"> <mutation></mutation> <title name="NAME">formal</title> <statement name="STACK"> <block type="top1"></block> </statement> </block> <block type="procedures_defnoreturn" x="355" y="255"> <block type="top2"> </block></block> </xml>';
+    //var xml_text2 = '<xml> <block type="procedures_defnoreturn" x="351" y="285"> </block></xml>';
+    var xml_text = '<xml> </xml>';
+    var saved_procedure = '<xml>';
     
+//-----------------------------------------------------------------------------------------
+// Local storage	                                                                 
+//------------------------------------------------------------------------------------------  
+    
+    function storeProcedure () {
+    	var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+    	xml_text = Blockly.Xml.domToText(xml);
+    	
+    	xmlDoc = loadXMLString(xml_text);
+    	
+    	x = xmlDoc.getElementsByTagName('block');
+    	for (i=0; i < x.length; i++) {
+  			if (x[i].parentNode.nodeName == 'xml') {
+  				att = x.item(i).attributes.getNamedItem("type");
+  				if ( att.value == 'procedures_defnoreturn') {
+  					cloneNode=x[i].cloneNode(true);
+					//var text = new XMLSerializer().serializeToString(cloneNode);
+  					saved_procedure += Blockly.Xml.domToText(cloneNode);
+  				}
+  			
+  			}
+  		}
+  		
+  		sessionStorage.procedure = saved_procedure;
+  		//alert(saved_procedure);
+	}
+	
+	
 //------------------------------------------------------------------------------------------
 // Attempt to open a web socket connection
 //------------------------------------------------------------------------------------------
@@ -45,6 +77,7 @@
 // Redirect to the next level
 //---------------------------------------------------------------------------
 	function advanceLevel () {
+		storeProcedure();
       if (CURRENT_LEVEL < MAX_LEVEL) {
         $.jqDialog.confirm("Congratulations!<BR/> <BR/> Are you ready to proceed to level %1?".replace('%1', CURRENT_LEVEL + 1),
         function() { window.location = window.location.protocol + '//' +
@@ -143,6 +176,7 @@
       	}
    	}
    	
+   	
    	function hideVariations (variation) {
    		if (variation == "top" || variation == "bottom") {
    			for (var i=1; i<9; i++) {
@@ -158,12 +192,12 @@
    		
    		
    			
-   			var places = ['gym', 'formal', 'restaurant', 'concert'];
+   		var places = ['gym', 'formal', 'restaurant', 'concert'];
    			
-   			for ( var i=0; i < places.length; i++) {
-   				var bg = document.getElementById(places[i]);
-   				bg.style.visibility = "hidden";
-   			}
+   		for ( var i=0; i < places.length; i++) {
+   			var bg = document.getElementById(places[i]);
+   			bg.style.visibility = "hidden";
+   		}
    			
    	}
    
@@ -287,12 +321,14 @@
           }
         
           else {
+          
             code = code.replace(/\]\[/g, '], [');
             code = (code.replace(/\)/g, '')).replace(/\(/g, '');
             code = code.replace(/\;/g, '');
             if (socket != null && socket.readyState == 1) {
-              alert(code);
+              //alert(code);
               socket.send('@dart'+ CURRENT_LEVEL + code);
+              
               playing = true;
               //window.location.reload(true);
             }
@@ -605,7 +641,7 @@
       toolbox5 += '<category name = "+ Controls"> <block type = "control_if"></block> <block type="going_to"></block> <block type="control_repeat"></block>';
       toolbox5 += '</category> <category> </category>'; //close controls
       
-      toolbox5 += '<category name = "+ Outfit Definitions" custom="PROCEDURE"></category>';
+      toolbox5 += '<category name = "+ Outfit Definitions" custom="PROCEDURE">  </category>';
       toolbox5 += '</category> <category> </category>'; //close definitions
       toolbox5 += '</xml>';
       
@@ -690,8 +726,20 @@
           Blockly.inject(document.getElementById('rosie-code'), {path: '../blockly/', toolbox: toolbox1 } );
       }
       
-      //Blockly.inject(document.getElementById('rosie-code'), {path: '../blockly/', toolbox: } );
-      
+      if (CURRENT_LEVEL >= 4) {
+      	 if ('sessionStorage' in window ) {
+      	 	var saved_xml = '';
+      	 	if (sessionStorage.procedure) {
+      	 		saved_xml += sessionStorage.procedure;
+      	 		saved_xml += '</xml>';	
+      	 		var xml = Blockly.Xml.textToDom(saved_xml);
+      			Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
+      			//window.setTimeout(BlocklyStorage.restoreBlocks, 0);
+      	 	}
+      	 	
+      	 }
+      	
+      }
       
       
       document.getElementById('full_text_div').innerHTML= LEVELS_MSG[CURRENT_LEVEL - 1];
