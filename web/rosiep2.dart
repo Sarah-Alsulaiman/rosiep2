@@ -73,7 +73,7 @@ bool repeat_block = false;
 bool set_block = false;
 
 //format [ [blockName, value, levels] ]
-List blocks = [  ['black', black_block, 7], ['top', top_block, 1, 2, 3, 4, 5], ['bottom', bottom_block, 1, 2, 3, 4, 5, 6, 7], 
+List blocks = [  [ 'black', black_block, 7], ['top', top_block, 1, 2, 3, 4, 5], ['bottom', bottom_block, 1, 2, 3, 4, 5, 6, 7], 
                  ['top_purple', top_purple_block, 2], ['bottom_purple', bottom_purple_block, 2],
                  ['abstraction', abstraction_block, 4, 5], ['call', call_block, 4, 5], ['func', func_block, 4, 5],
                  ['other', other_block, 3, 5, 7], ['then', then_block, 3, 5, 7],

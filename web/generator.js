@@ -1,10 +1,10 @@
 Blockly.JavaScript.top1 = function() {
 	var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
 	if (color == '0') {
-		return '[ "top1-", "red" ]';
+		return '[ "top1-", "red", "hot" ]';
 	}
 	else {
-		return '[ "top1-",' + color + ' ]';
+		return '[ "top1-",' + color + ', "hot" ]';
 	}
 };
 
@@ -21,10 +21,10 @@ Blockly.JavaScript.top2 = function() {
 Blockly.JavaScript.top3 = function() {
 	var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
 	if (color == '0') {
-		return '[ "top3-", "red" ]';
+		return '[ "top3-", "red", "cold" ]';
 	}
 	else {
-		return '[ "top3-",' + color + ' ]';
+		return '[ "top3-",' + color + ', "cold" ]';
 	}
 };
 
