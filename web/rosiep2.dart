@@ -44,6 +44,9 @@ String CURRENT_COLOR;
 List colors = ['red', 'blue', 'gold', 'lime', 'black', 'pink', 'orange' , 'purple', 'grey'];
 
 
+String CONNECTION_ID;
+List parts;
+
 bool consider = true;
 bool check_input = false;
 
@@ -157,6 +160,14 @@ void initWebsocket() {
     if (evt.data.startsWith("@dart")) {
       CURRENT_LEVEL = evt.data.substring(5,6);
       print("CURRENT LEVEL = " + CURRENT_LEVEL);
+      ////////////////////////////////////////////////////////
+      
+      parts = evt.data.split("#");
+      CONNECTION_ID = parts[1];
+      print("DATA CAME FROM CONNECTION = " + CONNECTION_ID);
+      
+      
+      //////////////////////////////////////////////////////
       randomize();
       if (CURRENT_LEVEL == "7") {
         var level7_top = "top2-";
@@ -164,7 +175,10 @@ void initWebsocket() {
         sendMessage("outfit " + level7_top);
       }
       
-      compile(evt.data.substring(6)); 
+      //compile(evt.data.substring(6)); 
+      print("COMPILE THIS: " + parts[2]);
+      compile(parts[2]);
+      
       print('Dart received code from HTML ');
       
       if (outfits.length != 0) {
@@ -682,7 +696,7 @@ void clearBlocks() {
 //--------------------------------------------------------------------------
 void sendMessage(String message) {
   if (ws != null && ws.readyState == WebSocket.OPEN) {
-    ws.send("@blockly $message");
+    ws.send("@blockly#$CONNECTION_ID#$message");
   }
 }
 

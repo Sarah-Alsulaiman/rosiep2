@@ -26,7 +26,7 @@ body {
    margin-left: 200px;
    margin-right: auto;
    width: 1000px;
-   height: 800px;
+   height: 900px;
    /*border: 1px solid black;*/
    background-color: white; 
 }
@@ -59,8 +59,8 @@ A:hover {text-decoration: underline; color: rgba(102, 0, 102, .6);}
    position: absolute;
    left: 1110px;
    top: 78px;
-   width: 400px;
-   height: 872px;
+   width: 600px;
+   height: 900px;
    padding: 10px;
    border: 1px solid black;
    text-align: center;
@@ -73,8 +73,8 @@ A:hover {text-decoration: underline; color: rgba(102, 0, 102, .6);}
    border: 2px solid white;
    border-color:  rgba(102, 0, 102, .6);
    position: absolute;
-   top: 870px;
-   left: 1250px;
+   top: 900px;
+   left: 1350px;
    text-align: center;
    padding: 5px;
    width: 150px;

@@ -22,6 +22,8 @@
     var xml_text = '<xml> </xml>';
     var saved_procedure = '<xml>';
     
+    
+    var CONNECTION_ID;
 //-----------------------------------------------------------------------------------------
 // store procedures in session storage	                                                                 
 //------------------------------------------------------------------------------------------  
@@ -235,36 +237,54 @@
 	
     function processEvent(event) {
       var check = event.substring(0,8);
+      
+      if (check == "your id=" ) {
+      
+      	CONNECTION_ID = event.substring(8);
+      	//alert("YOUR CONNECTION IS " + CONNECTION_ID);
+      	
+      }
+      
+      
       if ( check == "@blockly" ) {
+      	console.log("HTML received message from dart " + event);
       	
-      	if (event.substring(9, 15) == "error ") {
+      	var parts = event.split('#');
+      	if (parts[1] == CONNECTION_ID) {
+      		
+      		if (parts[2].substring(0, 6) == "error ") {
       		playing = false;
-      		error = event.substring(15);
+      		error = event.substring(6);
       		showError();
+	      	}
+	      	
+	      	else if (parts[2] == "GOT IT!") {
+	        	console.log("HTML received message from dart " + event);
+	      	}
+	      	
+	      	else if (parts[2] == "DONE!") {
+	        	console.log("HTML received message from dart " + event);
+	        	playing = false;
+	        	window.setTimeout(function() { advanceLevel(); }, 500);
+	      	}
+	      	
+	      	else if (parts[2].substring(0, 3) == "bg ") {  //received bg to display
+	      		console.log("HTML received message from dart for background " + event);
+		      	var bg = event.substring(3);
+		      	setHtmlVisibility(bg, true);
+	      	}
+	      	
+	      	else {		// received an outfit to display
+	      		console.log("HTML received message from dart for outfit " + event);
+		      	var outfit = parts[2].substring(7);
+		      	console.log(outfit);
+		      	setHtmlVisibility(outfit, true);
+		      
+	      	}
+	      	
+      	
       	}
       	
-      	else if (event == "@blockly GOT IT!") {
-        	console.log("HTML received message from dart " + event);
-      	}
-      	
-      	else if (event == "@blockly DONE!") {
-        	console.log("HTML received message from dart " + event);
-        	playing = false;
-        	window.setTimeout(function() { advanceLevel(); }, 500);
-      	}
-      	
-      	else if (event.substring(9, 12) == "bg ") {  //received bg to display
-      		console.log("HTML received message from dart for background " + event);
-	      	var bg = event.substring(12);
-	      	setHtmlVisibility(bg, true);
-      	}
-      	
-      	else {		// received an outfit to display
-      		console.log("HTML received message from dart for outfit " + event);
-	      	var outfit = event.substring(16);
-	      	setHtmlVisibility(outfit, true);
-	      
-      	}
       }	
     }   
 //---------------------------------------------------------------------------------------
@@ -327,7 +347,12 @@
             code = code.replace(/\;/g, '');
             if (socket != null && socket.readyState == 1) {
               //alert(code);
-              socket.send('@dart'+ CURRENT_LEVEL + code);
+              
+              //socket.send('@dart'+ CURRENT_LEVEL + '-' + CONNECTION_ID + '-' + code);
+              
+              code = '@dart'+ CURRENT_LEVEL + '#' + CONNECTION_ID + '#' + code;
+              socket.send(code);
+              alert(code);
               
               playing = true;
               //window.location.reload(true);
