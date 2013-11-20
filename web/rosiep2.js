@@ -264,7 +264,7 @@
       		
       		if (parts[2].substring(0, 6) == "error ") {
       		playing = false;
-      		error = event.substring(6);
+      		error = parts[2].substring(6);
       		showError();
 	      	}
 	      	
@@ -280,7 +280,7 @@
 	      	
 	      	else if (parts[2].substring(0, 3) == "bg ") {  //received bg to display
 	      		console.log("HTML received message from dart for background " + event);
-		      	var bg = event.substring(3);
+		      	var bg = parts[2].substring(3);
 		      	setHtmlVisibility(bg, true);
 	      	}
 	      	
@@ -305,19 +305,20 @@
       var connected = true;
       var start = 0;
       var newLine = 0;
-      while (start < code.length && start != -1) {
+      var length = code.length;
+      while (start < length && start != -1) {
         newLine = code.indexOf("\n",start);
         var curlyBrace = code.indexOf("}" ,start);
-        console.log(newLine); console.log(curlyBrace);
+        console.log(newLine); console.log(curlyBrace); console.log(length);
         if ( newLine > 0 ) {
         	if ( curlyBrace > 0) {
         		if ( newLine -1 != curlyBrace ) {
             		connected = false;
             		break;
           		}
-          		else { start = newLine+2; }
+          		else { start = newLine+2; length -= curlyBrace }
         	}
-        	else { connected = true; break; } ///++++++
+        	else { connected = false; break; } ///++++++
       	}
       	else { break; } 
       }
