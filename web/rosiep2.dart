@@ -221,7 +221,7 @@ void compile(String json) {
   ERR_MSG = '';
   
   check_input = true;
-  hideAll();          //for option1
+  //hideAll();          //for option1
   //prepareCanvas();  //for option2
   //removeAll();      //for option3
   

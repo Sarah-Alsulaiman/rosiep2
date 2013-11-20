@@ -203,6 +203,16 @@
    			
    	}
    
+   
+    function hideAll() {
+    
+    	hideVariations("top");
+    	hideVariations("bottom");
+    
+    
+    
+    
+    }
 	function setHtmlOpacity(id, opacity) {
 		var el = document.getElementById(id);
       	if (el) {
@@ -273,6 +283,7 @@
 		      	var bg = event.substring(3);
 		      	setHtmlVisibility(bg, true);
 	      	}
+	      	
 	      	
 	      	else {		// received an outfit to display
 	      		console.log("HTML received message from dart for outfit " + event);
@@ -349,7 +360,7 @@
               //alert(code);
               
               //socket.send('@dart'+ CURRENT_LEVEL + '-' + CONNECTION_ID + '-' + code);
-              
+              hideAll();
               code = '@dart'+ CURRENT_LEVEL + '#' + CONNECTION_ID + '#' + code;
               socket.send(code);
               alert(code);
