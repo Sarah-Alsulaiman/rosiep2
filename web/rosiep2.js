@@ -1,3 +1,4 @@
+
 //-----------------------------------------------------------------------------------------
 // Global Level variables                                                                   
 //------------------------------------------------------------------------------------------
@@ -24,6 +25,11 @@
     
     
     var CONNECTION_ID;
+    
+    var tipImg;
+    var originalTop;
+    var originalBottom;
+    var tempImg;
 //-----------------------------------------------------------------------------------------
 // store procedures in session storage	                                                                 
 //------------------------------------------------------------------------------------------  
@@ -162,8 +168,8 @@
 		var el = document.getElementById(String(id));
    	   	var variations = id.substring(0,3);
       	
-      	if (variations == "top") variations = "top";
-      	else if (variations == "bot") variations = "bottom";
+      	if (variations == "top") { variations = "top"; originalTop = id;}
+      	else if (variations == "bot") { variations = "bottom"; originalBottom = id; }
       	else variations = "background";
       	
   	   	hideVariations(variations);
@@ -600,38 +606,49 @@
  */
 Blockly.Tooltip.HOVER_MS = 100;
       
-      
-      /**
- * Create the tooltip elements.  Only needs to be called once.
- * @return {!SVGGElement} The tooltip's SVG group.
+
+/**
+ * When hovering over an element, schedule a tooltip to be shown.  If a tooltip
+ * is already visible, hide it if the mouse strays out of a certain radius.
+ * @param {!Event} e Mouse event.
+ * @private
  */
-Blockly.Tooltip.createDom = function() {
- 
-  var svgGroup = /** @type {!SVGGElement} */ (
-      Blockly.createSvgElement('g', {'class': 'blocklyHidden'}, null));
-  Blockly.Tooltip.svgGroup_ = svgGroup;
-  Blockly.Tooltip.svgShadow_ = /** @type {!SVGRectElement} */ (
-      Blockly.createSvgElement(
-          'rect', {'class': 'blocklyTooltipShadow', 'x': 2, 'y': 2}, svgGroup));
-  Blockly.Tooltip.svgBackground_ = /** @type {!SVGRectElement} */ (
-      Blockly.createSvgElement(
-          'rect', {'class': 'blocklyTooltipBackground'}, svgGroup));
-  Blockly.Tooltip.svgText_ = /** @type {!SVGTextElement} */ (
-      Blockly.createSvgElement(
-          'text', {'class': 'blocklyTooltipText'}, svgGroup));
-  Blockly.Tooltip.svgImg_ = /** @type {!SVGTextElement} */ (
-      Blockly.createSvgElement(
-          'image', {'class': 'blocklyTooltipText'}, svgGroup));
-  return svgGroup;
+Blockly.Tooltip.onMouseMove_ = function(e) {
+  if (!Blockly.Tooltip.element_ || !Blockly.Tooltip.element_.tooltip) {
+    // No tooltip here to show.
+    return;
+  } else if ((Blockly.ContextMenu && Blockly.ContextMenu.visible) ||
+             Blockly.Block.dragMode_ != 0) {
+    // Don't display a tooltip when a context menu is active, or during a drag.
+    return;
+  }
+  if (Blockly.Tooltip.poisonedElement_ != Blockly.Tooltip.element_) {
+    // The mouse moved, clear any previously scheduled tooltip.
+    window.clearTimeout(Blockly.Tooltip.showPid_);
+    // Maybe this time the mouse will stay put.  Schedule showing of tooltip.
+    Blockly.Tooltip.lastX_ = e.clientX;
+    Blockly.Tooltip.lastY_ = e.clientY;
+    Blockly.Tooltip.showPid_ =
+        window.setTimeout(Blockly.Tooltip.show_, Blockly.Tooltip.HOVER_MS);
+  }
 };
- 
+
  
  /**
  * Hide the tooltip.
  */
 Blockly.Tooltip.hide = function() {
-	hideAll();
 	
+	var imgNode = document.getElementById(tipImg);
+	if (imgNode && tipImg != originalTop && tipImg != originalBottom)
+		imgNode.style.visibility = "hidden";
+	
+	//restore original image (if any) after preview
+	imgNode = document.getElementById(tempImg);
+    if (imgNode)
+  		imgNode.style.visibility = "visible";
+  	
+  	
   if (Blockly.Tooltip.visible) {
     Blockly.Tooltip.visible = false;
     
@@ -691,7 +708,19 @@ Blockly.Tooltip.show_ = function() {
   //tspanElement.appendChild(imgNode);
   */
   
-  var imgNode = document.getElementById(tip);
+  tipImg = tip;
+  
+  if (tipImg.substring(0,3) == "top")
+  	tempImg = originalTop;
+  else
+  	tempImg = originalBottom;
+  	
+  
+  var imgNode = document.getElementById(tempImg);
+  if (imgNode)
+  	imgNode.style.visibility = "hidden";
+  
+  imgNode = document.getElementById(tipImg);
   imgNode.style.visibility = "visible";
   
   
@@ -699,8 +728,7 @@ Blockly.Tooltip.show_ = function() {
   Blockly.Tooltip.visible = true;
   Blockly.Tooltip.svgGroup_.style.display = 'block';
   // Resize the background and shadow to fit.
-  //var bBox = Blockly.Tooltip.svgText_.getBBox();
-  var bBox = Blockly.Tooltip.svgImg_.getBBox();
+  var bBox = Blockly.Tooltip.svgText_.getBBox();
   var width = 2 * Blockly.Tooltip.MARGINS + bBox.width;
   var height = bBox.height;
   Blockly.Tooltip.svgBackground_.setAttribute('width', width);
