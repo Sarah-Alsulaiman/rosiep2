@@ -10,7 +10,7 @@ Blockly.Language.top1 = {
         .appendTitle("T-shirt")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip('');
+    this.setTooltip("top1-red");
   },
   getName: function() {
   	return 'top1';
@@ -29,7 +29,7 @@ Blockly.Language.top2 = {
         .appendTitle("Blouse")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip('');
+    this.setTooltip("top2-blue");
   }
 };
 
@@ -45,7 +45,7 @@ Blockly.Language.top3 = {
         .appendTitle("Hoodie")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip('');
+    this.setTooltip("top3-red");
   }
 };
 
@@ -61,7 +61,7 @@ Blockly.Language.top4 = {
         .appendTitle("Sweater")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip('');
+    this.setTooltip("top4-red");
   }
 };
 
@@ -77,7 +77,7 @@ Blockly.Language.top5 = {
         .appendTitle("Top5")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip('');
+    this.setTooltip("top5-red");
   }
 };
 
@@ -93,7 +93,7 @@ Blockly.Language.top6 = {
         .appendTitle("Top6")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip('');
+    this.setTooltip("top6-red");
   }
 };
 
@@ -109,7 +109,7 @@ Blockly.Language.top7 = {
         .appendTitle("Top7")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip('');
+    this.setTooltip("top7-red");
   }
 };
 
@@ -125,7 +125,7 @@ Blockly.Language.top8 = {
         .appendTitle("Top8")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip('');
+    this.setTooltip("top8-red");
   }
 };
 
@@ -142,7 +142,7 @@ Blockly.Language.bottom1 = {
         .appendTitle("Jeans")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip('');
+    this.setTooltip("bottom1-red");
   }
 };
 
@@ -158,7 +158,7 @@ Blockly.Language.bottom2 = {
         .appendTitle("Legging")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip('');
+    this.setTooltip("bottom2-blue");
   }
 };
 
@@ -174,7 +174,7 @@ Blockly.Language.bottom3 = {
         .appendTitle("Sweat pant")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip('');
+    this.setTooltip("bottom3-red");
   }
 };
 
@@ -190,7 +190,7 @@ Blockly.Language.bottom4 = {
         .appendTitle("Skirt")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip('');
+    this.setTooltip("bottom4-red");
   }
 };
 
@@ -206,7 +206,7 @@ Blockly.Language.bottom5 = {
         .appendTitle("Short")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip('');
+    this.setTooltip("bottom5-red");
   }
 };
 
@@ -222,7 +222,7 @@ Blockly.Language.bottom6 = {
         .appendTitle("Trouser")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip('');
+    this.setTooltip("bottom6-red");
   }
 };
 
@@ -238,7 +238,7 @@ Blockly.Language.bottom7 = {
         .appendTitle("Bottom7")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip('');
+    this.setTooltip("bottom7-red");
   }
 };
 
@@ -254,7 +254,7 @@ Blockly.Language.bottom8 = {
         .appendTitle("Bottom8")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip('');
+    this.setTooltip("bottom8-red");
   }
 };
 
@@ -590,7 +590,7 @@ Blockly.Language.procedures_defnoreturn = {
     	.appendTitle("Wear");
         
     
-    this.setTooltip(Blockly.LANG_PROCEDURES_DEFNORETURN_TOOLTIP);
+    this.setTooltip("top1-red");
     this.arguments_ = [];
   },
   updateParams_: function() {
