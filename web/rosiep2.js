@@ -22,7 +22,7 @@
     //var xml_text2 = '<xml> <block type="procedures_defnoreturn" x="351" y="285"> </block></xml>';
     var xml_text = '<xml> </xml>';
     var saved_procedure = '<xml>';
-    
+    var compare_procedure = '<xml>';
     
     var CONNECTION_ID;
     
@@ -46,7 +46,18 @@
   				att = x.item(i).attributes.getNamedItem("type");
   				if ( att.value == 'procedures_defnoreturn') {
   					cloneNode=x[i].cloneNode(true);
-					//var text = new XMLSerializer().serializeToString(cloneNode);
+  					/*if ('sessionStorage' in window ) { //prevent duplicate saving
+  					
+  						if (sessionStorage.procedure) {
+  							
+      	 					compare_procedure += Blockly.Xml.domToText(cloneNode);
+      	 					
+      	 					if (sessionStorage.procedure == compare_procedure)
+      	 						continue; //find the next node
+      	 				
+  						}
+  					
+  					}*/
   					saved_procedure += Blockly.Xml.domToText(cloneNode);
   				}
   			
@@ -55,9 +66,10 @@
   		
   		sessionStorage.procedure = saved_procedure;
   		//alert(saved_procedure);
+  		
 	}
 	
-	
+	  
 //------------------------------------------------------------------------------------------
 // Attempt to open a web socket connection
 //------------------------------------------------------------------------------------------
