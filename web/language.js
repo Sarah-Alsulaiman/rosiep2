@@ -12,9 +12,6 @@ Blockly.Language.top1 = {
     this.setNextStatement(true);
     var thisBlock = this; 
     this.setTooltip( function() {
-      //var mode = thisBlock.getTitleValue('OP');
-      //return thisBlock.TOOLTIPS[mode];
-      
       var color = Blockly.JavaScript.valueToCode(thisBlock, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
       if (color == '0')
       	return 'top1-red';

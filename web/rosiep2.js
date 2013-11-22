@@ -21,8 +21,8 @@
     //var xml_text1 = '<xml> <block type="procedures_defnoreturn" x="351" y="285"> <mutation></mutation> <title name="NAME">formal</title> <statement name="STACK"> <block type="top1"></block> </statement> </block> <block type="procedures_defnoreturn" x="355" y="255"> <block type="top2"> </block></block> </xml>';
     //var xml_text2 = '<xml> <block type="procedures_defnoreturn" x="351" y="285"> </block></xml>';
     var xml_text = '<xml> </xml>';
-    var saved_procedure = '<xml>';
-    var compare_procedure = '<xml>';
+    var saved_procedure = '';
+    var compare_procedure = '';
     
     var CONNECTION_ID;
     
@@ -35,30 +35,65 @@
 //------------------------------------------------------------------------------------------  
     
     function storeProcedure () {
-    	var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
-    	xml_text = Blockly.Xml.domToText(xml);
+    	var pArr;
+    	var previous = false;
+    	var oldie = false;
+    	// previously stored procedures...
+    	if ('sessionStorage' in window ) {
+      	 	if (sessionStorage.procedure) {
+      	 		pArr = (sessionStorage.procedure).split('#');
+      	 		if (pArr.length > 0) {
+      	 			previous = true;
+      	 			for (i=0; i<pArr.length; i++)
+      	 				alert(pArr[i]);
+      	 			
+      	 		}
+      	 			
+      	 	}
+      	 	
+      	 }
+      	 
+      	 
+    	var current_xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+    	curret_xml_text = Blockly.Xml.domToText(current_xml);
     	
-    	xmlDoc = loadXMLString(xml_text);
+    	xmlDoc = loadXMLString(curret_xml_text);
     	
     	x = xmlDoc.getElementsByTagName('block');
     	for (i=0; i < x.length; i++) {
+    		oldie = false;
   			if (x[i].parentNode.nodeName == 'xml') {
   				att = x.item(i).attributes.getNamedItem("type");
   				if ( att.value == 'procedures_defnoreturn') {
   					cloneNode=x[i].cloneNode(true);
-  					/*if ('sessionStorage' in window ) { //prevent duplicate saving
-  					
-  						if (sessionStorage.procedure) {
+  					if (previous) { //prevent duplicate saving for the same procedure
+  						compare_procedure = Blockly.Xml.domToText(cloneNode);
+  						alert("COMPARING THIS: " + compare_procedure);
+  						for (y=0; y < pArr.length; y++) {
+  							alert("TO THIS: " + pArr[y]);
+  							if (compare_procedure == pArr[y]) {
+  								alert("NOT SAVED");
+  								oldie = true;
+  								break;
+  							}
+  							else {
+  								alert("NOT SAME");
   							
-      	 					compare_procedure += Blockly.Xml.domToText(cloneNode);
-      	 					
-      	 					if (sessionStorage.procedure == compare_procedure)
-      	 						continue; //find the next node
-      	 				
+  							}
+  							
   						}
+  						
+  					}
+  					else {
+  						alert("NO PRE SAVED");
+  					}
+  					if (!oldie) {
+  						saved_procedure += Blockly.Xml.domToText(cloneNode);
+  						saved_procedure += "#";
+  						alert("PROCEDURE SAVED");
   					
-  					}*/
-  					saved_procedure += Blockly.Xml.domToText(cloneNode);
+  					}
+  					
   				}
   			
   			}
@@ -968,9 +1003,13 @@ Blockly.Tooltip.show_ = function() {
       
       if (CURRENT_LEVEL >= 4) {
       	 if ('sessionStorage' in window ) {
-      	 	var saved_xml = '';
+      	 	var saved_xml = '<xml>';
       	 	if (sessionStorage.procedure) {
-      	 		saved_xml += sessionStorage.procedure;
+      	 		var pArr = (sessionStorage.procedure).split('#');
+      	 		for ( x=0; x < pArr.length; x++) {
+      	 			saved_xml += pArr[x];
+      	 		}
+      	 		//saved_xml += sessionStorage.procedure;
       	 		saved_xml += '</xml>';	
       	 		var xml = Blockly.Xml.textToDom(saved_xml);
       			Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
