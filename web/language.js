@@ -10,15 +10,20 @@ Blockly.Language.top1 = {
         .appendTitle("T-shirt")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
+    var thisBlock = this; 
     this.setTooltip( function() {
       //var mode = thisBlock.getTitleValue('OP');
       //return thisBlock.TOOLTIPS[mode];
       
-      var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
+      var color = Blockly.JavaScript.valueToCode(thisBlock, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
       if (color == '0')
       	return 'top1-red';
-      else
-      return 'top1-'+ color;
+      else {
+      	color = color.replace(/"/g, "").replace(/\(/g, "").replace(/\)/g, "");
+      	console.log("COLOR="+color);
+      	return 'top1-'+ color;
+      }
+      
     }
 );
   },
