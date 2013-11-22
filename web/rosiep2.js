@@ -155,7 +155,7 @@
       		
       	
       	
-      	console.log("POPULATE FINISHED");
+      	//console.log("POPULATE FINISHED");
       		
       		
     }	
@@ -273,26 +273,25 @@
 	      	}
 	      	
 	      	else if (parts[2] == "GOT IT!") {
-	        	console.log("HTML received message from dart " + event);
+	        	//console.log("HTML received message from dart " + event);
 	      	}
 	      	
 	      	else if (parts[2] == "DONE!") {
-	        	console.log("HTML received message from dart " + event);
+	        	//console.log("HTML received message from dart " + event);
 	        	playing = false;
 	        	window.setTimeout(function() { advanceLevel(); }, 500);
 	      	}
 	      	
 	      	else if (parts[2].substring(0, 3) == "bg ") {  //received bg to display
-	      		console.log("HTML received message from dart for background " + event);
+	      		//console.log("HTML received message from dart for background " + event);
 		      	var bg = parts[2].substring(3);
 		      	setHtmlVisibility(bg, true);
 	      	}
 	      	
 	      	
 	      	else {		// received an outfit to display
-	      		console.log("HTML received message from dart for outfit " + event);
+	      		//console.log("HTML received message from dart for outfit " + event);
 		      	var outfit = parts[2].substring(7);
-		      	console.log(outfit);
 		      	setHtmlVisibility(outfit, true);
 		      
 	      	}
@@ -310,17 +309,21 @@
       var start = 0;
       var newLine = 0;
       var length = code.length;
-      while (start < length && start != -1) {
+      var amount = 0;
+      while (start < code.length && start != -1) {
         newLine = code.indexOf("\n",start);
         var curlyBrace = code.indexOf("}" ,start);
-        console.log(newLine); console.log(curlyBrace); console.log(length);
+        console.log("start from:"+start);
+        console.log("new line at:"+newLine);
+        console.log("curleyBrace at:"+curlyBrace);
+        console.log("length="+length);
         if ( newLine > 0 ) {
         	if ( curlyBrace > 0) {
         		if ( newLine -1 != curlyBrace ) {
             		connected = false;
             		break;
           		}
-          		else { start = newLine+3; length -= curlyBrace }
+          		else { start = newLine+3; amount += (curlyBrace - amount) ; console.log("amount="+amount); length -= Math.abs(amount) } //++ for multiple procedures...
         	}
         	else { connected = false; break; } ///++++++
       	}
@@ -368,8 +371,8 @@
               hideAll();
               code = '@dart'+ CURRENT_LEVEL + '#' + CONNECTION_ID + '#' + code;
               socket.send(code);
-              alert(code);
-              
+              //alert(code);
+              tempImg = '';
               playing = true;
               //window.location.reload(true);
             }
@@ -678,6 +681,7 @@ Blockly.Tooltip.show_ = function() {
   var tip = Blockly.Tooltip.element_.tooltip;
   if (goog.isFunction(tip)) {
     tip = tip();
+    //console.log ("TIP = " + tip);
   }
   
   /*
@@ -712,8 +716,10 @@ Blockly.Tooltip.show_ = function() {
   
   if (tipImg.substring(0,3) == "top")
   	tempImg = originalTop;
-  else
+  else if (tipImg.substring(0,3) == "bot")
   	tempImg = originalBottom;
+  else
+  	tempImg = '';
   	
   
   var imgNode = document.getElementById(tempImg);
@@ -721,6 +727,7 @@ Blockly.Tooltip.show_ = function() {
   	imgNode.style.visibility = "hidden";
   
   imgNode = document.getElementById(tipImg);
+  if (imgNode)
   imgNode.style.visibility = "visible";
   
   

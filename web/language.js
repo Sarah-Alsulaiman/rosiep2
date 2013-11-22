@@ -10,13 +10,28 @@ Blockly.Language.top1 = {
         .appendTitle("T-shirt")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip("top1-red");
+    this.setTooltip( function() {
+      //var mode = thisBlock.getTitleValue('OP');
+      //return thisBlock.TOOLTIPS[mode];
+      
+      var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
+      if (color == '0')
+      	return 'top1-red';
+      else
+      return 'top1-'+ color;
+    }
+);
   },
   getName: function() {
   	return 'top1';
   },
 };
 
+function getTop () {
+
+return 'top1-red';
+
+}
 //-------------------------------------------------------------------------
 // Top2
 //-------------------------------------------------------------------------
@@ -174,7 +189,7 @@ Blockly.Language.bottom3 = {
         .appendTitle("Sweat pant")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip("bottom3-red");
+    this.setTooltip("bottom3-blue");
   }
 };
 
@@ -190,7 +205,7 @@ Blockly.Language.bottom4 = {
         .appendTitle("Skirt")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip("bottom4-red");
+    this.setTooltip("bottom4-blue");
   }
 };
 
@@ -206,7 +221,7 @@ Blockly.Language.bottom5 = {
         .appendTitle("Short")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip("bottom5-red");
+    this.setTooltip("bottom5-blue");
   }
 };
 
@@ -222,7 +237,7 @@ Blockly.Language.bottom6 = {
         .appendTitle("Trouser")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip("bottom6-red");
+    this.setTooltip("bottom6-blue");
   }
 };
 
@@ -238,7 +253,7 @@ Blockly.Language.bottom7 = {
         .appendTitle("Bottom7")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip("bottom7-red");
+    this.setTooltip("bottom7-blue");
   }
 };
 
@@ -254,7 +269,7 @@ Blockly.Language.bottom8 = {
         .appendTitle("Bottom8")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip("bottom8-red");
+    this.setTooltip("bottom8-blue");
   }
 };
 
@@ -570,7 +585,6 @@ Blockly.Language.going_to = {
 //--------------------------------------------------------------------------------------------------------------------------
 
 
-
 'use strict';
 
 Blockly.Language.procedures_defnoreturn = {
@@ -582,15 +596,13 @@ Blockly.Language.procedures_defnoreturn = {
     var name = Blockly.Procedures.findLegalName(
         Blockly.LANG_PROCEDURES_DEFNORETURN_PROCEDURE, this);
     this.appendDummyInput()
-    	.appendTitle("Outfit Name: ")
         .appendTitle(new Blockly.FieldTextInput(name,
         Blockly.Procedures.rename), 'NAME')
         .appendTitle('', 'PARAMS');
     this.appendStatementInput('STACK')
-    	.appendTitle("Wear");
-        
-    
-    this.setTooltip("top1-red");
+        .appendTitle(Blockly.LANG_PROCEDURES_DEFNORETURN_DO);
+   // this.setMutator(new Blockly.Mutator(['procedures_mutatorarg']));
+    this.setTooltip(Blockly.LANG_PROCEDURES_DEFNORETURN_TOOLTIP);
     this.arguments_ = [];
   },
   updateParams_: function() {
@@ -600,7 +612,6 @@ Blockly.Language.procedures_defnoreturn = {
     for (var x = 0; x < this.arguments_.length; x++) {
       if (hash['arg_' + this.arguments_[x].toLowerCase()]) {
         badArg = true;
-        
         break;
       }
       hash['arg_' + this.arguments_[x].toLowerCase()] = true;
@@ -613,6 +624,43 @@ Blockly.Language.procedures_defnoreturn = {
     // Merge the arguments into a human-readable list.
     var paramString = this.arguments_.join(', ');
     this.setTitleValue(paramString, 'PARAMS');
+  },
+  mutationToDom: function() {
+    var container = document.createElement('mutation');
+    for (var x = 0; x < this.arguments_.length; x++) {
+      var parameter = document.createElement('arg');
+      parameter.setAttribute('name', this.arguments_[x]);
+      container.appendChild(parameter);
+    }
+    return container;
+  },
+  domToMutation: function(xmlElement) {
+    this.arguments_ = [];
+    for (var x = 0, childNode; childNode = xmlElement.childNodes[x]; x++) {
+      if (childNode.nodeName.toLowerCase() == 'arg') {
+        this.arguments_.push(childNode.getAttribute('name'));
+      }
+    }
+    this.updateParams_();
+  },
+  decompose: function(workspace) {
+    var containerBlock = new Blockly.Block(workspace,
+                                           'procedures_mutatorcontainer');
+    containerBlock.initSvg();
+    var connection = containerBlock.getInput('STACK').connection;
+    for (var x = 0; x < this.arguments_.length; x++) {
+      var paramBlock = new Blockly.Block(workspace, 'procedures_mutatorarg');
+      paramBlock.initSvg();
+      paramBlock.setTitleValue(this.arguments_[x], 'NAME');
+      // Store the old location.
+      paramBlock.oldLocation = x;
+      connection.connect(paramBlock.previousConnection);
+      connection = paramBlock.nextConnection;
+    }
+    // Initialize procedure's callers with blank IDs.
+    Blockly.Procedures.mutateCallers(this.getTitleValue('NAME'),
+                                     this.workspace, this.arguments_, null);
+    return containerBlock;
   },
   compose: function(containerBlock) {
     this.arguments_ = [];
@@ -641,11 +689,98 @@ Blockly.Language.procedures_defnoreturn = {
     // and that it DOES NOT have a return value.
     return [this.getTitleValue('NAME'), this.arguments_, false];
   },
-  
+  getVars: function() {
+    return this.arguments_;
+  },
+  renameVar: function(oldName, newName) {
+    var change = false;
+    for (var x = 0; x < this.arguments_.length; x++) {
+      if (Blockly.Names.equals(oldName, this.arguments_[x])) {
+        this.arguments_[x] = newName;
+        change = true;
+      }
+    }
+    if (change) {
+      this.updateParams_();
+      // Update the mutator's variables if the mutator is open.
+      if (this.mutator.isVisible_()) {
+        var blocks = this.mutator.workspace_.getAllBlocks();
+        for (var x = 0, block; block = blocks[x]; x++) {
+          if (block.type == 'procedures_mutatorarg' &&
+              Blockly.Names.equals(oldName, block.getTitleValue('NAME'))) {
+            block.setTitleValue(newName, 'NAME');
+          }
+        }
+      }
+    }
+  },
+  customContextMenu: function(options) {
+    // Add option to create caller.
+    var option = {enabled: true};
+    var name = this.getTitleValue('NAME');
+    option.text = Blockly.LANG_PROCEDURES_CREATE_DO.replace('%1', name);
+
+    var xmlMutation = goog.dom.createDom('mutation');
+    xmlMutation.setAttribute('name', name);
+    for (var x = 0; x < this.arguments_.length; x++) {
+      var xmlArg = goog.dom.createDom('arg');
+      xmlArg.setAttribute('name', this.arguments_[x]);
+      xmlMutation.appendChild(xmlArg);
+    }
+    var xmlBlock = goog.dom.createDom('block', null, xmlMutation);
+    xmlBlock.setAttribute('type', this.callType_);
+    option.callback = Blockly.ContextMenu.callbackFactory(this, xmlBlock);
+
+    options.push(option);
+    // Add options to create getters for each parameter.
+    for (var x = 0; x < this.arguments_.length; x++) {
+      var option = {enabled: true};
+      var name = this.arguments_[x];
+      option.text = Blockly.LANG_VARIABLES_SET_CREATE_GET.replace('%1', name);
+      var xmlTitle = goog.dom.createDom('title', null, name);
+      xmlTitle.setAttribute('name', 'VAR');
+      var xmlBlock = goog.dom.createDom('block', null, xmlTitle);
+      xmlBlock.setAttribute('type', 'variables_get');
+      option.callback = Blockly.ContextMenu.callbackFactory(this, xmlBlock);
+      options.push(option);
+    }
+  },
   callType_: 'procedures_callnoreturn'
 };
 
 
+Blockly.Language.procedures_mutatorcontainer = {
+  // Procedure container (for mutator dialog).
+  init: function() {
+    this.setColour(34, .66, .95);
+    this.appendDummyInput()
+        .appendTitle(Blockly.LANG_PROCEDURES_MUTATORCONTAINER_TITLE);
+    this.appendStatementInput('STACK');
+    this.setTooltip('');
+    this.contextMenu = false;
+  }
+};
+
+Blockly.Language.procedures_mutatorarg = {
+  // Procedure argument (for mutator dialog).
+  init: function() {
+    this.setColour(34, .66, .95);
+    this.appendDummyInput()
+        .appendTitle(Blockly.LANG_PROCEDURES_MUTATORARG_TITLE)
+        .appendTitle(new Blockly.FieldTextInput('x', this.validator), 'NAME');
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+    this.contextMenu = false;
+  }
+};
+
+Blockly.Language.procedures_mutatorarg.validator = function(newVar) {
+  // Merge runs of whitespace.  Strip leading and trailing whitespace.
+  // Beyond this, all names are legal.
+  newVar = newVar.replace(/[\s\xa0]+/g, ' ').replace(/^ | $/g, '');
+  return newVar || null;
+};
 
 Blockly.Language.procedures_callnoreturn = {
   // Call a procedure with no return value.
@@ -654,7 +789,7 @@ Blockly.Language.procedures_callnoreturn = {
   init: function() {
     this.setColour(34, .66, .95);
     this.appendDummyInput()
-        .appendTitle("Wear")
+        .appendTitle(Blockly.LANG_PROCEDURES_CALLNORETURN_CALL)
         .appendTitle(Blockly.LANG_PROCEDURES_CALLNORETURN_PROCEDURE, 'NAME');
     this.setPreviousStatement(true);
     this.setNextStatement(true);
@@ -746,6 +881,33 @@ Blockly.Language.procedures_callnoreturn = {
     if (this.rendered) {
       this.render();
     }
+  },
+  mutationToDom: function() {
+    // Save the name and arguments (none of which are editable).
+    var container = document.createElement('mutation');
+    container.setAttribute('name', this.getTitleValue('NAME'));
+    for (var x = 0; x < this.arguments_.length; x++) {
+      var parameter = document.createElement('arg');
+      parameter.setAttribute('name', this.arguments_[x]);
+      container.appendChild(parameter);
+    }
+    return container;
+  },
+  domToMutation: function(xmlElement) {
+    // Restore the name and parameters.
+    var name = xmlElement.getAttribute('name');
+    this.setTitleValue(name, 'NAME');
+    var def = Blockly.Procedures.getDefinition(name, this.workspace);
+      this.arguments_ = [];
+      for (var x = 0, childNode; childNode = xmlElement.childNodes[x]; x++) {
+        if (childNode.nodeName.toLowerCase() == 'arg') {
+          this.arguments_.push(childNode.getAttribute('name'));
+        }
+      }
+      // For the second argument (paramIds) use the arguments list as a dummy
+      // list.
+      this.setProcedureParameters(this.arguments_, this.arguments_);
+    
   },
   renameVar: function(oldName, newName) {
     for (var x = 0; x < this.arguments_.length; x++) {
