@@ -340,7 +340,7 @@
 	function sendBlocklyCode() {
       if (!playing) {
         var code = Blockly.Generator.workspaceToCode('JavaScript');
-         alert(code);
+         //alert(code);
         //--------------------------------------------------
         // error 1: no blocks on the screen
         //--------------------------------------------------

@@ -12,28 +12,23 @@ Blockly.Language.top1 = {
     this.setNextStatement(true);
     var thisBlock = this; 
     this.setTooltip( function() {
-      var color = Blockly.JavaScript.valueToCode(thisBlock, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
-      if (color == '0')
-      	return 'top1-red';
-      else {
-      	color = color.replace(/"/g, "").replace(/\(/g, "").replace(/\)/g, "");
-      	console.log("COLOR="+color);
-      	return 'top1-'+ color;
-      }
-      
-    }
-);
+      					var color = Blockly.JavaScript.valueToCode(thisBlock, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
+      					if (color == '0')
+      						return 'top1-red';
+      					else {
+      						color = color.replace(/"/g, "").replace(/\(/g, "").replace(/\)/g, "");
+      						console.log("COLOR="+color);
+      						return 'top1-'+ color;
+      					}
+      				
+    				}
+				   );
   },
   getName: function() {
   	return 'top1';
   },
 };
 
-function getTop () {
-
-return 'top1-red';
-
-}
 //-------------------------------------------------------------------------
 // Top2
 //-------------------------------------------------------------------------
@@ -46,7 +41,19 @@ Blockly.Language.top2 = {
         .appendTitle("Blouse")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip("top2-blue");
+    var thisBlock = this; 
+    this.setTooltip( function() {
+      					var color = Blockly.JavaScript.valueToCode(thisBlock, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
+      					if (color == '0')
+      						return 'top2-blue';
+      					else {
+      						color = color.replace(/"/g, "").replace(/\(/g, "").replace(/\)/g, "");
+      						console.log("COLOR="+color);
+      						return 'top2-'+ color;
+      					}
+      				
+    				}
+				   );
   }
 };
 
@@ -62,7 +69,19 @@ Blockly.Language.top3 = {
         .appendTitle("Hoodie")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip("top3-red");
+    var thisBlock = this; 
+    this.setTooltip( function() {
+      					var color = Blockly.JavaScript.valueToCode(thisBlock, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
+      					if (color == '0')
+      						return 'top3-red';
+      					else {
+      						color = color.replace(/"/g, "").replace(/\(/g, "").replace(/\)/g, "");
+      						console.log("COLOR="+color);
+      						return 'top3-'+ color;
+      					}
+      				
+    				}
+				   );
   }
 };
 
@@ -78,7 +97,19 @@ Blockly.Language.top4 = {
         .appendTitle("Sweater")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip("top4-red");
+    var thisBlock = this; 
+    this.setTooltip( function() {
+      					var color = Blockly.JavaScript.valueToCode(thisBlock, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
+      					if (color == '0')
+      						return 'top4-red';
+      					else {
+      						color = color.replace(/"/g, "").replace(/\(/g, "").replace(/\)/g, "");
+      						console.log("COLOR="+color);
+      						return 'top4-'+ color;
+      					}
+      				
+    				}
+				   );
   }
 };
 
@@ -94,7 +125,19 @@ Blockly.Language.top5 = {
         .appendTitle("Top5")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip("top5-red");
+    var thisBlock = this; 
+    this.setTooltip( function() {
+      					var color = Blockly.JavaScript.valueToCode(thisBlock, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
+      					if (color == '0')
+      						return 'top5-red';
+      					else {
+      						color = color.replace(/"/g, "").replace(/\(/g, "").replace(/\)/g, "");
+      						console.log("COLOR="+color);
+      						return 'top5-'+ color;
+      					}
+      				
+    				}
+				   );
   }
 };
 
@@ -110,7 +153,19 @@ Blockly.Language.top6 = {
         .appendTitle("Top6")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip("top6-red");
+    var thisBlock = this; 
+    this.setTooltip( function() {
+      					var color = Blockly.JavaScript.valueToCode(thisBlock, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
+      					if (color == '0')
+      						return 'top6-red';
+      					else {
+      						color = color.replace(/"/g, "").replace(/\(/g, "").replace(/\)/g, "");
+      						console.log("COLOR="+color);
+      						return 'top6-'+ color;
+      					}
+      				
+    				}
+				   );
   }
 };
 
@@ -126,7 +181,19 @@ Blockly.Language.top7 = {
         .appendTitle("Top7")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip("top7-red");
+    var thisBlock = this; 
+    this.setTooltip( function() {
+      					var color = Blockly.JavaScript.valueToCode(thisBlock, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
+      					if (color == '0')
+      						return 'top7-red';
+      					else {
+      						color = color.replace(/"/g, "").replace(/\(/g, "").replace(/\)/g, "");
+      						console.log("COLOR="+color);
+      						return 'top7-'+ color;
+      					}
+      				
+    				}
+				   );
   }
 };
 
@@ -142,7 +209,19 @@ Blockly.Language.top8 = {
         .appendTitle("Top8")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip("top8-red");
+    var thisBlock = this; 
+    this.setTooltip( function() {
+      					var color = Blockly.JavaScript.valueToCode(thisBlock, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
+      					if (color == '0')
+      						return 'top8-red';
+      					else {
+      						color = color.replace(/"/g, "").replace(/\(/g, "").replace(/\)/g, "");
+      						console.log("COLOR="+color);
+      						return 'top8-'+ color;
+      					}
+      				
+    				}
+				   );
   }
 };
 
@@ -159,7 +238,19 @@ Blockly.Language.bottom1 = {
         .appendTitle("Jeans")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip("bottom1-red");
+    var thisBlock = this; 
+    this.setTooltip( function() {
+      					var color = Blockly.JavaScript.valueToCode(thisBlock, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
+      					if (color == '0')
+      						return 'bottom1-red';
+      					else {
+      						color = color.replace(/"/g, "").replace(/\(/g, "").replace(/\)/g, "");
+      						console.log("COLOR="+color);
+      						return 'bottom1-'+ color;
+      					}
+      				
+    				}
+				   );
   }
 };
 
@@ -175,7 +266,19 @@ Blockly.Language.bottom2 = {
         .appendTitle("Legging")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip("bottom2-blue");
+    var thisBlock = this; 
+    this.setTooltip( function() {
+      					var color = Blockly.JavaScript.valueToCode(thisBlock, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
+      					if (color == '0')
+      						return 'bottom2-blue';
+      					else {
+      						color = color.replace(/"/g, "").replace(/\(/g, "").replace(/\)/g, "");
+      						console.log("COLOR="+color);
+      						return 'bottom2-'+ color;
+      					}
+      				
+    				}
+				   );
   }
 };
 
@@ -191,7 +294,19 @@ Blockly.Language.bottom3 = {
         .appendTitle("Sweat pant")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip("bottom3-blue");
+    var thisBlock = this; 
+    this.setTooltip( function() {
+      					var color = Blockly.JavaScript.valueToCode(thisBlock, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
+      					if (color == '0')
+      						return 'bottom3-blue';
+      					else {
+      						color = color.replace(/"/g, "").replace(/\(/g, "").replace(/\)/g, "");
+      						console.log("COLOR="+color);
+      						return 'bottom3-'+ color;
+      					}
+      				
+    				}
+				   );
   }
 };
 
@@ -207,7 +322,19 @@ Blockly.Language.bottom4 = {
         .appendTitle("Skirt")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip("bottom4-blue");
+    var thisBlock = this; 
+    this.setTooltip( function() {
+      					var color = Blockly.JavaScript.valueToCode(thisBlock, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
+      					if (color == '0')
+      						return 'bottom4-blue';
+      					else {
+      						color = color.replace(/"/g, "").replace(/\(/g, "").replace(/\)/g, "");
+      						console.log("COLOR="+color);
+      						return 'bottom4-'+ color;
+      					}
+      				
+    				}
+				   );
   }
 };
 
@@ -223,7 +350,19 @@ Blockly.Language.bottom5 = {
         .appendTitle("Short")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip("bottom5-blue");
+    var thisBlock = this; 
+    this.setTooltip( function() {
+      					var color = Blockly.JavaScript.valueToCode(thisBlock, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
+      					if (color == '0')
+      						return 'bottom5-blue';
+      					else {
+      						color = color.replace(/"/g, "").replace(/\(/g, "").replace(/\)/g, "");
+      						console.log("COLOR="+color);
+      						return 'bottom5-'+ color;
+      					}
+      				
+    				}
+				   );
   }
 };
 
@@ -239,7 +378,19 @@ Blockly.Language.bottom6 = {
         .appendTitle("Trouser")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip("bottom6-blue");
+    var thisBlock = this; 
+    this.setTooltip( function() {
+      					var color = Blockly.JavaScript.valueToCode(thisBlock, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
+      					if (color == '0')
+      						return 'bottom6-blue';
+      					else {
+      						color = color.replace(/"/g, "").replace(/\(/g, "").replace(/\)/g, "");
+      						console.log("COLOR="+color);
+      						return 'bottom6-'+ color;
+      					}
+      				
+    				}
+				   );
   }
 };
 
@@ -255,7 +406,19 @@ Blockly.Language.bottom7 = {
         .appendTitle("Bottom7")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip("bottom7-blue");
+    var thisBlock = this; 
+    this.setTooltip( function() {
+      					var color = Blockly.JavaScript.valueToCode(thisBlock, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
+      					if (color == '0')
+      						return 'bottom7-blue';
+      					else {
+      						color = color.replace(/"/g, "").replace(/\(/g, "").replace(/\)/g, "");
+      						console.log("COLOR="+color);
+      						return 'bottom7-'+ color;
+      					}
+      				
+    				}
+				   );
   }
 };
 
@@ -271,7 +434,19 @@ Blockly.Language.bottom8 = {
         .appendTitle("Bottom8")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip("bottom8-blue");
+    var thisBlock = this; 
+    this.setTooltip( function() {
+      					var color = Blockly.JavaScript.valueToCode(thisBlock, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
+      					if (color == '0')
+      						return 'bottom8-blue';
+      					else {
+      						color = color.replace(/"/g, "").replace(/\(/g, "").replace(/\)/g, "");
+      						console.log("COLOR="+color);
+      						return 'bottom8-'+ color;
+      					}
+      				
+    				}
+				   );
   }
 };
 
