@@ -35,6 +35,7 @@
 //------------------------------------------------------------------------------------------  
     
     function storeProcedure () {
+    	alert("STORE PROCEDURE FUNCTION");
     	var pArr;
     	var previous = false;
     	var oldie = false;
@@ -98,8 +99,11 @@
   			
   			}
   		}
-  		
-  		sessionStorage.procedure = saved_procedure;
+  		if (sessionStorage.procedure)
+  			sessionStorage.procedure += saved_procedure;
+  			
+  		else
+  			sessionStorage.procedure = saved_procedure;
   		//alert(saved_procedure);
   		
 	}
