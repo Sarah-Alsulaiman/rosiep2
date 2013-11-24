@@ -30,6 +30,8 @@
     var originalTop;
     var originalBottom;
     var tempImg;
+    
+    var dafault_procedure = false;
 //-----------------------------------------------------------------------------------------
 // store procedures in session storage	                                                                 
 //------------------------------------------------------------------------------------------  
@@ -607,6 +609,60 @@
 	};
       
       //***********************************************************************************************************************
+     
+     
+/**
+ * Ensure two identically-named procedures don't exist.
+ * @param {string} name Proposed procedure name.
+ * @param {!Blockly.Block} block Block to disambiguate.
+ * @return {string} Non-colliding name.
+ */
+Blockly.Procedures.findLegalName = function(name, block) {
+  if (block.isInFlyout) {
+    // Flyouts can have multiple procedures called 'procedure'.
+    return name;
+  }
+  while (!Blockly.Procedures.isLegalName(name, block.workspace, block)) {
+    // Collision with another procedure.
+    var r = name.match(/^(.*?)(\d+)$/);
+    if (!r) {
+      if (default_procedure) { name+= 'name'; default_procedure = false;}
+      name += '1';
+    } else {
+      name = r[1] + (parseInt(r[2], 10) + 1);
+    }
+  }
+  return name;
+};
+      
+      
+      /**
+ * Does this procedure have a legal name?  Illegal names include names of
+ * procedures already defined.
+ * @param {string} name The questionable name.
+ * @param {!Blockly.Workspace} workspace The workspace to scan for collisions.
+ * @param {Blockly.Block} opt_exclude Optional block to exclude from
+ *     comparisons (one doesn't want to collide with oneself).
+ * @return {boolean} True if the name is legal.
+ */
+Blockly.Procedures.isLegalName = function(name, workspace, opt_exclude) {
+	if (name === "") { default_procedure = true; return false;}
+  var blocks = workspace.getAllBlocks();
+  // Iterate through every block and check the name.
+  for (var x = 0; x < blocks.length; x++) {
+    if (blocks[x] == opt_exclude) {
+      continue;
+    }
+    var func = blocks[x].getProcedureDef;
+    if (func) {
+      var procName = func.call(blocks[x]);
+      if (Blockly.Names.equals(procName[0], name)) {
+        return false;
+      }
+    }
+  }
+  return true;
+};
       
       Blockly.Tooltip.svgImg_ = null;
       
@@ -623,14 +679,14 @@ Blockly.Tooltip.HOVER_MS = 100;
  * @private
  */
 Blockly.Tooltip.onMouseMove_ = function(e) {
-  if (!Blockly.Tooltip.element_ || !Blockly.Tooltip.element_.tooltip) {
+ // if (!Blockly.Tooltip.element_ || !Blockly.Tooltip.element_.tooltip) {
     // No tooltip here to show.
-    return;
-  } else if ((Blockly.ContextMenu && Blockly.ContextMenu.visible) 
-             ) { // ||Blockly.Block.dragMode_ != 0 COMMENT OUT DRAG MODE
+   // return;
+  //} //else if ((Blockly.ContextMenu && Blockly.ContextMenu.visible) 
+      //       ) { // ||Blockly.Block.dragMode_ != 0 COMMENT OUT DRAG MODE
     // Don't display a tooltip when a context menu is active, or during a drag.
-    return;
-  }
+    //return;
+ // }
   if (Blockly.Tooltip.poisonedElement_ != Blockly.Tooltip.element_) {
     // The mouse moved, clear any previously scheduled tooltip.
     window.clearTimeout(Blockly.Tooltip.showPid_);
