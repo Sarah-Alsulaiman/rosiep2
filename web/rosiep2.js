@@ -203,7 +203,7 @@
    		
    		
    			
-   		var places = ['gym', 'formal', 'restaurant', 'concert'];
+   		var places = ['gym', 'formal', 'hot', 'cold'];
    			
    		for ( var i=0; i < places.length; i++) {
    			var bg = document.getElementById(places[i]);

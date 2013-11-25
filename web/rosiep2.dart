@@ -80,12 +80,12 @@ bool set_block = false;
 bool weather_block = false;
 
 //format [ [blockName, value, levels] ]
-List blocks = [  ['weather', weather_block, 3], [ 'black', black_block, 7], ['top', top_block, 1, 2, 3, 4, 5], ['bottom', bottom_block, 1, 2, 3, 4, 5, 6, 7], 
+List blocks = [  ['black', black_block, 7], ['top', top_block, 1, 2, 3, 4, 5], ['bottom', bottom_block, 1, 2, 3, 4, 5, 6, 7], 
                  ['top_purple', top_purple_block, 2], ['bottom_purple', bottom_purple_block, 2],
                  ['abstraction', abstraction_block, 4, 5], ['call', call_block, 4, 5], ['func', func_block, 4, 5],
                  ['other', other_block, 3, 5, 7], ['then', then_block, 3, 5, 7],
                  ['color', color_block, 7], ['get', get_input_block, 7], ['going', going_block, 0], ['if', if_block, 3, 5, 7],
-                 
+                 ['weather', weather_block, 3], 
               ];
 
 
@@ -104,24 +104,26 @@ void main() {
   
   initWebsocket();
   
-  block_name['weather'] = 0;
-  block_name['black'] = 1;
   
-  block_name['top'] = 2;
-  block_name['bottom'] = 3;
-  block_name['top_purple'] = 4;
-  block_name['bottom_purple'] = 5;
+  block_name['black'] = 0;
   
-  block_name['abstraction'] = 6;
-  block_name['call'] = 7;
-  block_name['func'] = 8;
+  block_name['top'] = 1;
+  block_name['bottom'] = 2;
+  block_name['top_purple'] = 3;
+  block_name['bottom_purple'] = 4;
   
-  block_name['other'] = 9;
-  block_name['then'] = 10;
-  block_name['color'] = 11;
-  block_name['get'] = 12;
-  block_name['going'] = 13;
-  block_name['if'] = 14;
+  block_name['abstraction'] = 5;
+  block_name['call'] = 6;
+  block_name['func'] = 7;
+  
+  block_name['other'] = 8;
+  block_name['then'] = 9;
+  block_name['color'] = 10;
+  block_name['get'] = 11;
+  block_name['going'] = 12;
+  block_name['if'] = 13;
+  
+  block_name['weather'] = 14;
   
   
   text['black'] = "Make sure you choose the color black <br> for one of the bottoms!";
@@ -192,15 +194,15 @@ void initWebsocket() {
       timer = new Timer.periodic(new Duration(milliseconds: 1000), (Timer t) {
         if (outfits.length == 0) {
           timer.cancel();
+          if (CURRENT_LEVEL == "3") {
+            String background = CURRENT_WEATHER;
+            sendMessage("bg " + background);
+          }
+          else if(CURRENT_LEVEL == "5") {
+            Sring background = CURRENT_PLACE;
+            sendMessage("bg " + background);
+          }
           if (check_input) {
-            if (CURRENT_LEVEL == "3") {
-              String background = CURRENT_WEATHER;
-              sendMessage("bg " + background);
-            }
-            else if(CURRENT_LEVEL == "5") {
-              Sring background = CURRENT_PLACE;
-              sendMessage("bg " + background);
-            }
             sendMessage("DONE!");
           }
             
@@ -455,7 +457,8 @@ void interpret (List commands) {
           else blocks[block_name['top_purple']][1] = false;
           
           if (cond == CURRENT_WEATHER && consider) {
-            blocks[block_name['weather']][1] = true; print("WEATHER MATCHES CLOTHES");
+            blocks[block_name['weather']][1] = true;
+            
           }
           
         }
@@ -465,11 +468,14 @@ void interpret (List commands) {
           if (color == "purple") blocks[block_name['bottom_purple']][1] = true;
           else if (color == "black") {blocks[block_name['black']][1] = true; print("BLACK!!!!!");} 
           else blocks[block_name['bottom_purple']][1] = false;
+          
         }
         
         if (consider) {
           outfits.add(outfit);
         }
+        
+        
           
           
   
