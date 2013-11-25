@@ -125,7 +125,7 @@ void main() {
   
   block_name['weather'] = 14;
   
-  
+  text['weather'] = "Remember, it might be hot or cold outside";
   text['black'] = "Make sure you choose the color black <br> for one of the bottoms!";
   
   text['top'] = "Make sure you choose both a top and a bottom";
@@ -456,8 +456,8 @@ void interpret (List commands) {
           if (color == "purple")  blocks[block_name['top_purple']][1]= true;
           else blocks[block_name['top_purple']][1] = false;
           
-          if (cond == CURRENT_WEATHER && consider) {
-            blocks[block_name['weather']][1] = true;
+          if (cond != CURRENT_WEATHER && consider) {
+            ERR_MSG = "weather_match";
             
           }
           
@@ -610,7 +610,7 @@ void processIf(List nested) {
     }
     
     else if (condition == "weather") {
-      
+      blocks[block_name['weather']][1] = true;
       consider = false;
       addOutfit(then);
       addOutfit(other);
@@ -665,6 +665,17 @@ void processIf(List nested) {
     } 
     
   }
+  
+  else { //nothing is connected to if statement
+    
+    consider = false;
+    addOutfit(then);
+    addOutfit(other);
+    
+    consider = true;
+    addOutfit(other);
+    
+  }
 }
 
 //--------------------------------------------------------------------------
@@ -698,7 +709,7 @@ void randomize() {
   x = rnd.nextInt(2);
   CURRENT_WEATHER = weather[x];
    
-  text['weather'] = "Don't be silly! <br> you shouldn't wear this on a " + CURRENT_WEATHER + " day!";
+  text['weather_match'] = "Don't be silly! <br> you shouldn't wear this on a " + CURRENT_WEATHER + " day!";
   
 }
 
