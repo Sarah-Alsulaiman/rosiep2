@@ -11,70 +11,70 @@ Blockly.JavaScript.top1 = function() {
 Blockly.JavaScript.top2 = function() {
   var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
 	if (color == '0') {
-		return '[ "top2-", "blue" ]';
+		return '[ "top2-", "blue", "hot" ]';
 	}
 	else {
-		return '[ "top2-",' + color + ' ]';
+		return '[ "top2-",' + color + ' "hot" ]';
 	}
 };
 
 Blockly.JavaScript.top3 = function() {
 	var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
 	if (color == '0') {
-		return '[ "top3-", "red", "cold" ]';
+		return '[ "top3-", "red", "hot" ]';
 	}
 	else {
-		return '[ "top3-",' + color + ', "cold" ]';
+		return '[ "top3-",' + color + ', "hot" ]';
 	}
 };
 
 Blockly.JavaScript.top4 = function() {
 	var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
 	if (color == '0') {
-		return '[ "top4-", "red" ]';
+		return '[ "top4-", "red", "cold" ]';
 	}
 	else {
-		return '[ "top4-",' + color + ' ]';
+		return '[ "top4-",' + color + ' "cold" ]';
 	}
 };
 
 Blockly.JavaScript.top5 = function() {
 	var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
 	if (color == '0') {
-		return '[ "top5-", "red" ]';
+		return '[ "top5-", "red" , "formal" ]';
 	}
 	else {
-		return '[ "top5-",' + color + ' ]';
+		return '[ "top5-",' + color + ' "formal" ]';
 	}
 };
 
 Blockly.JavaScript.top6 = function() {
 	var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
 	if (color == '0') {
-		return '[ "top6-", "red" ]';
+		return '[ "top6-", "red", "gym" ]';
 	}
 	else {
-		return '[ "top6-",' + color + ' ]';
+		return '[ "top6-",' + color + ' "gym" ]';
 	}
 };
 
 Blockly.JavaScript.top7 = function() {
 	var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
 	if (color == '0') {
-		return '[ "top7-", "red" ]';
+		return '[ "top7-", "red" , "hot" ]';
 	}
 	else {
-		return '[ "top7-",' + color + ' ]';
+		return '[ "top7-",' + color + ' "hot" ]';
 	}
 };
 
 Blockly.JavaScript.top8 = function() {
 	var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
 	if (color == '0') {
-		return '[ "top8-", "red" ]';
+		return '[ "top8-", "red", "hot" ]';
 	}
 	else {
-		return '[ "top8-",' + color + ' ]';
+		return '[ "top8-",' + color + ' "hot" ]';
 	}
 };
 
@@ -257,7 +257,12 @@ Blockly.JavaScript.going_to = function() {
 	return [code, Blockly.JavaScript.ORDER_NONE];
 };
 
-
+Blockly.JavaScript.weather = function() {
+	var weather = this.getTitleValue('weather');
+	var code = '"weather", "' + weather + '"';
+	
+	return [code, Blockly.JavaScript.ORDER_NONE];
+};
 
 Blockly.JavaScript.control_repeat = function() {
   var count = this.getTitleValue('COUNT') || '50';

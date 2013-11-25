@@ -40,6 +40,9 @@ String CURRENT_PLACE;
 /** Random Color **/
 String CURRENT_COLOR;
 
+/** Random weather **/
+String CURRENT_WEATHER;
+
 /** Colors available for each outfit **/
 List colors = ['red', 'blue', 'gold', 'lime', 'black', 'pink', 'orange' , 'purple', 'grey'];
 
@@ -74,13 +77,14 @@ bool black_block = false;
 
 bool repeat_block = false;
 bool set_block = false;
+bool weather_block = false;
 
 //format [ [blockName, value, levels] ]
-List blocks = [  [ 'black', black_block, 7], ['top', top_block, 1, 2, 3, 4, 5], ['bottom', bottom_block, 1, 2, 3, 4, 5, 6, 7], 
+List blocks = [  ['weather', weather_block, 3], [ 'black', black_block, 7], ['top', top_block, 1, 2, 3, 4, 5], ['bottom', bottom_block, 1, 2, 3, 4, 5, 6, 7], 
                  ['top_purple', top_purple_block, 2], ['bottom_purple', bottom_purple_block, 2],
                  ['abstraction', abstraction_block, 4, 5], ['call', call_block, 4, 5], ['func', func_block, 4, 5],
                  ['other', other_block, 3, 5, 7], ['then', then_block, 3, 5, 7],
-                 ['color', color_block, 7], ['get', get_input_block, 7], ['going', going_block, 3], ['if', if_block, 3, 5, 7],
+                 ['color', color_block, 7], ['get', get_input_block, 7], ['going', going_block, 0], ['if', if_block, 3, 5, 7],
                  
               ];
 
@@ -100,24 +104,24 @@ void main() {
   
   initWebsocket();
   
-  block_name['black'] = 0;
+  block_name['weather'] = 0;
+  block_name['black'] = 1;
   
-  block_name['top'] = 1;
-  block_name['bottom'] = 2;
-  block_name['top_purple'] = 3;
-  block_name['bottom_purple'] = 4;
+  block_name['top'] = 2;
+  block_name['bottom'] = 3;
+  block_name['top_purple'] = 4;
+  block_name['bottom_purple'] = 5;
   
-  block_name['abstraction'] = 5;
-  block_name['call'] = 6;
-  block_name['func'] = 7;
+  block_name['abstraction'] = 6;
+  block_name['call'] = 7;
+  block_name['func'] = 8;
   
-  block_name['other'] = 8;
-  block_name['then'] = 9;
-  block_name['color'] = 10;
-  block_name['get'] = 11;
-  block_name['going'] = 12;
-  block_name['if'] = 13;
-  
+  block_name['other'] = 9;
+  block_name['then'] = 10;
+  block_name['color'] = 11;
+  block_name['get'] = 12;
+  block_name['going'] = 13;
+  block_name['if'] = 14;
   
   
   text['black'] = "Make sure you choose the color black <br> for one of the bottoms!";
@@ -176,7 +180,7 @@ void initWebsocket() {
       }
       
       //compile(evt.data.substring(6)); 
-      print("COMPILE THIS: " + parts[2]);
+      //print("COMPILE THIS: " + parts[2]);
       compile(parts[2]);
       
       print('Dart received code from HTML ');
@@ -189,8 +193,12 @@ void initWebsocket() {
         if (outfits.length == 0) {
           timer.cancel();
           if (check_input) {
-            if (CURRENT_LEVEL == "3" || CURRENT_LEVEL == "5") {
-              String background = CURRENT_PLACE;
+            if (CURRENT_LEVEL == "3") {
+              String background = CURRENT_WEATHER;
+              sendMessage("bg " + background);
+            }
+            else if(CURRENT_LEVEL == "5") {
+              Sring background = CURRENT_PLACE;
               sendMessage("bg " + background);
             }
             sendMessage("DONE!");
@@ -432,16 +440,24 @@ void interpret (List commands) {
       else { //not a block
         var part = nested[0];
         var color = nested[1];
+        
+        
         if (color == 'current_color') {
           color = CURRENT_COLOR;
           get_var_block = true; print("GET VAR FOUND");
         }
         var outfit = part+color;
-          
+        var cond;
         if (part.startsWith("top")) { 
+          cond = nested[2];
           blocks[block_name['top']][1]= true; print("TOP block now true"); 
           if (color == "purple")  blocks[block_name['top_purple']][1]= true;
           else blocks[block_name['top_purple']][1] = false;
+          
+          if (cond == CURRENT_WEATHER && consider) {
+            blocks[block_name['weather']][1] = true; print("WEATHER MATCHES CLOTHES");
+          }
+          
         }
           
         else if (part.startsWith("bottom")) {
@@ -451,8 +467,10 @@ void interpret (List commands) {
           else blocks[block_name['bottom_purple']][1] = false;
         }
         
-        if (consider)
+        if (consider) {
           outfits.add(outfit);
+        }
+          
           
   
       }
@@ -584,6 +602,21 @@ void processIf(List nested) {
         //result could also be SET or REPEAT
         
     }
+    
+    else if (condition == "weather") {
+      
+      consider = false;
+      addOutfit(then);
+      addOutfit(other);
+      
+      
+      consider = true;
+      result = (nested[1][1] == CURRENT_WEATHER)? then : other;
+      if (result.length != 0)
+        addOutfit(result);
+      
+      
+    }
       
      
     else  {  //GET block is connected to IF block ==> for unkown color levels
@@ -639,21 +672,27 @@ void randomize() {
   }
   
   else {
-    places = ['formal', 'concert'];
+    places = ['formal', 'gym'];
   }
   
   
   Random rnd = new Random();
   var x = rnd.nextInt(2);
-  
   CURRENT_PLACE = places[x];
   
   var colors = ['black', 'purple'];
   
   rnd = new Random();
   x = rnd.nextInt(2);
-  
   CURRENT_COLOR = colors[x];
+  
+  var weather = ['hot', 'cold'];
+  
+  rnd = new Random();
+  x = rnd.nextInt(2);
+  CURRENT_WEATHER = weather[x];
+   
+  text['weather'] = "Don't be silly! <br> you shouldn't wear this on a " + CURRENT_WEATHER + " day!";
   
 }
 
@@ -680,6 +719,7 @@ void clearBlocks() {
   blocks[block_name['get']][1] = false;
   blocks[block_name['color']][1] = false;
   blocks[block_name['black']][1] = false;
+  blocks[block_name['weather']][1] = false;
   
   //blocks[block_name['repeat']][1] = false;
   
