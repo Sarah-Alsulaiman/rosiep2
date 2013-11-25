@@ -9,7 +9,7 @@
                         " Rosie is invited to a party. Dress code is purple. <BR/> &nbsp;&nbsp;&nbsp;&nbsp; Help Rosie decide what to wear. ",
                         " Rosie wants to go out for a walk. It might be hot or cold outside. Help Rosie choose her outfit for both cases",
                         " Rosie want you to help her pick an outfit that would be her favorite to wear on formal occasions. define an outfit and use it",
-                        " Rosie in invited to a formal event. She also wants to go to the gym.<BR/> Help Rosie on both cases",
+                        " Rosie in invited to a wedding. She also wants to go to the gym.<BR/> Help Rosie on both cases",
                         " Rosie is wearing a top and wants to wear a matching bottom that comes in black, grey and pink, she wants to try them all",
                         " Rosie wore a top that is either black or purple, when she wears a black top, she doesn't want to wear a black bottom, otherwise she wants the bottom to be black. Pick a bottom so that she doesn't wear all black (hint: check new blocks in the control section!)"
                        ];
@@ -203,7 +203,7 @@
    		
    		
    			
-   		var places = ['gym', 'formal', 'hot', 'cold'];
+   		var places = ['gym', 'wedding', 'hot', 'cold'];
    			
    		for ( var i=0; i < places.length; i++) {
    			var bg = document.getElementById(places[i]);

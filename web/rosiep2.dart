@@ -442,6 +442,8 @@ void interpret (List commands) {
       else { //not a block
         var part = nested[0];
         var color = nested[1];
+        var weather = nested[2];
+        var place = nested[3];
         
         
         if (color == 'current_color') {
@@ -449,17 +451,17 @@ void interpret (List commands) {
           get_var_block = true; print("GET VAR FOUND");
         }
         var outfit = part+color;
-        var cond;
+        
         if (part.startsWith("top")) { 
-          cond = nested[2];
           blocks[block_name['top']][1]= true; print("TOP block now true"); 
           if (color == "purple")  blocks[block_name['top_purple']][1]= true;
           else blocks[block_name['top_purple']][1] = false;
           
-          if (cond != CURRENT_WEATHER && consider) {
-            ERR_MSG = "weather_match";
+          if (CURRENT_LEVEL == "3" && weather != CURRENT_WEATHER && consider) {
+            ERR_MSG = "weather_mismatch";
             
           }
+          
           
         }
           
@@ -469,6 +471,10 @@ void interpret (List commands) {
           else if (color == "black") {blocks[block_name['black']][1] = true; print("BLACK!!!!!");} 
           else blocks[block_name['bottom_purple']][1] = false;
           
+        }
+        
+        if (CURRENT_LEVEL == "5" && place != CURRENT_PLACE && consider) {
+          ERR_MSG = "place_mismatch";
         }
         
         if (consider) {
@@ -689,13 +695,14 @@ void randomize() {
   }
   
   else {
-    places = ['formal', 'gym'];
+    places = ['wedding', 'gym'];
   }
   
   
   Random rnd = new Random();
   var x = rnd.nextInt(2);
   CURRENT_PLACE = places[x];
+  text['place_mismatch'] = "Don't be silly! <br> you shouldn't wear this to a " + CURRENT_PLACE + ".";
   
   var colors = ['black', 'purple'];
   
@@ -709,7 +716,7 @@ void randomize() {
   x = rnd.nextInt(2);
   CURRENT_WEATHER = weather[x];
    
-  text['weather_match'] = "Don't be silly! <br> you shouldn't wear this on a " + CURRENT_WEATHER + " day!";
+  text['weather_mismatch'] = "Don't be silly! <br> you shouldn't wear this on a " + CURRENT_WEATHER + " day!";
   
 }
 
