@@ -14,7 +14,7 @@ Blockly.Language.top1 = {
     this.setTooltip( function() {
       					var color = Blockly.JavaScript.valueToCode(thisBlock, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
       					if (color == '0')
-      						return 'top1-red';
+      						return 'top1-purple';
       					else {
       						color = color.replace(/"/g, "").replace(/\(/g, "").replace(/\)/g, "");
       						console.log("COLOR="+color);
@@ -45,7 +45,7 @@ Blockly.Language.top2 = {
     this.setTooltip( function() {
       					var color = Blockly.JavaScript.valueToCode(thisBlock, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
       					if (color == '0')
-      						return 'top2-blue';
+      						return 'top2-pink';
       					else {
       						color = color.replace(/"/g, "").replace(/\(/g, "").replace(/\)/g, "");
       						console.log("COLOR="+color);
@@ -73,7 +73,7 @@ Blockly.Language.top3 = {
     this.setTooltip( function() {
       					var color = Blockly.JavaScript.valueToCode(thisBlock, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
       					if (color == '0')
-      						return 'top3-red';
+      						return 'top3-blue';
       					else {
       						color = color.replace(/"/g, "").replace(/\(/g, "").replace(/\)/g, "");
       						console.log("COLOR="+color);
@@ -101,7 +101,7 @@ Blockly.Language.top4 = {
     this.setTooltip( function() {
       					var color = Blockly.JavaScript.valueToCode(thisBlock, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
       					if (color == '0')
-      						return 'top4-red';
+      						return 'top4-grey';
       					else {
       						color = color.replace(/"/g, "").replace(/\(/g, "").replace(/\)/g, "");
       						console.log("COLOR="+color);
@@ -157,7 +157,7 @@ Blockly.Language.top6 = {
     this.setTooltip( function() {
       					var color = Blockly.JavaScript.valueToCode(thisBlock, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
       					if (color == '0')
-      						return 'top6-red';
+      						return 'top6-purple';
       					else {
       						color = color.replace(/"/g, "").replace(/\(/g, "").replace(/\)/g, "");
       						console.log("COLOR="+color);
@@ -213,7 +213,7 @@ Blockly.Language.top8 = {
     this.setTooltip( function() {
       					var color = Blockly.JavaScript.valueToCode(thisBlock, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
       					if (color == '0')
-      						return 'top8-red';
+      						return 'top8-gold';
       					else {
       						color = color.replace(/"/g, "").replace(/\(/g, "").replace(/\)/g, "");
       						console.log("COLOR="+color);
@@ -242,7 +242,7 @@ Blockly.Language.bottom1 = {
     this.setTooltip( function() {
       					var color = Blockly.JavaScript.valueToCode(thisBlock, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
       					if (color == '0')
-      						return 'bottom1-red';
+      						return 'bottom1-blue';
       					else {
       						color = color.replace(/"/g, "").replace(/\(/g, "").replace(/\)/g, "");
       						console.log("COLOR="+color);
@@ -270,7 +270,7 @@ Blockly.Language.bottom2 = {
     this.setTooltip( function() {
       					var color = Blockly.JavaScript.valueToCode(thisBlock, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
       					if (color == '0')
-      						return 'bottom2-blue';
+      						return 'bottom2-red';
       					else {
       						color = color.replace(/"/g, "").replace(/\(/g, "").replace(/\)/g, "");
       						console.log("COLOR="+color);
@@ -326,7 +326,7 @@ Blockly.Language.bottom4 = {
     this.setTooltip( function() {
       					var color = Blockly.JavaScript.valueToCode(thisBlock, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
       					if (color == '0')
-      						return 'bottom4-blue';
+      						return 'bottom4-lime';
       					else {
       						color = color.replace(/"/g, "").replace(/\(/g, "").replace(/\)/g, "");
       						console.log("COLOR="+color);
@@ -382,7 +382,7 @@ Blockly.Language.bottom6 = {
     this.setTooltip( function() {
       					var color = Blockly.JavaScript.valueToCode(thisBlock, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
       					if (color == '0')
-      						return 'bottom6-blue';
+      						return 'bottom6-grey';
       					else {
       						color = color.replace(/"/g, "").replace(/\(/g, "").replace(/\)/g, "");
       						console.log("COLOR="+color);
@@ -410,7 +410,7 @@ Blockly.Language.bottom7 = {
     this.setTooltip( function() {
       					var color = Blockly.JavaScript.valueToCode(thisBlock, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
       					if (color == '0')
-      						return 'bottom7-blue';
+      						return 'bottom7-grey';
       					else {
       						color = color.replace(/"/g, "").replace(/\(/g, "").replace(/\)/g, "");
       						console.log("COLOR="+color);

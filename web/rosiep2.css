@@ -55,14 +55,13 @@ A:hover {text-decoration: underline; color: rgba(102, 0, 102, .6);}
 
 
 #rosie-output {
-   border: 1px solid black;
    position: absolute;
    left: 1110px;
    top: 78px;
    width: 600px;
    height: 900px;
    padding: 10px;
-   border: 1px solid black;
+   
    text-align: center;
    background-color: rgba(255, 192, 203, .6); 
 }
@@ -70,15 +69,15 @@ A:hover {text-decoration: underline; color: rgba(102, 0, 102, .6);}
 #rosie-toolbar {
    background-color: rgba(255, 192, 203, 1); 
    border-radius: 15px;
-   border: 2px solid white;
+   border: 2px solid;
    border-color:  rgba(102, 0, 102, .6);
    position: absolute;
-   top: 900px;
-   left: 1350px;
+   top: 940px;
+   left: 1380px;
    text-align: center;
    padding: 5px;
    width: 150px;
-   z-index: 2;
+   z-index: 2147483647;
 }
 
 
@@ -124,7 +123,7 @@ button {
   opacity: 100;
   z-index: 2;
   visibility : hidden;
-  left: 1250px;
+  left: 1150px;
   top: 100px;
   
 }

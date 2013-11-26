@@ -1,7 +1,7 @@
 Blockly.JavaScript.top1 = function() {
 	var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
 	if (color == '0') {
-		return '[ "top1-", "red", "hot", "casual" ]';
+		return '[ "top1-", "purple", "hot", "casual" ]';
 	}
 	else {
 		return '[ "top1-",' + color + ', "hot", "casual" ]';
@@ -11,7 +11,7 @@ Blockly.JavaScript.top1 = function() {
 Blockly.JavaScript.top2 = function() {
   var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
 	if (color == '0') {
-		return '[ "top2-", "blue", "hot", "casual" ]';
+		return '[ "top2-", "pink", "hot", "casual" ]';
 	}
 	else {
 		return '[ "top2-",' + color + ', "hot", "casual" ]';
@@ -21,7 +21,7 @@ Blockly.JavaScript.top2 = function() {
 Blockly.JavaScript.top3 = function() {
 	var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
 	if (color == '0') {
-		return '[ "top3-", "red", "hot", "wedding" ]';
+		return '[ "top3-", "blue", "hot", "wedding" ]';
 	}
 	else {
 		return '[ "top3-",' + color + ', "hot", "wedding" ]';
@@ -31,7 +31,7 @@ Blockly.JavaScript.top3 = function() {
 Blockly.JavaScript.top4 = function() {
 	var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
 	if (color == '0') {
-		return '[ "top4-", "red", "cold", "casual" ]';
+		return '[ "top4-", "grey", "cold", "casual" ]';
 	}
 	else {
 		return '[ "top4-",' + color + ', "cold", "casual" ]';
@@ -51,7 +51,7 @@ Blockly.JavaScript.top5 = function() {
 Blockly.JavaScript.top6 = function() {
 	var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
 	if (color == '0') {
-		return '[ "top6-", "red", "hot", "gym" ]';
+		return '[ "top6-", "purple", "hot", "gym" ]';
 	}
 	else {
 		return '[ "top6-",' + color + ', "hot", "gym" ]';
@@ -71,7 +71,7 @@ Blockly.JavaScript.top7 = function() {
 Blockly.JavaScript.top8 = function() {
 	var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
 	if (color == '0') {
-		return '[ "top8-", "red", "hot", "wedding" ]';
+		return '[ "top8-", "gold", "hot", "wedding" ]';
 	}
 	else {
 		return '[ "top8-",' + color + ', "hot", "wedding" ]';
@@ -84,7 +84,7 @@ Blockly.JavaScript.top8 = function() {
 Blockly.JavaScript.bottom1 = function() {
   var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
 	if (color == '0') {
-		return '[ "bottom1-", "red", "any", "casual" ]';
+		return '[ "bottom1-", "blue", "any", "casual" ]';
 	}
 	else {
 		return '[ "bottom1-",' + color + ' ,"any", "casual"]';
@@ -94,7 +94,7 @@ Blockly.JavaScript.bottom1 = function() {
 Blockly.JavaScript.bottom2 = function() {
   var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
 	if (color == '0') {
-		return '[ "bottom2-", "blue", "any", "casual" ]';
+		return '[ "bottom2-", "red", "any", "casual" ]';
 	}
 	else {
 		return '[ "bottom2-",' + color + ', "any", "casual" ]';
@@ -114,7 +114,7 @@ Blockly.JavaScript.bottom3 = function() {
 Blockly.JavaScript.bottom4 = function() {
   var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
 	if (color == '0') {
-		return '[ "bottom4-", "blue", "any", "casual" ]';
+		return '[ "bottom4-", "lime", "any", "casual" ]';
 	}
 	else {
 		return '[ "bottom4-",' + color + ', "any", "casual" ]';
@@ -134,7 +134,7 @@ Blockly.JavaScript.bottom5 = function() {
 Blockly.JavaScript.bottom6 = function() {
   var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
 	if (color == '0') {
-		return '[ "bottom6-", "blue", "any", "gym" ]';
+		return '[ "bottom6-", "grey", "any", "gym" ]';
 	}
 	else {
 		return '[ "bottom6-",' + color + ', "any", "gym" ]';
@@ -144,7 +144,7 @@ Blockly.JavaScript.bottom6 = function() {
 Blockly.JavaScript.bottom7 = function() {
   var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
 	if (color == '0') {
-		return '[ "bottom7-", "blue", "hot", "casual" ]';
+		return '[ "bottom7-", "grey", "hot", "casual" ]';
 	}
 	else {
 		return '[ "bottom7-",' + color + ', "hot", "casual" ]';

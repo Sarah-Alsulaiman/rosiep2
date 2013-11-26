@@ -182,7 +182,7 @@ void initWebsocket() {
       }
       
       //compile(evt.data.substring(6)); 
-      //print("COMPILE THIS: " + parts[2]);
+      print("COMPILE THIS: " + parts[2]);
       compile(parts[2]);
       
       print('Dart received code from HTML ');
@@ -199,7 +199,7 @@ void initWebsocket() {
             sendMessage("bg " + background);
           }
           else if(CURRENT_LEVEL == "5") {
-            Sring background = CURRENT_PLACE;
+            String background = CURRENT_PLACE;
             sendMessage("bg " + background);
           }
           if (check_input) {

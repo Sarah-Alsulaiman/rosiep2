@@ -33,7 +33,7 @@ pre {
 	-moz-border-radius: 8px;
   -webkit-border-radius: 8px;
   -khtml-border-radius: 8px;
-  z-index: 5;
+  z-index: 2147483647;
   
 	
 }

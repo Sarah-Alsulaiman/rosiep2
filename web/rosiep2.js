@@ -30,6 +30,7 @@
     var originalTop;
     var originalBottom;
     var tempImg;
+    var Zindex = 3;
     
     var dafault_procedure = false;
 //-----------------------------------------------------------------------------------------
@@ -184,6 +185,7 @@
   	  	
       	if (el) {
       		el.style.visibility = visible ? "visible" : "hidden";
+      		el.style.zIndex = Zindex++;
       	}
    	}
    	
@@ -342,7 +344,7 @@
 	function sendBlocklyCode() {
       if (!playing) {
         var code = Blockly.Generator.workspaceToCode('JavaScript');
-         //alert(code);
+        //alert(code);
         //--------------------------------------------------
         // error 1: no blocks on the screen
         //--------------------------------------------------
@@ -789,8 +791,11 @@ Blockly.Tooltip.show_ = function() {
   	imgNode.style.visibility = "hidden";
   
   imgNode = document.getElementById(tipImg);
-  if (imgNode)
-  imgNode.style.visibility = "visible";
+  if (imgNode) {
+  	imgNode.style.visibility = "visible";
+  	imgNode.style.zIndex = Zindex++;
+  }
+  
   
   
   // Display the tooltip.
@@ -916,10 +921,10 @@ Blockly.Tooltip.show_ = function() {
       
       //------------------------------------------------------------------------------
       var toolbox5 = '<xml> <category></category> ';
-      toolbox5 += '  <category name="+ Tops"> <block type="top1"></block> <block type="top2"></block> <block type="top3"></block> <block type="top4"></block> <block type="top5"></block> <block type="top6"></block>';
+      toolbox5 += '  <category name="+ Tops"> <block type="top1"></block> <block type="top2"></block> <block type="top3"></block> <block type="top4"></block> <block type="top5"></block> <block type="top6"> </block> <block type="top7"> </block> <block type="top8"> </block>';
       toolbox5 += '</category> <category> </category>'; //close tops
       
-      toolbox5 += '<category name="+ Bottoms"> <block type="bottom1"></block> <block type="bottom2"></block> <block type="bottom3"></block> <block type="bottom4"></block> <block type="bottom5"></block> <block type="bottom6"></block>';
+      toolbox5 += '<category name="+ Bottoms"> <block type="bottom1"></block> <block type="bottom2"></block> <block type="bottom3"></block> <block type="bottom4"></block> <block type="bottom5"></block> <block type="bottom6"></block> <block type="bottom7"></block> <block type="bottom8"></block>';
       
       toolbox5 += '</category> <category> </category>'; //close bottoms
       
