@@ -97,12 +97,73 @@ String ERR_MSG = '';
 Map block_name = new Map <String, int>();
 Map text = new Map <String, String> ();
 
+
+//------------------------------------------------
+//
+//-------------------------------------------------------
+
+
 //----------------------------------------------------------------------
 // Main function
 //----------------------------------------------------------------------
 void main() {
   
-  initWebsocket();
+  window.onMessage.listen((evt) {
+    
+    String msg = "${evt.data}";
+    
+    if (msg.startsWith("@dart")) {
+      CURRENT_LEVEL = msg.substring(5,6);
+      print("CURRENT LEVEL = " + CURRENT_LEVEL);
+      ////////////////////////////////////////////////////////
+      
+      parts = msg.split("#");
+      
+      //////////////////////////////////////////////////////
+      randomize();
+      if (CURRENT_LEVEL == "7") {
+        var level7_top = "top2-";
+        level7_top += CURRENT_COLOR;
+        sendMessage("outfit " + level7_top);
+      }
+      
+      //compile(evt.data.substring(6)); 
+      print("COMPILE THIS: " + parts[1]);
+      compile(parts[1]);
+      
+      print('Dart received code from HTML ');
+      
+      if (outfits.length != 0) {
+        Timer.run(() => display());
+      }
+      
+      timer = new Timer.periodic(new Duration(milliseconds: 1000), (Timer t) {
+        if (outfits.length == 0) {
+          timer.cancel();
+          if (CURRENT_LEVEL == "3") {
+            String background = CURRENT_WEATHER;
+            sendMessage("bg " + background);
+          }
+          else if(CURRENT_LEVEL == "5") {
+            String background = CURRENT_PLACE;
+            sendMessage("bg " + background);
+          }
+          if (check_input) {
+            sendMessage("DONE!");
+          }
+          
+          else
+            sendMessage("error " + text[ERR_MSG]);
+        }
+        else {
+          //if (check_input)
+          display();
+        }
+      });
+      sendMessage("GOT IT!");
+    }
+
+  });
   
   
   block_name['black'] = 0;
@@ -759,9 +820,12 @@ void clearBlocks() {
 // Send a message to the javascript blockly window
 //--------------------------------------------------------------------------
 void sendMessage(String message) {
-  if (ws != null && ws.readyState == WebSocket.OPEN) {
+  /*if (ws != null && ws.readyState == WebSocket.OPEN) {
     ws.send("@blockly#$CONNECTION_ID#$message");
-  }
+  }*/
+  var msg = "@blockly#$message";
+  var origin = window.location.protocol + "//" + window.location.host;
+  window.postMessage(msg, origin);
 }
 
 //--------------------------------------------------------------------------

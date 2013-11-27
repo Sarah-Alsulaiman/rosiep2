@@ -65,7 +65,7 @@
 //------------------------------------------------------------------------------------------
 // Attempt to open a web socket connection
 //------------------------------------------------------------------------------------------
-	var socket = null;
+	/*var socket = null;
     if ("WebSocket" in window) {
       socket = new WebSocket("ws://localhost:8080");
       socket.onopen    = function(evt) { console.log("HTML connected."); }
@@ -73,7 +73,9 @@
       socket.onerror   = function(evt) { console.log("HTML error in server connection"); }
       socket.onclose   = function(evt) { console.log("HTML server connection closed."); }
       
-    }
+    }*/
+    
+    window.addEventListener("message", processEvent, false);
     
 //---------------------------------------------------------------------------
 //  Get level number from URL
@@ -255,55 +257,52 @@
 //---------------------------------------------------------------------------
 	
     function processEvent(event) {
+    	var event = event.data;
       var check = event.substring(0,8);
       
-      if (check == "your id=" ) {
+      /*if (check == "your id=" ) {
       
       	CONNECTION_ID = event.substring(8);
       	//alert("YOUR CONNECTION IS " + CONNECTION_ID);
       	
-      }
+      }*/
       
       
       if ( check == "@blockly" ) {
       	console.log("HTML received message from dart " + event);
       	
       	var parts = event.split('#');
-      	if (parts[1] == CONNECTION_ID) {
+      	
       		
-      		if (parts[2].substring(0, 6) == "error ") {
+      		if (parts[1].substring(0, 6) == "error ") {
       		playing = false;
-      		error = parts[2].substring(6);
+      		error = parts[1].substring(6);
       		showError();
 	      	}
 	      	
-	      	else if (parts[2] == "GOT IT!") {
+	      	else if (parts[1] == "GOT IT!") {
 	        	//console.log("HTML received message from dart " + event);
 	      	}
 	      	
-	      	else if (parts[2] == "DONE!") {
+	      	else if (parts[1] == "DONE!") {
 	        	//console.log("HTML received message from dart " + event);
 	        	playing = false;
 	        	window.setTimeout(function() { advanceLevel(); }, 500);
 	      	}
 	      	
-	      	else if (parts[2].substring(0, 3) == "bg ") {  //received bg to display
+	      	else if (parts[1].substring(0, 3) == "bg ") {  //received bg to display
 	      		//console.log("HTML received message from dart for background " + event);
-		      	var bg = parts[2].substring(3);
+		      	var bg = parts[1].substring(3);
 		      	setHtmlVisibility(bg, true);
 	      	}
 	      	
 	      	
 	      	else {		// received an outfit to display
 	      		//console.log("HTML received message from dart for outfit " + event);
-		      	var outfit = parts[2].substring(7);
+		      	var outfit = parts[1].substring(7);
 		      	setHtmlVisibility(outfit, true);
 		      
 	      	}
-	      	
-      	
-      	}
-      	
       }	
     }   
 //---------------------------------------------------------------------------------------
@@ -369,18 +368,22 @@
             code = code.replace(/\]\[/g, '], [');
             code = (code.replace(/\)/g, '')).replace(/\(/g, '');
             code = code.replace(/\;/g, '');
-            if (socket != null && socket.readyState == 1) {
+            //if (socket != null && socket.readyState == 1) {
               //alert(code);
               
               //socket.send('@dart'+ CURRENT_LEVEL + '-' + CONNECTION_ID + '-' + code);
               hideAll();
-              code = '@dart'+ CURRENT_LEVEL + '#' + CONNECTION_ID + '#' + code;
-              socket.send(code);
-              //alert(code);
+              //code = '@dart'+ CURRENT_LEVEL + '#' + CONNECTION_ID + '#' + code;
+              //socket.send(code);
+              
+              code = '@dart'+ CURRENT_LEVEL + '#' + code;
+              var origin = window.location.protocol + "//" + window.location.host;
+   			  window.postMessage(code, origin);
+   
               tempImg = '';
               playing = true;
               //window.location.reload(true);
-            }
+            //}
           }
         }
       
