@@ -5,10 +5,10 @@
 	var MAX_LEVEL = 7;
     var MIN_LEVEL = 1;
     var CURRENT_LEVEL = getLevel();
-    var LEVELS_MSG = [" Rosie is going to a resturant with her friend, Jasmin. <BR/> &nbsp;&nbsp;&nbsp;&nbsp; Help her decide what to wear. ",
+    var LEVELS_MSG = [" Rosie is going to a resturant with her friend, Jasmin. Help her decide what to wear.<BR><BR> ",
                         " Rosie is invited to a party. Dress code is purple. <BR/> &nbsp;&nbsp;&nbsp;&nbsp; Help Rosie decide what to wear. ",
                         " Rosie wants to go out for a walk. It might be hot or cold outside. Help Rosie choose her outfit for both cases",
-                        " Rosie want you to help her pick an outfit that would be her favorite to wear on formal occasions. define an outfit and use it",
+                        " Rosie want you to help her pick an outfit that would be her favorite to wear on weddings. define an outfit and use it",
                         " Rosie in invited to a wedding. She also wants to go to the gym.<BR/> Help Rosie on both cases",
                         " Rosie is wearing a top and wants to wear a matching bottom that comes in black, grey and pink, she wants to try them all",
                         " Rosie wore a top that is either black or purple, when she wears a black top, she doesn't want to wear a black bottom, otherwise she wants the bottom to be black. Pick a bottom so that she doesn't wear all black (hint: check new blocks in the control section!)"
@@ -98,7 +98,7 @@
 	function advanceLevel () {
 		storeProcedure();
       if (CURRENT_LEVEL < MAX_LEVEL) {
-        $.jqDialog.confirm("Congratulations!<BR/> <BR/> Are you ready to proceed to level %1?".replace('%1', CURRENT_LEVEL + 1),
+        $.jqDialog.confirm("Wonderful!<BR/> <BR/> Would you like to continue? ".replace('%1', CURRENT_LEVEL + 1),
         function() { window.location = window.location.protocol + '//' +
                      window.location.host + window.location.pathname +
                      '?level=' + (CURRENT_LEVEL + 1); },    // callback function for 'YES' button
@@ -178,7 +178,7 @@
       	document.getElementById("images").appendChild(img_blank);
       	
       	if (CURRENT_LEVEL == 6)
-      		document.getElementById('top5-black').style.visibility = "visible";
+      		document.getElementById('top5-red').style.visibility = "visible";
       	else if (CURRENT_LEVEL == 7)
       		img_blank.style.visibility = "visible";
       		
@@ -195,7 +195,6 @@
 	
 	function setHtmlVisibility(id, visible) {
 		var variations = id.substring(0,3);
-		console.log("HTML VISIBILITY FOR: " + id);
 		var el = document.getElementById(String(id));
 		
 		if (variations == "top") { variations = "top"; originalTop = id;}
@@ -208,7 +207,7 @@
       	
 		
   	   	if (CURRENT_LEVEL == 6)
-      		document.getElementById('top5-black').style.visibility = "visible";
+      		document.getElementById('top5-red').style.visibility = "visible";
       		
   	   	img_blank.style.visibility = "hidden";
   	  	
@@ -326,7 +325,7 @@
       	}*/
       	
       	if ( check == "@blockly" ) {
-      		console.log("HTML received message from dart " + event);
+      		//console.log("HTML received message from dart " + event);
       		
       		var parts = event.split('#');
       	
@@ -368,17 +367,17 @@
       while (start < code.length && start != -1) {
         newLine = code.indexOf("\n",start);
         var curlyBrace = code.indexOf("}" ,start);
-        console.log("start from:"+start);
-        console.log("new line at:"+newLine);
-        console.log("curleyBrace at:"+curlyBrace);
-        console.log("length="+length);
+        //console.log("start from:"+start);
+        //console.log("new line at:"+newLine);
+        //console.log("curleyBrace at:"+curlyBrace);
+        //console.log("length="+length);
         if ( newLine > 0 ) {
         	if ( curlyBrace > 0) {
         		if ( newLine -1 != curlyBrace ) {
             		connected = false;
             		break;
           		}
-          		else { start = newLine+3; amount += (curlyBrace - amount) ; console.log("amount="+amount); length -= Math.abs(amount) } //++ for multiple procedures...
+          		else { start = newLine+3; amount += (curlyBrace - amount) ; length -= Math.abs(amount) } //++ for multiple procedures...
         	}
         	else { connected = false; break; } ///++++++
       	}
@@ -1116,6 +1115,6 @@ Blockly.Tooltip.show_ = function() {
       
       
       document.getElementById('full_text_div').innerHTML= LEVELS_MSG[CURRENT_LEVEL - 1];
-      document.getElementById('level-h').innerHTML= "Level " + CURRENT_LEVEL + " :";
+      //document.getElementById('level-h').innerHTML= "Level " + CURRENT_LEVEL + " :";
       
     }

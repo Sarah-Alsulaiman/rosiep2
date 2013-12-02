@@ -270,7 +270,7 @@ Blockly.Language.bottom2 = {
     this.setTooltip( function() {
       					var color = Blockly.JavaScript.valueToCode(thisBlock, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
       					if (color == '0')
-      						return 'bottom2-red';
+      						return 'bottom2-grey';
       					else {
       						color = color.replace(/"/g, "").replace(/\(/g, "").replace(/\)/g, "");
       						console.log("COLOR="+color);
@@ -983,11 +983,12 @@ Blockly.Language.procedures_defnoreturn = {
     var name = Blockly.Procedures.findLegalName(
         Blockly.LANG_PROCEDURES_DEFNORETURN_PROCEDURE, this);
     this.appendDummyInput()
-        .appendTitle(new Blockly.FieldTextInput(name,
+    	.appendTitle("Outfit name: ")
+        .appendTitle(new Blockly.FieldTextInput("Name",
         Blockly.Procedures.rename), 'NAME')
         .appendTitle('', 'PARAMS');
     this.appendStatementInput('STACK')
-        .appendTitle(Blockly.LANG_PROCEDURES_DEFNORETURN_DO);
+        .appendTitle("");
    // this.setMutator(new Blockly.Mutator(['procedures_mutatorarg']));
     this.setTooltip(Blockly.LANG_PROCEDURES_DEFNORETURN_TOOLTIP);
     this.arguments_ = [];
@@ -1176,7 +1177,7 @@ Blockly.Language.procedures_callnoreturn = {
   init: function() {
     this.setColour(34, .66, .95);
     this.appendDummyInput()
-        .appendTitle(Blockly.LANG_PROCEDURES_CALLNORETURN_CALL)
+        .appendTitle("Wear")
         .appendTitle(Blockly.LANG_PROCEDURES_CALLNORETURN_PROCEDURE, 'NAME');
     this.setPreviousStatement(true);
     this.setNextStatement(true);

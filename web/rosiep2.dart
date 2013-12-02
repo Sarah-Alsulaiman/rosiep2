@@ -128,7 +128,7 @@ void main() {
       }
       
       //compile(evt.data.substring(6)); 
-      print("COMPILE THIS: " + parts[1]);
+      //print("COMPILE THIS: " + parts[1]);
       compile(parts[1]);
       
       print('Dart received code from HTML ');
@@ -226,7 +226,7 @@ void initWebsocket() {
   ws.onMessage.listen((evt) {
     if (evt.data.startsWith("@dart")) {
       CURRENT_LEVEL = evt.data.substring(5,6);
-      print("CURRENT LEVEL = " + CURRENT_LEVEL);
+      //print("CURRENT LEVEL = " + CURRENT_LEVEL);
       ////////////////////////////////////////////////////////
       
       parts = evt.data.split("#");
@@ -243,7 +243,7 @@ void initWebsocket() {
       }
       
       //compile(evt.data.substring(6)); 
-      print("COMPILE THIS: " + parts[2]);
+      //print("COMPILE THIS: " + parts[2]);
       compile(parts[2]);
       
       print('Dart received code from HTML ');
@@ -351,10 +351,7 @@ void validate() {
       
   }
   
-  /*if (! ERR_MSG.isEmpty) {
-    print (ERR_MSG + " NOT FOUND");
-    check_input = false;
-  }*/
+ 
  
 }
 //--------------------------------------------------------------------------
@@ -508,17 +505,23 @@ void interpret (List commands) {
         
         var outfit = part+color;
         
-        if (part.startsWith("top")) { 
+        if (part.startsWith("top") && consider) { 
           blocks[block_name['top']][1]= true; print("TOP block now true"); 
           if (color == "purple")  blocks[block_name['top_purple']][1]= true;
           else blocks[block_name['top_purple']][1] = false;
           
-          if (CURRENT_LEVEL == "3" && weather != CURRENT_WEATHER && consider) {
-            ERR_MSG = "weather_mismatch"; 
+          if (CURRENT_LEVEL == "3") {
+            if (weather != CURRENT_WEATHER && weather != "casual") {
+              ERR_MSG = "weather_mismatch"; 
+            }
+            else {
+              ERR_MSG = ''; //rewrite the value if outfit is suitable later
+            }
+            
           }
         }
           
-        else if (part.startsWith("bottom")) {
+        else if (part.startsWith("bottom") && consider) {
           blocks[block_name['bottom']][1]= true; print("BOTTOM block now true"); 
           if (color == "purple") blocks[block_name['bottom_purple']][1] = true;
           else if (color == "black") {blocks[block_name['black']][1] = true; print("BLACK!!!!!");} 

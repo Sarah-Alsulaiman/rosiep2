@@ -94,7 +94,7 @@ Blockly.JavaScript.bottom1 = function() {
 Blockly.JavaScript.bottom2 = function() {
   var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
 	if (color == '0') {
-		return '[ "bottom2-", "red", "any", "casual" ]';
+		return '[ "bottom2-", "grey", "any", "casual" ]';
 	}
 	else {
 		return '[ "bottom2-",' + color + ', "any", "casual" ]';
