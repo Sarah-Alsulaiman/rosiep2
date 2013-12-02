@@ -53,39 +53,15 @@ List parts;
 bool consider = true;
 bool check_input = false;
 
-bool top_block = false;
-bool bottom_block = false;
-
-bool top_purple_block = false;
-bool bottom_purple_block = false;
-
-bool if_block = false;
-bool then_block = false;
-bool other_block = false;
-
-bool going_block = false;
-
-bool func_block = false;
-bool call_block = false;
-bool abstraction_block = false;
-
-bool get_input_block = false;
-bool get_var_block = false;
-
-bool color_block = false;
-bool black_block = false;
-
-bool repeat_block = false;
-bool set_block = false;
-bool weather_block = false;
 
 //format [ [blockName, value, levels] ]
-List blocks = [  ['black', black_block, 7], ['top', top_block, 1, 2, 3, 4, 5], ['bottom', bottom_block, 1, 2, 3, 4, 5, 6, 7], 
-                 ['top_purple', top_purple_block, 2], ['bottom_purple', bottom_purple_block, 2],
-                 ['abstraction', abstraction_block, 4, 5], ['call', call_block, 4, 5], ['func', func_block, 4, 5],
-                 ['other', other_block, 3, 5, 7], ['then', then_block, 3, 5, 7],
-                 ['color', color_block, 7], ['get', get_input_block, 7], ['going', going_block, 0], ['if', if_block, 3, 5, 7],
-                 ['weather', weather_block, 3], 
+List blocks = [  ['repeat', false, 6], ['black', false, 6], ['grey', false, 6],  ['blue', false, 6], 
+                 ['top', false, 1, 2, 3, 4, 5], ['bottom', false, 1, 2, 3, 4, 5, 6], 
+                 ['top_purple', false, 2], ['bottom_purple', false, 2],
+                 ['abstraction', false, 4, 5], ['call', false, 4, 5], ['func', false, 4, 5],
+                 ['other', false, 3, 5], ['then', false, 3, 5],
+                 ['color', false], ['get', false], ['going', false, 0], ['if', false, 3, 5],
+                 ['weather', false, 3], 
               ];
 
 
@@ -121,11 +97,11 @@ void main() {
       
       //////////////////////////////////////////////////////
       randomize();
-      if (CURRENT_LEVEL == "7") {
+      /*if (CURRENT_LEVEL == "7") {
         var level7_top = "top2-";
         level7_top += CURRENT_COLOR;
         sendMessage("outfit " + level7_top);
-      }
+      }*/
       
       //compile(evt.data.substring(6)); 
       //print("COMPILE THIS: " + parts[1]);
@@ -165,29 +141,37 @@ void main() {
 
   });
   
+  block_name['repeat'] = 0;
+  block_name['black'] = 1;
+  block_name['grey'] = 2;
+  block_name['blue'] = 3;
   
-  block_name['black'] = 0;
+  block_name['top'] = 4;
+  block_name['bottom'] = 5;
+  block_name['top_purple'] = 6;
+  block_name['bottom_purple'] = 7;
   
-  block_name['top'] = 1;
-  block_name['bottom'] = 2;
-  block_name['top_purple'] = 3;
-  block_name['bottom_purple'] = 4;
+  block_name['abstraction'] = 8;
+  block_name['call'] = 9;
+  block_name['func'] = 10;
   
-  block_name['abstraction'] = 5;
-  block_name['call'] = 6;
-  block_name['func'] = 7;
+  block_name['other'] = 11;
+  block_name['then'] = 12;
+  block_name['color'] = 13;
+  block_name['get'] = 14;
+  block_name['going'] = 15;
+  block_name['if'] = 16;
   
-  block_name['other'] = 8;
-  block_name['then'] = 9;
-  block_name['color'] = 10;
-  block_name['get'] = 11;
-  block_name['going'] = 12;
-  block_name['if'] = 13;
+  block_name['weather'] = 17;
   
-  block_name['weather'] = 14;
+  text['repeat'] = "Rosie wants to repeat the process, <br> choose a block to repeat over and over again<br>";
+  text['black'] = "Make sure you choose the color black <br> for one of the bottoms!";
+  text['grey'] = "Make sure you choose the color grey <br> for one of the bottoms!";
+  text['blue'] = "Make sure you choose the color blue <br> for one of the bottoms!";
+  
   
   text['weather'] = "Remember, it might be hot or cold outside";
-  text['black'] = "Make sure you choose the color black <br> for one of the bottoms!";
+  
   
   text['top'] = "Make sure you choose both a top and a bottom";
   text['bottom'] = "Make sure you choose both a top and a bottom";
@@ -523,8 +507,10 @@ void interpret (List commands) {
           
         else if (part.startsWith("bottom") && consider) {
           blocks[block_name['bottom']][1]= true; print("BOTTOM block now true"); 
-          if (color == "purple") blocks[block_name['bottom_purple']][1] = true;
-          else if (color == "black") {blocks[block_name['black']][1] = true; print("BLACK!!!!!");} 
+          if (color == "purple")  blocks[block_name['bottom_purple']][1]= true;
+          else if (color == "grey") blocks[block_name['grey']][1] = true;
+          else if (color == "blue") {blocks[block_name['blue']][1] = true;}
+          else if (color == "black") {blocks[block_name['black']][1] = true;} 
           else blocks[block_name['bottom_purple']][1] = false;
           
         }
@@ -566,6 +552,8 @@ void processRepeat(List nested) {
   var count = nested[1];
   var block = nested[2];
   var outfit;
+  
+  blocks[block_name['repeat']][1] = true; print("repeat FOUND");
   
   for (var i=0; i < count; i++) {
     addOutfit(block);
@@ -778,6 +766,12 @@ void randomize() {
 // Clear blocks
 //--------------------------------------------------------------------------
 void clearBlocks() {
+  
+  blocks[block_name['repeat']][1] = false;
+  blocks[block_name['black']][1] = false;
+  blocks[block_name['grey']][1] = false;
+  blocks[block_name['blue']][1] = false;
+  
   blocks[block_name['top']][1] = false;
   blocks[block_name['bottom']][1] = false;
   blocks[block_name['top_purple']][1] = false;
@@ -794,17 +788,9 @@ void clearBlocks() {
   
   blocks[block_name['get']][1] = false;
   blocks[block_name['color']][1] = false;
-  blocks[block_name['black']][1] = false;
+  
   blocks[block_name['weather']][1] = false;
   
-  //blocks[block_name['repeat']][1] = false;
-  
-  get_var_block = false;
-  
-  set_block = false;
-  color_block = false;
-  
-  print("BLOCKS CLEAERD");
 }  
 
 //--------------------------------------------------------------------------
