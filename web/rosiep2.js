@@ -10,10 +10,10 @@
                         " Rosie wants to go out for a walk. It might be hot or cold outside. Help Rosie choose her outfit for both cases",
                         " Rosie want you to help her pick an outfit that would be her favorite to wear on weddings. define an outfit and use it",
                         " Rosie in invited to a wedding. She also wants to go to the gym.<BR/> Help Rosie on both cases",
-                        " Rosie is wearing a top and wants to wear a matching bottom that comes in black, grey and pink, she wants to try them all",
-                        " Rosie wore a top that is either black or purple, when she wears a black top, she doesn't want to wear a black bottom, otherwise she wants the bottom to be black. Pick a bottom so that she doesn't wear all black (hint: check new blocks in the control section!)"
+                        " Rosie wants to do a fashion show where she will wear a grey then black then blue jeans, she will do this over and over again 5 times in a row",
+                        " Play with the blocks as you like! <br><br>"
                        ];
-                       
+    // Rosie wore a top that is either black or purple, when she wears a black top, she doesn't want to wear a black bottom, otherwise she wants the bottom to be black. Pick a bottom so that she doesn't wear all black (hint: check new blocks in the control section!)                   
     var colors = ['red', 'blue', 'gold', 'lime', 'black', 'pink', 'orange' , 'purple', 'grey'];
     var playing = false;
     var error = '';
@@ -68,7 +68,7 @@
 	
 	  
 //------------------------------------------------------------------------------------------
-// Attempt to open a web socket connection
+// Attempt to open a web socket connection || add Event Listener
 //------------------------------------------------------------------------------------------
 	/*var socket = null;
     if ("WebSocket" in window) {
@@ -97,7 +97,7 @@
 //---------------------------------------------------------------------------
 	function advanceLevel () {
 		storeProcedure();
-      if (CURRENT_LEVEL < MAX_LEVEL) {
+      if (CURRENT_LEVEL < MAX_LEVEL - 1) {
         $.jqDialog.confirm("Wonderful!<BR/> <BR/> Would you like to continue? ".replace('%1', CURRENT_LEVEL + 1),
         function() { window.location = window.location.protocol + '//' +
                      window.location.host + window.location.pathname +
@@ -107,8 +107,9 @@
         );  
       }
       
-      else {
-        $.jqDialog.alert("<br>End of game", function() { }); // callback function for 'OK' button
+      else if (CURRENT_LEVEL == MAX_LEVEL - 1) {
+        $.jqDialog.alert("<center> Congratulations! <br> You finished all activities <br> <br>Now, you can play with all blocks as you like</center>", 
+        				function() { window.location = window.location.protocol + '//' + window.location.host + window.location.pathname + '?level=' + (CURRENT_LEVEL + 1);  }); // callback function for 'OK' button
       }   
     }
  
@@ -178,15 +179,7 @@
       	document.getElementById("images").appendChild(img_blank);
       	
       	if (CURRENT_LEVEL == 6)
-      		document.getElementById('top5-red').style.visibility = "visible";
-      	else if (CURRENT_LEVEL == 7)
-      		img_blank.style.visibility = "visible";
-      		
-      	
-      	
-      	//console.log("POPULATE FINISHED");
-      		
-      		
+      		document.getElementById('top5-red').style.visibility = "visible";	
     }	
     	
 //---------------------------------------------------------------------------------------
@@ -883,6 +876,74 @@ Blockly.Tooltip.show_ = function() {
       
       //***********************************************************************************************************************
       
+    /**
+ * Show the context menu for this block.
+ * @param {number} x X-coordinate of mouse click.
+ * @param {number} y Y-coordinate of mouse click.
+ * @private
+ */
+Blockly.Block.prototype.showContextMenu_ = function(x, y) {
+  if (!this.contextMenu) {
+    return;
+  }
+  // Save the current block in a variable for use in closures.
+  var block = this;
+  var options = [];
+
+  if (this.deletable) {
+    // Option to duplicate this block.
+    var duplicateOption = {
+      text: Blockly.MSG_DUPLICATE_BLOCK,
+      enabled: true,
+      callback: function() {
+        block.duplicate_();
+      }
+    };
+    if (this.getDescendants().length > this.workspace.remainingCapacity()) {
+      duplicateOption.enabled = false;
+    }
+    options.push(duplicateOption);
+
+    // Option to delete this block.
+    // Count the number of blocks that are nested in this block.
+    var descendantCount = this.getDescendants().length;
+    if (block.nextConnection && block.nextConnection.targetConnection) {
+      // Blocks in the current stack would survive this block's deletion.
+      descendantCount -= this.nextConnection.targetBlock().
+          getDescendants().length;
+    }
+    var deleteOption = {
+      text: descendantCount == 1 ? Blockly.MSG_DELETE_BLOCK :
+          Blockly.MSG_DELETE_X_BLOCKS.replace('%1', descendantCount),
+      enabled: true,
+      callback: function() {
+        block.dispose(true, true);
+      }
+    };
+    options.push(deleteOption);
+  }
+
+  // Option to get help.
+  var url = goog.isFunction(this.helpUrl) ? this.helpUrl() : this.helpUrl;
+  var helpOption = {enabled: !!url};
+  helpOption.text = Blockly.MSG_HELP;
+  helpOption.callback = function() {
+    block.showHelp_();
+  };
+  options.push(helpOption);
+
+  // Allow the block to add or modify options.
+  if (this.customContextMenu) {
+    this.customContextMenu(options);
+  }
+
+  Blockly.ContextMenu.show(x, y, options);
+};
+    
+      
+      
+      //************************************************************************************************************************
+      
       var toolbox1 = '<xml>';
       toolbox1 += '  <category></category>';
       
@@ -1004,7 +1065,7 @@ Blockly.Tooltip.show_ = function() {
       //------------------------------------------------------------------------------
       var toolbox6 = '<xml> <category></category> ';
       
-      toolbox6 += '<category name="+ Bottoms"> <block type="bottom1"></block>';
+      toolbox6 += '<category name="+ Bottoms"> <block type="bottom7"></block>';
       
       toolbox6 += '</category> <category> </category>'; //close bottoms
       
@@ -1014,7 +1075,7 @@ Blockly.Tooltip.show_ = function() {
       toolbox6 += '<category name="+ Shoes"> <block type="shoes1"></block> <block type="shoes2"></block> <block type="shoes3"></block> <block type="shoes4"></block>';
       toolbox6 += '</category> <category> </category>'; //close shoes
       
-      toolbox6 += '<category name="+ Coloring"> <block type="black"></block> <block type="pink"></block> <block type="grey"></block> ';
+      toolbox6 += '<category name="+ Coloring"> <block type="black"></block> <block type="blue"></block> <block type="grey"></block> ';
                    
       toolbox6 += '</category> <category> </category>'; //close coloring
       
@@ -1028,6 +1089,9 @@ Blockly.Tooltip.show_ = function() {
       //------------------------------------------------------------------------------
       var toolbox7 = '<xml> <category></category> ';
      
+      toolbox7 += '  <category name="+ Tops"> <block type="top1"></block> <block type="top2"></block> <block type="top3"></block> <block type="top4"></block> <block type="top5"></block> <block type="top6"> </block> <block type="top7"> </block> <block type="top8"> </block>';
+      toolbox7 += '</category> <category> </category>'; //close tops
+      
       toolbox7 += '<category name="+ Bottoms"> <block type="bottom1"></block> <block type="bottom2"></block> <block type="bottom3"></block> <block type="bottom4"></block> <block type="bottom5"></block> <block type="bottom6"></block> <block type="bottom7"></block> <block type="bottom8"></block>';
       
       toolbox7 += '</category> <category> </category>'; //close bottoms
@@ -1038,33 +1102,17 @@ Blockly.Tooltip.show_ = function() {
       toolbox7 += '<category name="+ Shoes"> <block type="shoes1"></block> <block type="shoes2"></block> <block type="shoes3"></block> <block type="shoes4"></block>';
       toolbox7 += '</category> <category> </category>'; //close shoes
       
-      toolbox7 += '<category name="+ Coloring"> <block type="get_color_var"></block> <block type="red"></block> <block type="blue"></block>' + 
+      toolbox7 += '<category name="+ Coloring"> <block type="red"></block> <block type="blue"></block>' + 
                     '<block type="black"></block> <block type="pink"></block> <block type="grey"></block> <block type="orange"></block> <block type="purple"></block>' +
                     '<block type="lime"></block> <block type="gold"></block>' ;
       toolbox7 += '</category> <category> </category>'; //close coloring
       
-      toolbox7 += '<category name = "+ Controls"> <block type = "control_if"></block> <block type="get_color_input"></block> <block type="control_repeat"></block>';
+      toolbox7 += '<category name = "+ Controls"> <block type = "control_if"></block> <block type="going_to"></block> <block type="weather"></block> <block type="control_repeat"></block>';
       toolbox7 += '</category> <category> </category>'; //close controls
       
       toolbox7 += '<category name = "+ Outfit Definitions" custom="PROCEDURE"></category>';
       toolbox7 += '</category> <category> </category>'; //close definitions
       toolbox7 += '</xml>';
-      
-      /*
-      if (CURRENT_LEVEL > 1) {
-        toolbox += '<category name="+ Coloring"> <block type="get_color_var"></block> <block type="red"></block> <block type="blue"></block>' + 
-                    '<block type="black"></block> <block type="pink"></block> <block type="grey"></block> <block type="orange"></block> <block type="purple"></block>' +
-                    '<block type="lime"></block> <block type="gold"></block>' ;
-        toolbox += '</category> <category> </category>'; //close coloring
-        if (CURRENT_LEVEL > 2) {
-          toolbox += '<category name = "+ Controls"> <block type = "control_if"></block> <block type="going_to"></block> <block type="get_color_input"></block> <block type="control_repeat"></block>';
-          toolbox += '</category> <category> </category>'; //close controls
-          if (CURRENT_LEVEL > 3) {
-            toolbox += '<category name = "+ Outfit Definitions" custom="PROCEDURE"></category>';
-            toolbox += '</category> <category> </category>'; //close definitions
-          }
-        }  
-      }//*/
       
       
       switch(CURRENT_LEVEL)
