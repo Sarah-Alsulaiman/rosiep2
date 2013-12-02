@@ -124,7 +124,7 @@ Blockly.JavaScript.bottom4 = function() {
 Blockly.JavaScript.bottom5 = function() {
   var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
 	if (color == '0') {
-		return '[ "bottom5-", "blue" , "any", "wedding"]';
+		return '[ "bottom5-", "pink" , "any", "wedding"]';
 	}
 	else {
 		return '[ "bottom5-",' + color + ', "any", "wedding"]';

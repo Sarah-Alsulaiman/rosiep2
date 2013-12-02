@@ -354,7 +354,7 @@ Blockly.Language.bottom5 = {
     this.setTooltip( function() {
       					var color = Blockly.JavaScript.valueToCode(thisBlock, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
       					if (color == '0')
-      						return 'bottom5-blue';
+      						return 'bottom5-pink';
       					else {
       						color = color.replace(/"/g, "").replace(/\(/g, "").replace(/\)/g, "");
       						console.log("COLOR="+color);
@@ -834,7 +834,7 @@ Blockly.Language.gold = {
 Blockly.Language.pink = {
   helpUrl: 'http://www.example.com/',
   init: function() {
-    this.setColour(330, .25, .92);
+    this.setColour(348, .3, .98);
     this.appendDummyInput()
         .appendTitle("pink");
     this.setOutput(true, String);
