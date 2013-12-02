@@ -451,6 +451,202 @@ Blockly.Language.bottom8 = {
 };
 
 //-------------------------------------------------------------------------
+// shoes1
+//-------------------------------------------------------------------------
+Blockly.Language.shoes1 = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(330, .45, .65);
+    this.appendValueInput("color")
+        .setCheck([String, "var"])
+        .appendTitle("flats")
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    var thisBlock = this; 
+    this.setTooltip( function() {
+      					var color = Blockly.JavaScript.valueToCode(thisBlock, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
+      					if (color == '0')
+      						return 'shoes1-blue';
+      					else {
+      						color = color.replace(/"/g, "").replace(/\(/g, "").replace(/\)/g, "");
+      						console.log("COLOR="+color);
+      						return 'shoes1-'+ color;
+      					}
+      				
+    				}
+				   );
+  }
+};
+
+//-------------------------------------------------------------------------
+// shoes2
+//-------------------------------------------------------------------------
+Blockly.Language.shoes2 = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(330, .45, .65);
+    this.appendValueInput("color")
+        .setCheck([String, "var"])
+        .appendTitle("Heels")
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    var thisBlock = this; 
+    this.setTooltip( function() {
+      					var color = Blockly.JavaScript.valueToCode(thisBlock, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
+      					if (color == '0')
+      						return 'shoes2-blue';
+      					else {
+      						color = color.replace(/"/g, "").replace(/\(/g, "").replace(/\)/g, "");
+      						console.log("COLOR="+color);
+      						return 'shoes2-'+ color;
+      					}
+      				
+    				}
+				   );
+  }
+};
+
+//-------------------------------------------------------------------------
+// shoes3
+//-------------------------------------------------------------------------
+Blockly.Language.shoes3 = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(330, .45, .65);
+    this.appendValueInput("color")
+        .setCheck([String, "var"])
+        .appendTitle("Boots")
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    var thisBlock = this; 
+    this.setTooltip( function() {
+      					var color = Blockly.JavaScript.valueToCode(thisBlock, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
+      					if (color == '0')
+      						return 'shoes3-blue';
+      					else {
+      						color = color.replace(/"/g, "").replace(/\(/g, "").replace(/\)/g, "");
+      						console.log("COLOR="+color);
+      						return 'shoes3-'+ color;
+      					}
+      				
+    				}
+				   );
+  }
+};
+
+//-------------------------------------------------------------------------
+// shoes4
+//-------------------------------------------------------------------------
+Blockly.Language.shoes4 = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(330, .45, .65);
+    this.appendValueInput("color")
+        .setCheck([String, "var"])
+        .appendTitle("Sneakers")
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    var thisBlock = this; 
+    this.setTooltip( function() {
+      					var color = Blockly.JavaScript.valueToCode(thisBlock, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
+      					if (color == '0')
+      						return 'shoes4-blue';
+      					else {
+      						color = color.replace(/"/g, "").replace(/\(/g, "").replace(/\)/g, "");
+      						console.log("COLOR="+color);
+      						return 'shoes4-'+ color;
+      					}
+      				
+    				}
+				   );
+  }
+};
+
+//-------------------------------------------------------------------------
+// Hair 1 (straight)
+//-------------------------------------------------------------------------
+Blockly.Language.hair1 = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(330, .45, .65);
+    this.appendDummyInput()
+    	.appendTitle("staright hair")
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    var thisBlock = this; 
+    this.setTooltip('hair1-');
+  }
+};
+
+
+//-------------------------------------------------------------------------
+// Hair 2 (wavy)
+//-------------------------------------------------------------------------
+Blockly.Language.hair2 = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(330, .45, .65);
+    this.appendDummyInput()
+    	.appendTitle("wavy hair")
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    var thisBlock = this; 
+    this.setTooltip('hair2-');
+  }
+};
+
+
+//-------------------------------------------------------------------------
+// Hair 3 (side)
+//-------------------------------------------------------------------------
+Blockly.Language.hair3 = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(330, .45, .65);
+    this.appendDummyInput()
+    	.appendTitle("side hair")
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    var thisBlock = this; 
+    this.setTooltip('hair3-');
+  }
+};
+
+
+//-------------------------------------------------------------------------
+// Hair 4 (bony tail)
+//-------------------------------------------------------------------------
+Blockly.Language.hair4 = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(330, .45, .65);
+    this.appendDummyInput()
+    	.appendTitle("bony tail hair")
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    var thisBlock = this; 
+    this.setTooltip('hair4-');
+  }
+};
+
+
+//-------------------------------------------------------------------------
+// Hair 5 (5)
+//-------------------------------------------------------------------------
+Blockly.Language.hair5 = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(330, .45, .65);
+    this.appendDummyInput()
+    	.appendTitle("5 hair")
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    var thisBlock = this; 
+    this.setTooltip('hair5-');
+  }
+};
+
+//-------------------------------------------------------------------------
 // SetColor
 //-------------------------------------------------------------------------
 Blockly.Language.set_color = {

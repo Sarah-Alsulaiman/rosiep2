@@ -506,11 +506,6 @@ void interpret (List commands) {
         var weather = nested[2];
         var place = nested[3];
         
-        
-        if (color == 'current_color') {
-          color = CURRENT_COLOR;
-          get_var_block = true; print("GET VAR FOUND");
-        }
         var outfit = part+color;
         
         if (part.startsWith("top")) { 
@@ -519,11 +514,8 @@ void interpret (List commands) {
           else blocks[block_name['top_purple']][1] = false;
           
           if (CURRENT_LEVEL == "3" && weather != CURRENT_WEATHER && consider) {
-            ERR_MSG = "weather_mismatch";
-            
+            ERR_MSG = "weather_mismatch"; 
           }
-          
-          
         }
           
         else if (part.startsWith("bottom")) {
@@ -541,11 +533,7 @@ void interpret (List commands) {
         if (consider) {
           outfits.add(outfit);
         }
-        
-        
-          
-          
-  
+      
       }
      }
    }

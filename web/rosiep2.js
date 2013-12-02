@@ -18,10 +18,13 @@
     var playing = false;
     var error = '';
     var img_blank;
-    //var xml_text1 = '<xml> <block type="procedures_defnoreturn" x="351" y="285"> <mutation></mutation> <title name="NAME">formal</title> <statement name="STACK"> <block type="top1"></block> </statement> </block> <block type="procedures_defnoreturn" x="355" y="255"> <block type="top2"> </block></block> </xml>';
-    //var xml_text2 = '<xml> <block type="procedures_defnoreturn" x="351" y="285"> </block></xml>';
-    var xml_text = '<xml> </xml>';
     
+    var topLength = 9;
+    var bottomLength = 9;
+    var shoesLength = 5;
+    var hairLength = 6;
+    
+    var xml_text = '<xml> </xml>';
     var compare_procedure = '';
     
     var CONNECTION_ID;
@@ -29,6 +32,8 @@
     var tipImg;
     var originalTop;
     var originalBottom;
+    var originalShoes;
+    var originalHair;
     var tempImg;
     var Zindex = 3;
     
@@ -117,19 +122,17 @@
 		$.jqDialog.alert("Are you missing something?<br><br>" + error, function() { }); // callback function for 'OK' button
       
     }
-   
+ 
+ 
+
+    
 //---------------------------------------------------------------------------
 // Populate images
 //---------------------------------------------------------------------------
 	function populate() {
 		
-		/*var bgImg = document.createElement("img");
-        bgImg.src = 'images/gym.png';
-        bgImg.id = 'gym';
-        bgImg.className = 'background';
-        document.getElementById("images").appendChild(bgImg);*/
-		
       	var COLORS = ['red', 'blue', 'gold', 'lime', 'black', 'pink', 'orange' , 'purple', 'grey'];
+      	
       	for (var i=1; i < 9; i++ ) {
         	for (var j=0; j < COLORS.length; j++ ) {
           		var imgT=document.createElement("img");
@@ -147,6 +150,26 @@
           		
         	}
       	}
+      	
+      	for (var i=1; i<6; i++) {
+      		
+      		var imgH= document.createElement("img");
+          	imgH.src = 'images/hair' + i + '-' + '.png';
+          	imgH.id = 'hair'+ i + '-';
+          	imgH.className = 'hair';
+          	document.getElementById("images").appendChild(imgH);
+          		
+      		for (var j=0; j< COLORS.length; j++) {
+      			var imgS= document.createElement("img");
+          		imgS.src = 'images/shoes'+ i + '-' + COLORS[j] +'.png';
+          		imgS.id = 'shoes'+ i + '-' + COLORS[j];
+          		imgS.className = 'shoes';
+          		document.getElementById("images").appendChild(imgS);
+          		
+          		
+      		}
+      	}
+      	
       	
       	img_blank = document.createElement("img");
       	img_blank.src = 'images/blank.png';
@@ -171,15 +194,19 @@
 //---------------------------------------------------------------------------------------
 	
 	function setHtmlVisibility(id, visible) {
+		var variations = id.substring(0,3);
+		console.log("HTML VISIBILITY FOR: " + id);
 		var el = document.getElementById(String(id));
-   	   	var variations = id.substring(0,3);
-      	
-      	if (variations == "top") { variations = "top"; originalTop = id;}
+		
+		if (variations == "top") { variations = "top"; originalTop = id;}
       	else if (variations == "bot") { variations = "bottom"; originalBottom = id; }
-      	else variations = "background";
+      	else if (variations == "sho") { variations = "shoes"; originalShoes = id; }
+      	else if (variations == "hai") { variations = "hair"; var item = id.substring(0,6); el = document.getElementById(item); originalHair = item; }
+      	else { variations = "background";  }
       	
-  	   	hideVariations(variations);
-  	   	
+      	hideVariations(variations);
+      	
+		
   	   	if (CURRENT_LEVEL == 6)
       		document.getElementById('top5-black').style.visibility = "visible";
       		
@@ -193,8 +220,29 @@
    	
    	
    	function hideVariations (variation) {
-   		if (variation == "top" || variation == "bottom") {
-   			for (var i=1; i<9; i++) {
+   		var length;
+   		
+   		switch(variation) {
+        	case "top":
+          		length = 9;
+          		break;
+        
+        	case "bottom":
+          		length = 9;
+          		break;
+          		
+            case "shoes":
+          		length = 5;
+          		break;
+          		
+          	default:
+          		length = 9;
+          		break;
+        }
+        
+         
+   		if (variation == "top" || variation == "bottom" || variation == "shoes") {
+   			for (var i=1; i<length; i++) {
    				for (var j=0; j < colors.length; j++) {
    					var item = variation.concat(i.toString(),"-",colors[j].toString());
 	    			//console.log("item = " + item);
@@ -203,10 +251,18 @@
 	        		
 	    		}
 	  		}	 
-  	 	}
+   		}
    		
-   		
+   		else if (variation == "hair") {
+   			for (var i=1; i<6; i++ ) {
+   				var item = variation.concat(i.toString(),"-");
+   				item = document.getElementById(item);
+   				item.style.visibility = "hidden";
    			
+   			}
+   		}
+   		
+  	 	
    		var places = ['gym', 'wedding', 'hot', 'cold'];
    			
    		for ( var i=0; i < places.length; i++) {
@@ -221,6 +277,8 @@
     
     	hideVariations("top");
     	hideVariations("bottom");
+    	hideVariations("shoes");
+    	hideVariations("hair");
    
     }
     
@@ -258,30 +316,24 @@
 	
     function processEvent(event) {
     	var event = event.data;
-      var check = event.substring(0,8);
+      	var check = event.substring(0,8);
       
-      /*if (check == "your id=" ) {
+      	/*if (check == "your id=" ) {
       
-      	CONNECTION_ID = event.substring(8);
-      	//alert("YOUR CONNECTION IS " + CONNECTION_ID);
+      		CONNECTION_ID = event.substring(8);
+      		//alert("YOUR CONNECTION IS " + CONNECTION_ID);
       	
-      }*/
-      
-      
-      if ( check == "@blockly" ) {
-      	console.log("HTML received message from dart " + event);
+      	}*/
       	
-      	var parts = event.split('#');
-      	
+      	if ( check == "@blockly" ) {
+      		console.log("HTML received message from dart " + event);
       		
+      		var parts = event.split('#');
+      	
       		if (parts[1].substring(0, 6) == "error ") {
-      		playing = false;
-      		error = parts[1].substring(6);
-      		showError();
-	      	}
-	      	
-	      	else if (parts[1] == "GOT IT!") {
-	        	//console.log("HTML received message from dart " + event);
+      			playing = false;
+      			error = parts[1].substring(6);
+      			showError();
 	      	}
 	      	
 	      	else if (parts[1] == "DONE!") {
@@ -291,11 +343,10 @@
 	      	}
 	      	
 	      	else if (parts[1].substring(0, 3) == "bg ") {  //received bg to display
-	      		//console.log("HTML received message from dart for background " + event);
-		      	var bg = parts[1].substring(3);
+	      		var bg = parts[1].substring(3);
+	      		//console.log("HTML received message from dart for background " + bg);
 		      	setHtmlVisibility(bg, true);
 	      	}
-	      	
 	      	
 	      	else {		// received an outfit to display
 	      		//console.log("HTML received message from dart for outfit " + event);
@@ -710,7 +761,7 @@ Blockly.Tooltip.onMouseMove_ = function(e) {
 Blockly.Tooltip.hide = function() {
 	
 	var imgNode = document.getElementById(tipImg);
-	if (imgNode && tipImg != originalTop && tipImg != originalBottom)
+	if (imgNode && tipImg != originalTop && tipImg != originalBottom && tipImg != originalHair && tipImg != originalShoes)
 		imgNode.style.visibility = "hidden";
 	
 	//restore original image (if any) after preview
@@ -751,40 +802,16 @@ Blockly.Tooltip.show_ = function() {
     //console.log ("TIP = " + tip);
   }
   
-  /*
-  var lines = tip.split('\n');
-  for (var i = 0; i < lines.length; i++) {
-    var tspanElement = Blockly.createSvgElement('tspan',
-        {'dy': '1em', 'x': Blockly.Tooltip.MARGINS}, Blockly.Tooltip.svgText_);
-    var textNode = document.createTextNode(lines[i]);
-    tspanElement.appendChild(textNode);
-  }
-  */
-  
-  
-  /*var tspanElement = Blockly.createSvgElement('tspan',
-        {'id':'tspan'}, Blockly.Tooltip.svgImg_);
-  var imgNode = document.createElement("img");
-  imgNode.src = 'images/' + tip + '.png';
-  imgNode.id = 'toolTip';
-  
-  if (tip.substring(0,3) == "top")
-  	imgNode.className = 'top';
-  else
-  	imgNode.className = 'bottom';
-  
-  
-  imgNode.style.visibility = "visible";
-  document.getElementById("images").appendChild(imgNode);
-  //tspanElement.appendChild(imgNode);
-  */
-  
   tipImg = tip;
-  
-  if (tipImg.substring(0,3) == "top")
+  var type = tipImg.substring(0,3);
+  if (type == "top")
   	tempImg = originalTop;
-  else if (tipImg.substring(0,3) == "bot")
+  else if (type == "bot")
   	tempImg = originalBottom;
+  else if (type == "sho")
+  	tempImg = originalShoes;
+  else if (type == "hai")
+  	tempImg = originalHair;
   else
   	tempImg = '';
   	
@@ -865,6 +892,13 @@ Blockly.Tooltip.show_ = function() {
       
       toolbox1 += '<category name="+ Bottoms"> <block type="bottom1"></block> <block type="bottom2"></block>';
       toolbox1 += '</category> <category> </category>'; //close bottoms
+      
+      toolbox1 += '<category name="+ Hair"> <block type="hair1"></block> <block type="hair2"></block>';
+      toolbox1 += '</category> <category> </category>'; //close hair
+      
+      toolbox1 += '<category name="+ Shoes"> <block type="shoes1"></block> <block type="shoes2"></block>';
+      toolbox1 += '</category> <category> </category>'; //close shoes
+      
       toolbox1 += '</xml>';
       
       //------------------------------------------------------------------------------
@@ -875,6 +909,12 @@ Blockly.Tooltip.show_ = function() {
       toolbox2 += '<category name="+ Bottoms"> <block type="bottom1"></block> <block type="bottom2"></block> <block type="bottom3"></block>';
       
       toolbox2 += '</category> <category> </category>'; //close bottoms
+      
+      toolbox2 += '<category name="+ Hair"> <block type="hair1"></block> <block type="hair2"></block> <block type="hair3"></block>';
+      toolbox2 += '</category> <category> </category>'; //close hair
+      
+      toolbox2 += '<category name="+ Shoes"> <block type="shoes1"></block> <block type="shoes2"></block> <block type="shoes3"></block>';
+      toolbox2 += '</category> <category> </category>'; //close shoes
       
       toolbox2 += '<category name="+ Coloring"> <block type="red"></block> <block type="blue"></block>' + 
                     '<block type="black"></block> <block type="pink"></block> <block type="grey"></block> <block type="orange"></block> <block type="purple"></block>' +
@@ -891,6 +931,12 @@ Blockly.Tooltip.show_ = function() {
       toolbox3 += '<category name="+ Bottoms"> <block type="bottom1"></block> <block type="bottom2"></block> <block type="bottom3"></block> <block type="bottom4"></block>';
       
       toolbox3 += '</category> <category> </category>'; //close bottoms
+      
+      toolbox3 += '<category name="+ Hair"> <block type="hair1"></block> <block type="hair2"></block> <block type="hair3"></block> <block type="hair4"></block>';
+      toolbox3 += '</category> <category> </category>'; //close hair
+      
+      toolbox3 += '<category name="+ Shoes"> <block type="shoes1"></block> <block type="shoes2"></block> <block type="shoes3"></block> <block type="shoes4"></block>';
+      toolbox3 += '</category> <category> </category>'; //close shoes
       
       toolbox3 += '<category name="+ Coloring"> <block type="red"></block> <block type="blue"></block>' + 
                     '<block type="black"></block> <block type="pink"></block> <block type="grey"></block> <block type="orange"></block> <block type="purple"></block>' +
@@ -909,6 +955,13 @@ Blockly.Tooltip.show_ = function() {
       toolbox4 += '<category name="+ Bottoms"> <block type="bottom1"></block> <block type="bottom2"></block> <block type="bottom3"></block> <block type="bottom4"></block> <block type="bottom5"></block>';
       
       toolbox4 += '</category> <category> </category>'; //close bottoms
+      
+      
+      toolbox4 += '<category name="+ Hair"> <block type="hair1"></block> <block type="hair2"></block> <block type="hair3"></block> <block type="hair4"></block> <block type="hair5"></block>';
+      toolbox4 += '</category> <category> </category>'; //close hair
+      
+      toolbox4 += '<category name="+ Shoes"> <block type="shoes1"></block> <block type="shoes2"></block> <block type="shoes3"></block> <block type="shoes4"></block>';
+      toolbox4 += '</category> <category> </category>'; //close shoes
       
       toolbox4 += '<category name="+ Coloring"> <block type="red"></block> <block type="blue"></block>' + 
                     '<block type="black"></block> <block type="pink"></block> <block type="grey"></block> <block type="orange"></block> <block type="purple"></block>' +
@@ -931,6 +984,12 @@ Blockly.Tooltip.show_ = function() {
       
       toolbox5 += '</category> <category> </category>'; //close bottoms
       
+      toolbox5 += '<category name="+ Hair"> <block type="hair1"></block> <block type="hair2"></block> <block type="hair3"></block> <block type="hair4"></block> <block type="hair5"></block>';
+      toolbox5 += '</category> <category> </category>'; //close hair
+      
+      toolbox5 += '<category name="+ Shoes"> <block type="shoes1"></block> <block type="shoes2"></block> <block type="shoes3"></block> <block type="shoes4"></block>';
+      toolbox5 += '</category> <category> </category>'; //close shoes
+      
       toolbox5 += '<category name="+ Coloring"> <block type="red"></block> <block type="blue"></block>' + 
                     '<block type="black"></block> <block type="pink"></block> <block type="grey"></block> <block type="orange"></block> <block type="purple"></block>' +
                     '<block type="lime"></block> <block type="gold"></block>' ;
@@ -950,6 +1009,12 @@ Blockly.Tooltip.show_ = function() {
       
       toolbox6 += '</category> <category> </category>'; //close bottoms
       
+      toolbox6 += '<category name="+ Hair"> <block type="hair1"></block> <block type="hair2"></block> <block type="hair3"></block> <block type="hair4"></block> <block type="hair5"></block>';
+      toolbox6 += '</category> <category> </category>'; //close hair
+      
+      toolbox6 += '<category name="+ Shoes"> <block type="shoes1"></block> <block type="shoes2"></block> <block type="shoes3"></block> <block type="shoes4"></block>';
+      toolbox6 += '</category> <category> </category>'; //close shoes
+      
       toolbox6 += '<category name="+ Coloring"> <block type="black"></block> <block type="pink"></block> <block type="grey"></block> ';
                    
       toolbox6 += '</category> <category> </category>'; //close coloring
@@ -967,6 +1032,12 @@ Blockly.Tooltip.show_ = function() {
       toolbox7 += '<category name="+ Bottoms"> <block type="bottom1"></block> <block type="bottom2"></block> <block type="bottom3"></block> <block type="bottom4"></block> <block type="bottom5"></block> <block type="bottom6"></block> <block type="bottom7"></block> <block type="bottom8"></block>';
       
       toolbox7 += '</category> <category> </category>'; //close bottoms
+      
+      toolbox7 += '<category name="+ Hair"> <block type="hair1"></block> <block type="hair2"></block> <block type="hair3"></block> <block type="hair4"></block> <block type="hair5"></block>';
+      toolbox7 += '</category> <category> </category>'; //close hair
+      
+      toolbox7 += '<category name="+ Shoes"> <block type="shoes1"></block> <block type="shoes2"></block> <block type="shoes3"></block> <block type="shoes4"></block>';
+      toolbox7 += '</category> <category> </category>'; //close shoes
       
       toolbox7 += '<category name="+ Coloring"> <block type="get_color_var"></block> <block type="red"></block> <block type="blue"></block>' + 
                     '<block type="black"></block> <block type="pink"></block> <block type="grey"></block> <block type="orange"></block> <block type="purple"></block>' +
