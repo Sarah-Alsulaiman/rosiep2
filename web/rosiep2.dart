@@ -196,75 +196,6 @@ void main() {
   
 }
 
-//--------------------------------------------------------------------------
-// Web socket initialization
-//--------------------------------------------------------------------------
-void initWebsocket() {
-  
-  ws = new WebSocket("ws://localhost:8080");
-  
-  ws.onOpen.listen((e) { print('Dart Connected.'); } );
-  ws.onError.listen((e) { print ("Dart Socket error"); } );
-  ws.onClose.listen((e) { print('Dart web socket closed'); } );
-  
-  ws.onMessage.listen((evt) {
-    if (evt.data.startsWith("@dart")) {
-      CURRENT_LEVEL = evt.data.substring(5,6);
-      //print("CURRENT LEVEL = " + CURRENT_LEVEL);
-      ////////////////////////////////////////////////////////
-      
-      parts = evt.data.split("#");
-      CONNECTION_ID = parts[1];
-      print("DATA CAME FROM CONNECTION = " + CONNECTION_ID);
-      
-      
-      //////////////////////////////////////////////////////
-      randomize();
-      if (CURRENT_LEVEL == "7") {
-        var level7_top = "top2-";
-        level7_top += CURRENT_COLOR;
-        sendMessage("outfit " + level7_top);
-      }
-      
-      //compile(evt.data.substring(6)); 
-      //print("COMPILE THIS: " + parts[2]);
-      compile(parts[2]);
-      
-      print('Dart received code from HTML ');
-      
-      if (outfits.length != 0) {
-        Timer.run(() => display());
-      }
-      
-      timer = new Timer.periodic(new Duration(milliseconds: 1000), (Timer t) {
-        if (outfits.length == 0) {
-          timer.cancel();
-          if (CURRENT_LEVEL == "3") {
-            String background = CURRENT_WEATHER;
-            sendMessage("bg " + background);
-          }
-          else if(CURRENT_LEVEL == "5") {
-            String background = CURRENT_PLACE;
-            sendMessage("bg " + background);
-          }
-          if (check_input) {
-            sendMessage("DONE!");
-          }
-            
-          else
-            sendMessage("error " + text[ERR_MSG]);
-        }
-        else {
-          //if (check_input)
-          display();
-        }
-        });
-      sendMessage("GOT IT!");
-    }
-    
-  });  
-  
-}
 
 //--------------------------------------------------------------------------
 // Compile user program
@@ -493,16 +424,6 @@ void interpret (List commands) {
           blocks[block_name['top']][1]= true; print("TOP block now true"); 
           if (color == "purple")  blocks[block_name['top_purple']][1]= true;
           else blocks[block_name['top_purple']][1] = false;
-          
-          if (CURRENT_LEVEL == "3") {
-            if (weather != CURRENT_WEATHER && weather != "casual") {
-              ERR_MSG = "weather_mismatch"; 
-            }
-            else {
-              ERR_MSG = ''; //rewrite the value if outfit is suitable later
-            }
-            
-          }
         }
           
         else if (part.startsWith("bottom") && consider) {
@@ -515,8 +436,24 @@ void interpret (List commands) {
           
         }
         
-        if (CURRENT_LEVEL == "5" && place != CURRENT_PLACE && consider) {
-          ERR_MSG = "place_mismatch";
+        if (CURRENT_LEVEL == "3" && consider) {
+          if (weather != CURRENT_WEATHER && weather != "any") {
+            ERR_MSG = "weather_mismatch"; 
+          }
+          else {  ERR_MSG = ''; //rewrite the value if outfit is suitable later
+          }
+          
+        }
+        
+        if (CURRENT_LEVEL == "5" && consider) {
+          if (place != CURRENT_PLACE && place != "casual" ) {
+            ERR_MSG = "place_mismatch";
+          }
+          else {  ERR_MSG = ''; //rewrite the value if outfit is suitable later
+            
+          }
+          
+          
         }
         
         if (consider) {
@@ -631,7 +568,6 @@ void processIf(List nested) {
   List result;
   var outfit;
   
-  if_block = true;
   blocks[block_name['if']][1] = true;
   
   if (then.length >= 1 ) {blocks[block_name['then']][1] = true; print("THEN POPULATED");}
@@ -729,15 +665,7 @@ void processIf(List nested) {
 //--------------------------------------------------------------------------
 void randomize() {
   
-  var places;
-  if (CURRENT_LEVEL == "3") {
-    places = ['gym', 'restaurant'];
-  }
-  
-  else {
-    places = ['wedding', 'gym'];
-  }
-  
+  var places = ['wedding', 'gym'];
   
   Random rnd = new Random();
   var x = rnd.nextInt(2);

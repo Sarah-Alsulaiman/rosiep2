@@ -165,69 +165,69 @@ Blockly.JavaScript.bottom8 = function() {
 Blockly.JavaScript.shoes1 = function() {
   var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
 	if (color == '0') {
-		return '[ "shoes1-", "blue", "hot", "casual" ]';
+		return '[ "shoes1-", "blue", "any", "casual" ]';
 	}
 	else {
-		return '[ "shoes1-",' + color + ', "hot", "casual" ]';
+		return '[ "shoes1-",' + color + ', "any", "casual" ]';
 	}
 };
 
 Blockly.JavaScript.shoes2 = function() {
   var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
 	if (color == '0') {
-		return '[ "shoes2-", "blue", "hot", "casual" ]';
+		return '[ "shoes2-", "blue", "any", "casual" ]';
 	}
 	else {
-		return '[ "shoes2-",' + color + ', "hot", "casual" ]';
+		return '[ "shoes2-",' + color + ', "any", "casual" ]';
 	}
 };
 
 Blockly.JavaScript.shoes3 = function() {
   var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
 	if (color == '0') {
-		return '[ "shoes3-", "blue", "hot", "casual" ]';
+		return '[ "shoes3-", "blue", "cold", "casual" ]';
 	}
 	else {
-		return '[ "shoes3-",' + color + ', "hot", "casual" ]';
+		return '[ "shoes3-",' + color + ', "cold", "casual" ]';
 	}
 };
 
 Blockly.JavaScript.shoes4 = function() {
   var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
 	if (color == '0') {
-		return '[ "shoes4-", "blue", "hot", "casual" ]';
+		return '[ "shoes4-", "blue", "any", "casual" ]';
 	}
 	else {
-		return '[ "shoes4-",' + color + ', "hot", "casual" ]';
+		return '[ "shoes4-",' + color + ', "any", "casual" ]';
 	}
 };
 
 
 Blockly.JavaScript.hair1 = function() {
-	return '[ "hair1-", "blue", "hot", "casual" ]';
+	return '[ "hair1-", "blue", "any", "casual" ]';
 	
 };
 
 Blockly.JavaScript.hair2 = function() {
-	return '[ "hair2-", "blue", "hot", "casual" ]';
+	return '[ "hair2-", "blue", "any", "casual" ]';
 	
 };
 
 
 Blockly.JavaScript.hair3 = function() {
-	return '[ "hair3-", "blue", "hot", "casual" ]';
+	return '[ "hair3-", "blue", "any", "casual" ]';
 	
 };
 
 
 Blockly.JavaScript.hair4 = function() {
-	return '[ "hair4-", "blue", "hot", "casual" ]';
+	return '[ "hair4-", "blue", "any", "casual" ]';
 	
 };
 
 
 Blockly.JavaScript.hair5 = function() {
-	return '[ "hair5-", "blue", "hot", "casual" ]';
+	return '[ "hair5-", "blue", "any", "casual" ]';
 	
 };
 
