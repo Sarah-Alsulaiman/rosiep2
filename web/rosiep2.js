@@ -36,6 +36,7 @@
     var originalHair;
     var tempImg;
     var Zindex = 3;
+    var originalZindex;
     
     var dafault_procedure = false;
 //-----------------------------------------------------------------------------------------
@@ -758,8 +759,10 @@ Blockly.Tooltip.hide = function() {
 	
 	//restore original image (if any) after preview
 	imgNode = document.getElementById(tempImg);
-    if (imgNode)
+    if (imgNode) {
   		imgNode.style.visibility = "visible";
+  		imgNode.style.zIndex = originalZindex;
+  	}
   	
   	
   if (Blockly.Tooltip.visible) {
@@ -809,8 +812,10 @@ Blockly.Tooltip.show_ = function() {
   	
   
   var imgNode = document.getElementById(tempImg);
-  if (imgNode)
+  if (imgNode) {
   	imgNode.style.visibility = "hidden";
+  	originalZindex = imgNode.style.zIndex;
+  }
   
   imgNode = document.getElementById(tipImg);
   if (imgNode) {
