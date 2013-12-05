@@ -165,7 +165,7 @@ Blockly.JavaScript.bottom8 = function() {
 Blockly.JavaScript.shoes1 = function() {
   var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
 	if (color == '0') {
-		return '[ "shoes1-", "blue", "any", "casual" ]';
+		return '[ "shoes1-", "purple", "any", "casual" ]';
 	}
 	else {
 		return '[ "shoes1-",' + color + ', "any", "casual" ]';
@@ -175,7 +175,7 @@ Blockly.JavaScript.shoes1 = function() {
 Blockly.JavaScript.shoes2 = function() {
   var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
 	if (color == '0') {
-		return '[ "shoes2-", "blue", "any", "casual" ]';
+		return '[ "shoes2-", "pink", "any", "casual" ]';
 	}
 	else {
 		return '[ "shoes2-",' + color + ', "any", "casual" ]';
@@ -185,7 +185,7 @@ Blockly.JavaScript.shoes2 = function() {
 Blockly.JavaScript.shoes3 = function() {
   var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
 	if (color == '0') {
-		return '[ "shoes3-", "blue", "cold", "casual" ]';
+		return '[ "shoes3-", "grey", "cold", "casual" ]';
 	}
 	else {
 		return '[ "shoes3-",' + color + ', "cold", "casual" ]';
@@ -195,13 +195,22 @@ Blockly.JavaScript.shoes3 = function() {
 Blockly.JavaScript.shoes4 = function() {
   var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
 	if (color == '0') {
-		return '[ "shoes4-", "blue", "any", "casual" ]';
+		return '[ "shoes4-", "pink", "any", "casual" ]';
 	}
 	else {
 		return '[ "shoes4-",' + color + ', "any", "casual" ]';
 	}
 };
 
+Blockly.JavaScript.shoes5 = function() {
+  var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
+	if (color == '0') {
+		return '[ "shoes5-", "lime", "any", "casual" ]';
+	}
+	else {
+		return '[ "shoes5-",' + color + ', "any", "casual" ]';
+	}
+};
 
 Blockly.JavaScript.hair1 = function() {
 	return '[ "hair1-", "blue", "any", "casual" ]';

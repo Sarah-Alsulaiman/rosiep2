@@ -1025,7 +1025,7 @@ Blockly.Block.prototype.showContextMenu_ = function(x, y) {
       toolbox4 += '<category name="+ Hair"> <block type="hair1"></block> <block type="hair2"></block> <block type="hair3"></block> <block type="hair4"></block> <block type="hair5"></block>';
       toolbox4 += '</category> <category> </category>'; //close hair
       
-      toolbox4 += '<category name="+ Shoes"> <block type="shoes1"></block> <block type="shoes2"></block> <block type="shoes3"></block> <block type="shoes4"></block>';
+      toolbox4 += '<category name="+ Shoes"> <block type="shoes1"></block> <block type="shoes2"></block> <block type="shoes3"></block> <block type="shoes4"></block> <block type="shoes5"></block>';
       toolbox4 += '</category> <category> </category>'; //close shoes
       
       toolbox4 += '<category name="+ Coloring"> <block type="red"></block> <block type="blue"></block>' + 
@@ -1052,8 +1052,9 @@ Blockly.Block.prototype.showContextMenu_ = function(x, y) {
       toolbox5 += '<category name="+ Hair"> <block type="hair1"></block> <block type="hair2"></block> <block type="hair3"></block> <block type="hair4"></block> <block type="hair5"></block>';
       toolbox5 += '</category> <category> </category>'; //close hair
       
-      toolbox5 += '<category name="+ Shoes"> <block type="shoes1"></block> <block type="shoes2"></block> <block type="shoes3"></block> <block type="shoes4"></block>';
+      toolbox5 += '<category name="+ Shoes"> <block type="shoes1"></block> <block type="shoes2"></block> <block type="shoes3"></block> <block type="shoes4"></block> <block type="shoes5"></block>';
       toolbox5 += '</category> <category> </category>'; //close shoes
+      
       
       toolbox5 += '<category name="+ Coloring"> <block type="red"></block> <block type="blue"></block>' + 
                     '<block type="black"></block> <block type="pink"></block> <block type="grey"></block> <block type="orange"></block> <block type="purple"></block>' +
@@ -1077,8 +1078,9 @@ Blockly.Block.prototype.showContextMenu_ = function(x, y) {
       toolbox6 += '<category name="+ Hair"> <block type="hair1"></block> <block type="hair2"></block> <block type="hair3"></block> <block type="hair4"></block> <block type="hair5"></block>';
       toolbox6 += '</category> <category> </category>'; //close hair
       
-      toolbox6 += '<category name="+ Shoes"> <block type="shoes1"></block> <block type="shoes2"></block> <block type="shoes3"></block> <block type="shoes4"></block>';
+      toolbox6 += '<category name="+ Shoes"> <block type="shoes1"></block> <block type="shoes2"></block> <block type="shoes3"></block> <block type="shoes4"></block> <block type="shoes5"></block>';
       toolbox6 += '</category> <category> </category>'; //close shoes
+      
       
       toolbox6 += '<category name="+ Coloring"> <block type="black"></block> <block type="blue"></block> <block type="grey"></block> ';
                    
@@ -1104,8 +1106,9 @@ Blockly.Block.prototype.showContextMenu_ = function(x, y) {
       toolbox7 += '<category name="+ Hair"> <block type="hair1"></block> <block type="hair2"></block> <block type="hair3"></block> <block type="hair4"></block> <block type="hair5"></block>';
       toolbox7 += '</category> <category> </category>'; //close hair
       
-      toolbox7 += '<category name="+ Shoes"> <block type="shoes1"></block> <block type="shoes2"></block> <block type="shoes3"></block> <block type="shoes4"></block>';
+      toolbox7 += '<category name="+ Shoes"> <block type="shoes1"></block> <block type="shoes2"></block> <block type="shoes3"></block> <block type="shoes4"></block> <block type="shoes5"></block>';
       toolbox7 += '</category> <category> </category>'; //close shoes
+      
       
       toolbox7 += '<category name="+ Coloring"> <block type="red"></block> <block type="blue"></block>' + 
                     '<block type="black"></block> <block type="pink"></block> <block type="grey"></block> <block type="orange"></block> <block type="purple"></block>' +

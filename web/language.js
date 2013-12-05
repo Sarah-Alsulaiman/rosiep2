@@ -466,7 +466,7 @@ Blockly.Language.shoes1 = {
     this.setTooltip( function() {
       					var color = Blockly.JavaScript.valueToCode(thisBlock, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
       					if (color == '0')
-      						return 'shoes1-blue';
+      						return 'shoes1-purple';
       					else {
       						color = color.replace(/"/g, "").replace(/\(/g, "").replace(/\)/g, "");
       						console.log("COLOR="+color);
@@ -494,7 +494,7 @@ Blockly.Language.shoes2 = {
     this.setTooltip( function() {
       					var color = Blockly.JavaScript.valueToCode(thisBlock, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
       					if (color == '0')
-      						return 'shoes2-blue';
+      						return 'shoes2-pink';
       					else {
       						color = color.replace(/"/g, "").replace(/\(/g, "").replace(/\)/g, "");
       						console.log("COLOR="+color);
@@ -522,7 +522,7 @@ Blockly.Language.shoes3 = {
     this.setTooltip( function() {
       					var color = Blockly.JavaScript.valueToCode(thisBlock, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
       					if (color == '0')
-      						return 'shoes3-blue';
+      						return 'shoes3-grey';
       					else {
       						color = color.replace(/"/g, "").replace(/\(/g, "").replace(/\)/g, "");
       						console.log("COLOR="+color);
@@ -550,11 +550,39 @@ Blockly.Language.shoes4 = {
     this.setTooltip( function() {
       					var color = Blockly.JavaScript.valueToCode(thisBlock, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
       					if (color == '0')
-      						return 'shoes4-blue';
+      						return 'shoes4-pink';
       					else {
       						color = color.replace(/"/g, "").replace(/\(/g, "").replace(/\)/g, "");
       						console.log("COLOR="+color);
       						return 'shoes4-'+ color;
+      					}
+      				
+    				}
+				   );
+  }
+};
+
+//-------------------------------------------------------------------------
+// shoes4
+//-------------------------------------------------------------------------
+Blockly.Language.shoes5 = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(330, .45, .65);
+    this.appendValueInput("color")
+        .setCheck([String, "var"])
+        .appendTitle("Sandals")
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    var thisBlock = this; 
+    this.setTooltip( function() {
+      					var color = Blockly.JavaScript.valueToCode(thisBlock, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
+      					if (color == '0')
+      						return 'shoes5-lime';
+      					else {
+      						color = color.replace(/"/g, "").replace(/\(/g, "").replace(/\)/g, "");
+      						console.log("COLOR="+color);
+      						return 'shoes5-'+ color;
       					}
       				
     				}
