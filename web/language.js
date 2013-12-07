@@ -598,7 +598,7 @@ Blockly.Language.hair1 = {
   init: function() {
     this.setColour(330, .45, .65);
     this.appendDummyInput()
-    	.appendTitle("staright hair")
+    	.appendTitle("Natural look")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     var thisBlock = this; 
@@ -632,7 +632,7 @@ Blockly.Language.hair3 = {
   init: function() {
     this.setColour(330, .45, .65);
     this.appendDummyInput()
-    	.appendTitle("side hair")
+    	.appendTitle("straight style")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     var thisBlock = this; 
@@ -666,7 +666,7 @@ Blockly.Language.hair5 = {
   init: function() {
     this.setColour(330, .45, .65);
     this.appendDummyInput()
-    	.appendTitle("5 hair")
+    	.appendTitle("Short cut")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     var thisBlock = this; 
