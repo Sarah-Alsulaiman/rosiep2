@@ -53,6 +53,10 @@ List parts;
 bool consider = true;
 bool check_input = false;
 
+List other_outfits = new List ();
+List then_outfits = new List ();
+List alternate_outfits = new List ();
+bool display_other = false;
 
 //format [ [blockName, value, levels] ]
 List blocks = [  ['repeat', false, 6], ['black', false, 6], ['grey', false, 6],  ['blue', false, 6], 
@@ -69,9 +73,15 @@ var CURRENT_LEVEL = 1;
 String CURRENT_BLOCK = '';
 String ERR_MSG = '';
 String CHECK_AGAINST;
-String ERROR_THEN;
-String ERROR_OTHER;
-bool procedure_wedding;
+String ERROR_THEN = '';
+String ERROR_OTHER = '';
+String ERROR_BLOCK = '';
+bool procedure_wedding = false;
+
+bool bg_wedding = false;
+bool bg_gym = false;
+bool bg_hot = false;
+bool bg_cold = false;
 // write blocks[top] = true and then another map uses[top] = levels...
 Map block_name = new Map <String, int>();
 Map text = new Map <String, String> ();
@@ -99,33 +109,76 @@ void main() {
       compile(parts[1]);
       print('Dart received code from HTML ');
       
-      if (outfits.length != 0) {
-        Timer.run(() => display());
+      if (display_other) { // wanting to show the wrong choice
+        print("ALTERNATE OUTFITS");
+        if (ERROR_BLOCK == 'then')
+          alternate_outfits = then_outfits;
+        else
+          alternate_outfits = other_outfits;
+          
+        if (alternate_outfits.length != 0) {
+          Timer.run(() => display(2));
+        }
+        timer = new Timer.periodic(new Duration(milliseconds: 1000), (Timer t) {
+          if (alternate_outfits.length == 0) {
+            timer.cancel();
+          
+          String background = '';
+          if (CURRENT_LEVEL == "3" && bg_cold) {
+            background = 'cold';
+          }
+          else if (CURRENT_LEVEL == "3" && bg_hot)
+            background = 'hot';
+          
+          else if (CURRENT_LEVEL == "5" && bg_wedding)
+            background = 'wedding';
+          else if (CURRENT_LEVEL == "5" && bg_gym)
+            background = 'gym';
+          
+          if (background.isNotEmpty)
+            sendMessage("bg " + background);
+          sendMessage("error " + text[ERR_MSG]);
+        
+            
+          }
+          else {
+            display(2);
+          }
+        });
+      }
+      //*/
+      else { //show real outfits
+        if (outfits.length != 0) {
+          Timer.run(() => display(1));
+        }
+        timer = new Timer.periodic(new Duration(milliseconds: 1000), (Timer t) {
+          if (outfits.length == 0) {
+            timer.cancel();
+            
+            if (check_input) {
+              if (CURRENT_LEVEL == "3") {
+                String background = CURRENT_WEATHER;
+                sendMessage("bg " + background);
+              }
+              else if(CURRENT_LEVEL == "5") {
+                String background = CURRENT_PLACE;
+                sendMessage("bg " + background);
+              }
+              sendMessage("DONE!");
+            }
+            
+            else {
+              sendMessage("error " + text[ERR_MSG]);
+            }
+            
+          }
+          else {
+            display(1);
+          }
+        });
+        
       }
       
-      timer = new Timer.periodic(new Duration(milliseconds: 1000), (Timer t) {
-        if (outfits.length == 0) {
-          timer.cancel();
-          
-          if (check_input) {
-            if (CURRENT_LEVEL == "3") {
-              String background = CURRENT_WEATHER;
-              sendMessage("bg " + background);
-            }
-            else if(CURRENT_LEVEL == "5") {
-              String background = CURRENT_PLACE;
-              sendMessage("bg " + background);
-            }
-            sendMessage("DONE!");
-          }
-          
-          else
-            sendMessage("error " + text[ERR_MSG]);
-        }
-        else {
-          display();
-        }
-      });
       sendMessage("GOT IT!");
     }
 
@@ -184,6 +237,7 @@ void main() {
   text['all_black'] = "Remember, Rosie doesn't want to wear all black!";
   text['not_black'] = "Remember, Rosie wants a black bottom <br> if the top is not black";
   
+  text['place'] = 'Remember, you need to wear the wedding outfit when going to a wedding';
   
 }
 
@@ -193,11 +247,16 @@ void main() {
 //--------------------------------------------------------------------------
 void compile(String json) {
   outfits.clear();
+  other_outfits.clear();
+  then_outfits.clear();
+  alternate_outfits.clear();
   clearBlocks();
   
   ERR_MSG = '';
+  ERROR_BLOCK = '';
   procedure_wedding = false;
   check_input = true;
+  display_other = false;
   //hideAll();          //for option1
   //prepareCanvas();  //for option2
   //removeAll();      //for option3
@@ -229,16 +288,18 @@ void compile(String json) {
     if (check_input) {
       if (ERROR_THEN.isNotEmpty) {
         ERR_MSG = ERROR_THEN;
+        //flags(ERR_MSG);
         check_input = false;
       }
         
       if (ERROR_OTHER.isNotEmpty) {
         ERR_MSG = ERROR_OTHER;
+        //flags(ERR_MSG);
         check_input = false;
       }
       
       if (CURRENT_LEVEL == "5" && ! procedure_wedding) {
-        ERR_MSG = 'city';
+        ERR_MSG = 'place';
         check_input = false;
       }
       
@@ -252,6 +313,31 @@ void compile(String json) {
     check_input = false;
 }
 
+
+void flags (String msg ) {
+  print("IN FLAGS " + msg);
+  switch (msg) {
+    case 'place_gym_mismatch' :
+      bg_gym = display_other = true;
+      break;
+      
+    case 'place_wedding_mismatch':
+      bg_wedding = display_other = true;
+      break;
+      
+    case 'weather_hot_mismatch':
+      bg_hot = display_other = true;
+      break;
+      
+    case 'weather_cold_mismatch':
+      bg_cold = display_other = true;
+      break;
+      
+    default:
+      break;
+  }
+  
+}
 //----------------------------------------------------------------------
 // Validate use input
 //----------------------------------------------------------------------
@@ -343,7 +429,8 @@ void interpret (List commands, bool consider) {
         if (CURRENT_LEVEL == "3" && weather == "cold") {
           if (CHECK_AGAINST == "hot" ) {
             if (CURRENT_BLOCK == "then") {
-              ERROR_THEN = 'weather_cold_mismatch'; print("COLD OUTFIT IN HOT DAY");
+              ERROR_THEN = 'weather_hot_mismatch'; print("COLD OUTFIT IN HOT DAY"); ERROR_BLOCK = 'then'; bg_hot = display_other = true; bg_cold = false;
+              then_outfits.add(outfit);
               /*if (weather != CURRENT_WEATHER && weather != "any") {
                 ERR_MSG = "weather_mismatch"; 
               }
@@ -351,15 +438,16 @@ void interpret (List commands, bool consider) {
               }*/
               
             }
-            else { ERROR_OTHER = '';}
+            else { ERROR_OTHER = ''; other_outfits.add(outfit);}
           }
           
           else { //check against cold
             
             if (CURRENT_BLOCK == 'then') {
-              ERROR_THEN = '';
+              ERROR_THEN = ''; then_outfits.add(outfit); 
             }
-            else {  ERROR_OTHER = 'weather_cold_mismatch'; print("COLD OUTFIT IN HOT DAY");}
+            else {  ERROR_OTHER = 'weather_hot_mismatch'; print("COLD OUTFIT IN HOT DAY"); 
+                    other_outfits.add(outfit); ERROR_BLOCK = 'other'; bg_hot = display_other = true; bg_cold = false;}
           }
           
         }
@@ -367,33 +455,71 @@ void interpret (List commands, bool consider) {
         else if( CURRENT_LEVEL == "3" && weather == "hot") {
           if (CHECK_AGAINST == "hot" ) {
             if(CURRENT_BLOCK == "then" ) {
-              ERROR_THEN = '';
+              ERROR_THEN = ''; then_outfits.add(outfit);
             }
             else {
-              ERROR_OTHER = 'weather_hot_mismatch'; print("HOT OUTFIT IN COLD DAY");
+              ERROR_OTHER = 'weather_cold_mismatch'; print("HOT OUTFIT IN COLD DAY"); 
+              other_outfits.add(outfit); ERROR_BLOCK = 'other'; bg_cold = display_other = true; bg_hot = false;
             }
           }
           
           else { //check against cold
             if (CURRENT_BLOCK == "then") {
-              ERROR_THEN = 'weather_hot_mismatch'; print("HOT OUTFIT IN COLD DAY");
+              ERROR_THEN = 'weather_cold_mismatch'; print("HOT OUTFIT IN COLD DAY"); 
+              then_outfits.add(outfit); ERROR_BLOCK = 'then'; bg_cold = display_other = true; bg_hot = false;
             }
             else {
-              ERROR_OTHER = '';
+              ERROR_OTHER = ''; other_outfits.add(outfit);
             }
           }
         }
         
         
-        if (CURRENT_LEVEL == "5") {
-          if (place != CURRENT_PLACE && place != "casual" ) {
-            ERR_MSG = "place_mismatch";
-          }
-          else {  ERR_MSG = ''; //rewrite the value if outfit is suitable later
-            
+        if (CURRENT_LEVEL == "5" && place == "wedding") {
+          if (CHECK_AGAINST == "wedding" ) {
+            if (CURRENT_BLOCK == "then") {
+              ERROR_THEN = ''; then_outfits.add(outfit);
+            }
+            else {
+              ERROR_OTHER = 'place_gym_mismatch'; other_outfits.add(outfit); 
+              ERROR_BLOCK = 'other'; bg_gym = display_other = true; bg_wedding = false;
+            }
           }
           
+          else { //check against gym
+            if (CURRENT_BLOCK == "then") {
+              ERROR_THEN = 'place_gym_mismatch'; then_outfits.add(outfit);
+              ERROR_BLOCK = 'then'; bg_gym = display_other = true; bg_wedding = false;
+            }
+            else {
+              ERROR_OTHER = ''; other_outfits.add(outfit);
+            }
+              
+          }
+     
+        }
+        
+        if (CURRENT_LEVEL == "5" && place == "gym") {
+          if (CHECK_AGAINST == "wedding" ) {
+            if (CURRENT_BLOCK == "then") {
+              ERROR_THEN = 'place_wedding_mismatch'; then_outfits.add(outfit);
+              ERROR_BLOCK = 'then'; bg_wedding = display_other = true; bg_gym = false;
+            }
+            else {
+              ERROR_OTHER = ''; other_outfits.add(outfit);
+            }
+          }
           
+          else { //check against gym
+            if (CURRENT_BLOCK == "then") {
+              ERROR_THEN = ''; then_outfits.add(outfit);
+            }
+            else {
+              ERROR_OTHER = 'place_wedding_mismatch'; other_outfits.add(outfit);
+              ERROR_BLOCK = 'other'; bg_wedding = display_other = true; bg_gym = false;
+            }     
+          }
+        
         }
         
         if (consider) {
@@ -577,7 +703,8 @@ void randomize() {
   Random rnd = new Random();
   var x = rnd.nextInt(2);
   CURRENT_PLACE = places[x];
-  text['place_mismatch'] = "Don't be silly! <br> you shouldn't wear this to a " + CURRENT_PLACE + ".";
+  text['place_gym_mismatch'] = "Don't be silly! <br> you shouldn't wear that to this place!";
+  text['place_wedding_mismatch'] = "Don't be silly! <br> you shouldn't wear that to this place!";
   
   var colors = ['black', 'purple'];
   
@@ -591,8 +718,8 @@ void randomize() {
   x = rnd.nextInt(2);
   CURRENT_WEATHER = weather[x];
    
-  text['weather_hot_mismatch'] = "Don't be silly! <br> you shouldn't wear that top when it is cold!";
-  text['weather_cold_mismatch'] = "Don't be silly! <br> you shouldn't wear a jacket when it is hot!";
+  text['weather_hot_mismatch'] = "Don't be silly! <br> you shouldn't wear that in this weather!";
+  text['weather_cold_mismatch'] = "Don't be silly! <br> you shouldn't wear that in this weather!";
   
 }
 
@@ -632,9 +759,10 @@ void clearBlocks() {
 //--------------------------------------------------------------------------
 // Display outfits from user's program 
 //--------------------------------------------------------------------------
-void display() {
+void display(int x) {
   
-  String outfit = outfits[0]; //print("current = $outfit");
+  if (x == 1) {
+    String outfit = outfits[0]; //print("current = $outfit");
     
     /**-------------------------------------------------------------------------------------
      * option1: Control imgVisibility on a div: (all images must be loaded in the HTML file)
@@ -655,7 +783,16 @@ void display() {
     /* addImageElement(outfit); */
     
     
-  outfits.removeAt(0);
+    outfits.removeAt(0);
+  }
+  
+  else {
+    String outfit = alternate_outfits[0];
+    sendMessage("outfit " + outfit);
+    alternate_outfits.removeAt(0);
+    
+  }
+  
   
 }
 
