@@ -60,24 +60,21 @@ List blocks = [  ['repeat', false, 6], ['black', false, 6], ['grey', false, 6], 
                  ['top_purple', false, 2], ['bottom_purple', false, 2],
                  ['abstraction', false, 4, 5], ['call', false, 4, 5], ['func', false, 4, 5],
                  ['other', false, 3, 5], ['then', false, 3, 5],
-                 ['color', false], ['get', false], ['going', false, 0], ['if', false, 3, 5],
-                 ['weather', false, 3], 
+                 ['color', false], ['get', false],['weather', false, 3],  ['going', false, 0], ['if', false, 3, 5],
+                 
               ];
 
 
 var CURRENT_LEVEL = 1;
-var CURRENT_block;
+String CURRENT_BLOCK = '';
 String ERR_MSG = '';
-
+String CHECK_AGAINST;
+String ERROR_THEN;
+String ERROR_OTHER;
+bool procedure_wedding;
 // write blocks[top] = true and then another map uses[top] = levels...
 Map block_name = new Map <String, int>();
 Map text = new Map <String, String> ();
-
-
-//------------------------------------------------
-//
-//-------------------------------------------------------
-
 
 //----------------------------------------------------------------------
 // Main function
@@ -90,12 +87,8 @@ void main() {
     
     if (msg.startsWith("@dart")) {
       CURRENT_LEVEL = msg.substring(5,6);
-      print("CURRENT LEVEL = " + CURRENT_LEVEL);
-      ////////////////////////////////////////////////////////
-      
+      text['if'] = (CURRENT_LEVEL == "3")? "You need to account for an outfit for cold weather and another for hot weather" : "You need to account for an outfit to a wedding and another to a gym";
       parts = msg.split("#");
-      
-      //////////////////////////////////////////////////////
       randomize();
       /*if (CURRENT_LEVEL == "7") {
         var level7_top = "top2-";
@@ -103,10 +96,7 @@ void main() {
         sendMessage("outfit " + level7_top);
       }*/
       
-      //compile(evt.data.substring(6)); 
-      //print("COMPILE THIS: " + parts[1]);
       compile(parts[1]);
-      
       print('Dart received code from HTML ');
       
       if (outfits.length != 0) {
@@ -116,15 +106,16 @@ void main() {
       timer = new Timer.periodic(new Duration(milliseconds: 1000), (Timer t) {
         if (outfits.length == 0) {
           timer.cancel();
-          if (CURRENT_LEVEL == "3") {
-            String background = CURRENT_WEATHER;
-            sendMessage("bg " + background);
-          }
-          else if(CURRENT_LEVEL == "5") {
-            String background = CURRENT_PLACE;
-            sendMessage("bg " + background);
-          }
+          
           if (check_input) {
+            if (CURRENT_LEVEL == "3") {
+              String background = CURRENT_WEATHER;
+              sendMessage("bg " + background);
+            }
+            else if(CURRENT_LEVEL == "5") {
+              String background = CURRENT_PLACE;
+              sendMessage("bg " + background);
+            }
             sendMessage("DONE!");
           }
           
@@ -132,7 +123,6 @@ void main() {
             sendMessage("error " + text[ERR_MSG]);
         }
         else {
-          //if (check_input)
           display();
         }
       });
@@ -159,10 +149,11 @@ void main() {
   block_name['then'] = 12;
   block_name['color'] = 13;
   block_name['get'] = 14;
-  block_name['going'] = 15;
-  block_name['if'] = 16;
+  block_name['weather'] = 15;
+  block_name['going'] = 16;
+  block_name['if'] = 17;
   
-  block_name['weather'] = 17;
+ 
   
   text['repeat'] = "Rosie wants to repeat the process, <br> choose a block to repeat over and over again<br>";
   text['black'] = "Make sure you choose the color black <br> for one of the bottoms!";
@@ -184,7 +175,7 @@ void main() {
   text['color'] = "Remember, top will only be either black or purple";
   text['get'] = "Choose a block to help you decide ";
   text['going'] = "Remember, there are two occasions";
-  text['if'] = "Choose a block to help you decide";
+ 
   
   text['abstraction'] = "Make sure you fill the definition";
   text['call'] = "You created a definition but didn't use it!";
@@ -205,7 +196,7 @@ void compile(String json) {
   clearBlocks();
   
   ERR_MSG = '';
-  
+  procedure_wedding = false;
   check_input = true;
   //hideAll();          //for option1
   //prepareCanvas();  //for option2
@@ -227,21 +218,43 @@ void compile(String json) {
   var script = json.substring(scriptIndex);
   
   commands = parseCode(script);
-  //print(commands);
   
+  interpret(commands, true);
   
-  interpret(commands);
-  
-  // Validate user answers here...
+// Validate user answers here...
   //format blocks = [ [blockName, value, levels] ]
   
-  if (ERR_MSG.isEmpty)
+  if (ERR_MSG.isEmpty) {
     validate();
+    if (check_input) {
+      if (ERROR_THEN.isNotEmpty) {
+        ERR_MSG = ERROR_THEN;
+        check_input = false;
+      }
+        
+      if (ERROR_OTHER.isNotEmpty) {
+        ERR_MSG = ERROR_OTHER;
+        check_input = false;
+      }
+      
+      if (CURRENT_LEVEL == "5" && ! procedure_wedding) {
+        ERR_MSG = 'city';
+        check_input = false;
+      }
+      
+    }
+    
+    
+  }
+    
   
   else
     check_input = false;
 }
 
+//----------------------------------------------------------------------
+// Validate use input
+//----------------------------------------------------------------------
 
 void validate() {
   for (var i= (blocks.length) - 1; i >= 0 ; i--) {
@@ -285,6 +298,337 @@ List parseCode(code) {
   return parsedCode;
 }
 
+
+
+//--------------------------------------------------------------------------
+// Interpret the user program
+//--------------------------------------------------------------------------
+void interpret (List commands, bool consider) { 
+  for (int j=0; j<commands.length; j++) {
+    if (commands[j] is !List || commands[j][0] == "GET") { //ensure output blocks are connected
+      break;
+    }
+    else {
+      List nested = commands[j] as List;
+      //print("inner = ${nested.length} ");
+      
+      if (nested[0] == "if") {processIf(nested, consider);}
+      else if (nested[0] == "SET") {/*processSet(nested, consider);*/}
+      else if (nested[0] == "repeat") {processRepeat(nested, consider);}
+      else if (nested[0] == "CALL") {processCall(nested, consider);}
+      else { //not a block
+        var part = nested[0];
+        var color = nested[1];
+        var weather = nested[2];
+        var place = nested[3];
+        
+        var outfit = part+color;
+        
+        if (part.startsWith("top") && consider) { 
+          blocks[block_name['top']][1]= true; print("TOP block now true"); 
+          if (color == "purple")  blocks[block_name['top_purple']][1]= true;
+          else blocks[block_name['top_purple']][1] = false;
+        }
+          
+        else if (part.startsWith("bottom") && consider) {
+          blocks[block_name['bottom']][1]= true; print("BOTTOM block now true"); 
+          if (color == "purple")  blocks[block_name['bottom_purple']][1]= true;
+          else if (color == "grey") blocks[block_name['grey']][1] = true;
+          else if (color == "blue") {blocks[block_name['blue']][1] = true;}
+          else if (color == "black") {blocks[block_name['black']][1] = true;} 
+          else blocks[block_name['bottom_purple']][1] = false;
+          
+        }
+        
+        if (CURRENT_LEVEL == "3" && weather == "cold") {
+          if (CHECK_AGAINST == "hot" ) {
+            if (CURRENT_BLOCK == "then") {
+              ERROR_THEN = 'weather_cold_mismatch'; print("COLD OUTFIT IN HOT DAY");
+              /*if (weather != CURRENT_WEATHER && weather != "any") {
+                ERR_MSG = "weather_mismatch"; 
+              }
+              else {  ERR_MSG = ''; //rewrite the value if outfit is suitable later
+              }*/
+              
+            }
+            else { ERROR_OTHER = '';}
+          }
+          
+          else { //check against cold
+            
+            if (CURRENT_BLOCK == 'then') {
+              ERROR_THEN = '';
+            }
+            else {  ERROR_OTHER = 'weather_cold_mismatch'; print("COLD OUTFIT IN HOT DAY");}
+          }
+          
+        }
+        
+        else if( CURRENT_LEVEL == "3" && weather == "hot") {
+          if (CHECK_AGAINST == "hot" ) {
+            if(CURRENT_BLOCK == "then" ) {
+              ERROR_THEN = '';
+            }
+            else {
+              ERROR_OTHER = 'weather_hot_mismatch'; print("HOT OUTFIT IN COLD DAY");
+            }
+          }
+          
+          else { //check against cold
+            if (CURRENT_BLOCK == "then") {
+              ERROR_THEN = 'weather_hot_mismatch'; print("HOT OUTFIT IN COLD DAY");
+            }
+            else {
+              ERROR_OTHER = '';
+            }
+          }
+        }
+        
+        
+        if (CURRENT_LEVEL == "5") {
+          if (place != CURRENT_PLACE && place != "casual" ) {
+            ERR_MSG = "place_mismatch";
+          }
+          else {  ERR_MSG = ''; //rewrite the value if outfit is suitable later
+            
+          }
+          
+          
+        }
+        
+        if (consider) {
+          outfits.add(outfit);
+        }
+      
+      }
+     }
+   }
+    
+}
+
+
+//--------------------------------------------------------------------------
+// Repeat block
+//--------------------------------------------------------------------------
+void processRepeat(List nested, bool consider) {
+  var count = nested[1];
+  var block = nested[2];
+  var outfit;
+  
+  blocks[block_name['repeat']][1] = true; print("repeat FOUND");
+  
+  for (var i=0; i < count; i++) {
+    interpret(block, consider);
+  }
+}
+
+
+//--------------------------------------------------------------------------
+// CallFunction block
+//--------------------------------------------------------------------------
+void processCall(List nested, bool consider) {
+  var funcName = nested[1];
+  var block;
+  var outfit;
+  
+  blocks[block_name['call']][1] = true; print("CALL FOUND");
+  
+  if (CURRENT_LEVEL == "5") {
+    if (CHECK_AGAINST == "wedding") {
+      if (CURRENT_BLOCK == "then") {
+        procedure_wedding = true;
+      }
+      
+    }
+    else if (CHECK_AGAINST == "gym") {
+      if (CURRENT_BLOCK =="other") {
+        procedure_wedding = true;
+      }
+    }
+    
+  }
+  
+  for (int i=0; i < subroutines.length; i++) {
+    if (funcName == subroutines[i][0]) {
+      block = subroutines[i][1];
+      if (block.length >= 1) {blocks[block_name['abstraction']][1] = true;}
+      
+      interpret(block, consider);
+    }
+  }
+   
+}
+
+
+
+//--------------------------------------------------------------------------
+// IF block
+//--------------------------------------------------------------------------
+void processIf(List nested, bool consider) {
+  var condition = nested [1][0];
+  var then = nested[2];
+  var other = nested[3];
+  List result;
+  var outfit;
+  
+  blocks[block_name['if']][1] = true;
+  
+  if (then.length >= 1 ) {blocks[block_name['then']][1] = true; print("THEN POPULATED");}
+  if (other.length >= 1) {blocks[block_name['other']][1] = true; print("OTHER POPULATED");}
+  
+  if (condition != 0) {
+    if (condition == "Going") { //GOING TO block is connected to IF block
+      blocks[block_name['going']][1] = true;
+      CHECK_AGAINST = (nested[1][1] == "wedding")? "wedding" : "gym";
+      if (nested[1][1] == CURRENT_PLACE) {
+        CURRENT_BLOCK = 'then';
+        interpret(then, true);
+        CURRENT_BLOCK = 'other';
+        interpret(other, false);
+      }
+      
+      else {
+        CURRENT_BLOCK = 'other';
+        interpret(other, true);
+        CURRENT_BLOCK = 'then';
+        interpret(then, false);
+        
+      }
+      
+        
+    }
+    
+    else if (condition == "weather") {
+      blocks[block_name['weather']][1] = true;
+      CHECK_AGAINST = (nested[1][1] == "hot")? "hot" : "cold";
+      if (nested[1][1] == CURRENT_WEATHER) {
+        CURRENT_BLOCK = 'then';
+        interpret(then, true);
+        CURRENT_BLOCK = 'other';
+        interpret(other, false);
+      }
+      
+      else {
+        CURRENT_BLOCK = 'other';
+        interpret(other, true);
+        CURRENT_BLOCK = 'then';
+        interpret(then, false);
+        
+      }
+    }
+      
+     
+    /*else  {  //GET block is connected to IF block ==> for unkown color levels
+      blocks[block_name['get']][1] = true; 
+      var part = nested[1][0][1][0];
+      var color = nested[1][0][1][1] ;
+      
+      if (color == "black" || color == "purple") { blocks[block_name['color']][1] = true; print("COLOR CONNECTED");}
+      
+      
+      consider = false;
+      interpret(then);
+      interpret(other);
+      
+      consider = true;
+      result = (color == CURRENT_COLOR)? then : other;
+      interpret(result);
+      
+      var sameColor = false;
+      
+      if (color == "black") {
+           if ( then[0][1] == "black")
+             ERR_MSG = "all_black";
+            //print("NO! YOU MADE ALL BLACK");
+          
+          if (other[0][1] != "black")
+            ERR_MSG = "not_black";
+            //print("WHY OTHER NOT BLACK?");
+      }
+      
+      else if (color == "purple") {
+        if ( then[0][1] != "black")
+          ERR_MSG = "not_black";
+        
+        if (other[0][1] == "black")
+          ERR_MSG = "all_black";
+        
+      }
+       
+    }*/ 
+    
+  }
+  
+  else { //nothing is connected to if statement
+    
+    interpret(then, false);
+    interpret(other, true);
+    
+  }
+}
+
+//--------------------------------------------------------------------------
+// Generate random place and color
+//--------------------------------------------------------------------------
+void randomize() {
+  
+  var places = ['wedding', 'gym'];
+  
+  Random rnd = new Random();
+  var x = rnd.nextInt(2);
+  CURRENT_PLACE = places[x];
+  text['place_mismatch'] = "Don't be silly! <br> you shouldn't wear this to a " + CURRENT_PLACE + ".";
+  
+  var colors = ['black', 'purple'];
+  
+  rnd = new Random();
+  x = rnd.nextInt(2);
+  CURRENT_COLOR = colors[x];
+  
+  var weather = ['hot', 'cold'];
+  
+  rnd = new Random();
+  x = rnd.nextInt(2);
+  CURRENT_WEATHER = weather[x];
+   
+  text['weather_hot_mismatch'] = "Don't be silly! <br> you shouldn't wear that top when it is cold!";
+  text['weather_cold_mismatch'] = "Don't be silly! <br> you shouldn't wear a jacket when it is hot!";
+  
+}
+
+
+
+//--------------------------------------------------------------------------
+// Clear blocks
+//--------------------------------------------------------------------------
+void clearBlocks() {
+  
+  blocks[block_name['repeat']][1] = false;
+  blocks[block_name['black']][1] = false;
+  blocks[block_name['grey']][1] = false;
+  blocks[block_name['blue']][1] = false;
+  
+  blocks[block_name['top']][1] = false;
+  blocks[block_name['bottom']][1] = false;
+  blocks[block_name['top_purple']][1] = false;
+  blocks[block_name['bottom_purple']][1] = false;
+  
+  blocks[block_name['if']][1] = false;
+  blocks[block_name['then']][1] = false;
+  blocks[block_name['other']][1] = false;
+  blocks[block_name['going']][1] = false;
+  
+  blocks[block_name['func']][1] = false;
+  blocks[block_name['call']][1] = false;
+  blocks[block_name['abstraction']][1] = false;
+  
+  blocks[block_name['get']][1] = false;
+  blocks[block_name['color']][1] = false;
+  
+  blocks[block_name['weather']][1] = false;
+  
+}  
+
 //--------------------------------------------------------------------------
 // Display outfits from user's program 
 //--------------------------------------------------------------------------
@@ -314,6 +658,24 @@ void display() {
   outfits.removeAt(0);
   
 }
+
+//--------------------------------------------------------------------------
+// Send a message to the javascript blockly window
+//--------------------------------------------------------------------------
+void sendMessage(String message) {
+  /*if (ws != null && ws.readyState == WebSocket.OPEN) {
+    ws.send("@blockly#$CONNECTION_ID#$message");
+  }*/
+  var msg = "@blockly#$message";
+  var origin = window.location.protocol + "//" + window.location.host;
+  window.postMessage(msg, origin);
+}
+
+
+/* =====================================
+ * 
+ *    PREVIOUSLY USED FUNCTIONS
+ * =====================================
 
 //--------------------------------------------------------------------------
 // Draw image on the screen
@@ -397,125 +759,20 @@ void addImageElement(String outfit) {
 }
 
 //--------------------------------------------------------------------------
-// Interpret the user program
+// Remove all outfit images
 //--------------------------------------------------------------------------
-void interpret (List commands) { 
-  for (int j=0; j<commands.length; j++) {
-    if (commands[j] is !List || commands[j][0] == "GET") { //ensure output blocks are connected
-      break;
-    }
-    else {
-      List nested = commands[j] as List;
-      //print("inner = ${nested.length} ");
-      
-      if (nested[0] == "if") {processIf(nested);}
-      else if (nested[0] == "SET") {processSet(nested);}
-      else if (nested[0] == "repeat") {processRepeat(nested);}
-      else if (nested[0] == "CALL") {processCall(nested);}
-      else { //not a block
-        var part = nested[0];
-        var color = nested[1];
-        var weather = nested[2];
-        var place = nested[3];
-        
-        var outfit = part+color;
-        
-        if (part.startsWith("top") && consider) { 
-          blocks[block_name['top']][1]= true; print("TOP block now true"); 
-          if (color == "purple")  blocks[block_name['top_purple']][1]= true;
-          else blocks[block_name['top_purple']][1] = false;
-        }
-          
-        else if (part.startsWith("bottom") && consider) {
-          blocks[block_name['bottom']][1]= true; print("BOTTOM block now true"); 
-          if (color == "purple")  blocks[block_name['bottom_purple']][1]= true;
-          else if (color == "grey") blocks[block_name['grey']][1] = true;
-          else if (color == "blue") {blocks[block_name['blue']][1] = true;}
-          else if (color == "black") {blocks[block_name['black']][1] = true;} 
-          else blocks[block_name['bottom_purple']][1] = false;
-          
-        }
-        
-        if (CURRENT_LEVEL == "3" && consider) {
-          if (weather != CURRENT_WEATHER && weather != "any") {
-            ERR_MSG = "weather_mismatch"; 
-          }
-          else {  ERR_MSG = ''; //rewrite the value if outfit is suitable later
-          }
-          
-        }
-        
-        if (CURRENT_LEVEL == "5" && consider) {
-          if (place != CURRENT_PLACE && place != "casual" ) {
-            ERR_MSG = "place_mismatch";
-          }
-          else {  ERR_MSG = ''; //rewrite the value if outfit is suitable later
-            
-          }
-          
-          
-        }
-        
-        if (consider) {
-          outfits.add(outfit);
-        }
-      
-      }
-     }
-   }
-    
+void removeAll() {
+  //TODO
+ 
 }
 
 //--------------------------------------------------------------------------
-// Process nested block
+// Control the z-Index property of an image
 //--------------------------------------------------------------------------
-void addOutfit(block) {
-  var outfit;
-  if (block is !List) {
-    for (var j=0; j<block.length; j++) {
-      outfit = block[j][0];
-      outfit = outfit+block[j][1];
-      outfits.add(outfit); // add to our global list of outfits 
-      print("ADD OUTFIT FUNCTION");
-    }
-  }
-  else { interpret(block); }
+void setZIndex(id, z) {
+  query("#$id").style.zIndex = z.toString();
+  //bottomCounter++;
   
-}
-//--------------------------------------------------------------------------
-// Repeat block
-//--------------------------------------------------------------------------
-void processRepeat(List nested) {
-  var count = nested[1];
-  var block = nested[2];
-  var outfit;
-  
-  blocks[block_name['repeat']][1] = true; print("repeat FOUND");
-  
-  for (var i=0; i < count; i++) {
-    addOutfit(block);
-  }
-}
-
-
-//--------------------------------------------------------------------------
-// CallFunction block
-//--------------------------------------------------------------------------
-void processCall(List nested) {
-  var funcName = nested[1];
-  var block;
-  var outfit;
-  
-  blocks[block_name['call']][1] = true; print("CALL FOUND");
-  for (int i=0; i < subroutines.length; i++) {
-    if (funcName == subroutines[i][0]) {
-      block = subroutines[i][1];
-      if (block.length >= 1) {blocks[block_name['abstraction']][1] = true;}
-      
-      addOutfit(block);
-    }
-  }
-   
 }
 
 //--------------------------------------------------------------------------
@@ -557,195 +814,4 @@ void processSet(List nested) {
   }
 }
 
-
-//--------------------------------------------------------------------------
-// IF block
-//--------------------------------------------------------------------------
-void processIf(List nested) {
-  var condition = nested [1][0];
-  var then = nested[2];
-  var other = nested[3];
-  List result;
-  var outfit;
-  
-  blocks[block_name['if']][1] = true;
-  
-  if (then.length >= 1 ) {blocks[block_name['then']][1] = true; print("THEN POPULATED");}
-  if (other.length >= 1) {blocks[block_name['other']][1] = true; print("OTHER POPULATED");}
-  
-  if (condition != 0) {
-    if (condition == "Going") { //GOING TO block is connected to IF block
-      blocks[block_name['going']][1] = true;
-      
-      consider = false;
-      addOutfit(then);
-      addOutfit(other);
-      
-      consider = true;
-      result = (nested[1][1] == CURRENT_PLACE)? then : other;
-      //result could be empty!
-      if (result.length != 0)
-        addOutfit(result);
-        //print("result = " + result.length.toString());
-        //result could also be SET or REPEAT
-        
-    }
-    
-    else if (condition == "weather") {
-      blocks[block_name['weather']][1] = true;
-      consider = false;
-      addOutfit(then);
-      addOutfit(other);
-      
-      
-      consider = true;
-      result = (nested[1][1] == CURRENT_WEATHER)? then : other;
-      if (result.length != 0)
-        addOutfit(result);
-      
-      
-    }
-      
-     
-    else  {  //GET block is connected to IF block ==> for unkown color levels
-      blocks[block_name['get']][1] = true; 
-      var part = nested[1][0][1][0];
-      var color = nested[1][0][1][1] ;
-      
-      if (color == "black" || color == "purple") { blocks[block_name['color']][1] = true; print("COLOR CONNECTED");}
-      
-      
-      consider = false;
-      addOutfit(then);
-      addOutfit(other);
-      
-      consider = true;
-      result = (color == CURRENT_COLOR)? then : other;
-      addOutfit(result);
-      
-      var sameColor = false;
-      
-      if (color == "black") {
-           if ( then[0][1] == "black")
-             ERR_MSG = "all_black";
-            //print("NO! YOU MADE ALL BLACK");
-          
-          if (other[0][1] != "black")
-            ERR_MSG = "not_black";
-            //print("WHY OTHER NOT BLACK?");
-      }
-      
-      else if (color == "purple") {
-        if ( then[0][1] != "black")
-          ERR_MSG = "not_black";
-        
-        if (other[0][1] == "black")
-          ERR_MSG = "all_black";
-        
-      }
-       
-    } 
-    
-  }
-  
-  else { //nothing is connected to if statement
-    
-    consider = false;
-    addOutfit(then);
-    addOutfit(other);
-    
-    consider = true;
-    addOutfit(other);
-    
-  }
-}
-
-//--------------------------------------------------------------------------
-// Generate random place and color
-//--------------------------------------------------------------------------
-void randomize() {
-  
-  var places = ['wedding', 'gym'];
-  
-  Random rnd = new Random();
-  var x = rnd.nextInt(2);
-  CURRENT_PLACE = places[x];
-  text['place_mismatch'] = "Don't be silly! <br> you shouldn't wear this to a " + CURRENT_PLACE + ".";
-  
-  var colors = ['black', 'purple'];
-  
-  rnd = new Random();
-  x = rnd.nextInt(2);
-  CURRENT_COLOR = colors[x];
-  
-  var weather = ['hot', 'cold'];
-  
-  rnd = new Random();
-  x = rnd.nextInt(2);
-  CURRENT_WEATHER = weather[x];
-   
-  text['weather_mismatch'] = "Don't be silly! <br> you shouldn't wear this on a " + CURRENT_WEATHER + " day!";
-  
-}
-
-
-
-//--------------------------------------------------------------------------
-// Clear blocks
-//--------------------------------------------------------------------------
-void clearBlocks() {
-  
-  blocks[block_name['repeat']][1] = false;
-  blocks[block_name['black']][1] = false;
-  blocks[block_name['grey']][1] = false;
-  blocks[block_name['blue']][1] = false;
-  
-  blocks[block_name['top']][1] = false;
-  blocks[block_name['bottom']][1] = false;
-  blocks[block_name['top_purple']][1] = false;
-  blocks[block_name['bottom_purple']][1] = false;
-  
-  blocks[block_name['if']][1] = false;
-  blocks[block_name['then']][1] = false;
-  blocks[block_name['other']][1] = false;
-  blocks[block_name['going']][1] = false;
-  
-  blocks[block_name['func']][1] = false;
-  blocks[block_name['call']][1] = false;
-  blocks[block_name['abstraction']][1] = false;
-  
-  blocks[block_name['get']][1] = false;
-  blocks[block_name['color']][1] = false;
-  
-  blocks[block_name['weather']][1] = false;
-  
-}  
-
-//--------------------------------------------------------------------------
-// Send a message to the javascript blockly window
-//--------------------------------------------------------------------------
-void sendMessage(String message) {
-  /*if (ws != null && ws.readyState == WebSocket.OPEN) {
-    ws.send("@blockly#$CONNECTION_ID#$message");
-  }*/
-  var msg = "@blockly#$message";
-  var origin = window.location.protocol + "//" + window.location.host;
-  window.postMessage(msg, origin);
-}
-
-//--------------------------------------------------------------------------
-// Remove all outfit images
-//--------------------------------------------------------------------------
-void removeAll() {
-  //TODO
- 
-}
-
-//--------------------------------------------------------------------------
-// Control the z-Index property of an image
-//--------------------------------------------------------------------------
-void setZIndex(id, z) {
-  query("#$id").style.zIndex = z.toString();
-  //bottomCounter++;
-  
-}
+*/

@@ -132,8 +132,30 @@
 // Populate images
 //---------------------------------------------------------------------------
 	function populate() {
+		var COLORS = ['red', 'blue', 'gold', 'lime', 'black', 'pink', 'orange' , 'purple', 'grey'];
 		
-      	var COLORS = ['red', 'blue', 'gold', 'lime', 'black', 'pink', 'orange' , 'purple', 'grey'];
+		for (var i=1; i<6; i++) {
+      		
+      		var imgH= document.createElement("img");
+          	imgH.src = 'images/hair' + i + '-' + '.png';
+          	imgH.id = 'hair'+ i + '-';
+          	imgH.className = 'hair';
+          	document.getElementById("images").appendChild(imgH);
+          		
+      		for (var j=0; j< COLORS.length; j++) {
+      			var imgS= document.createElement("img");
+          		imgS.src = 'images/shoes'+ i + '-' + COLORS[j] +'.png';
+          		imgS.id = 'shoes'+ i + '-' + COLORS[j];
+          		imgS.className = 'shoes';
+          		document.getElementById("images").appendChild(imgS);
+          		
+          		
+      		}
+      	}
+      	
+      	//Always show natural hair first
+      	//document.getElementById('hair1-').style.visibility = "visible";	
+      	
       	
       	for (var i=1; i < 9; i++ ) {
         	for (var j=0; j < COLORS.length; j++ ) {
@@ -151,25 +173,6 @@
           		//console.log(img.src);
           		
         	}
-      	}
-      	
-      	for (var i=1; i<6; i++) {
-      		
-      		var imgH= document.createElement("img");
-          	imgH.src = 'images/hair' + i + '-' + '.png';
-          	imgH.id = 'hair'+ i + '-';
-          	imgH.className = 'hair';
-          	document.getElementById("images").appendChild(imgH);
-          		
-      		for (var j=0; j< COLORS.length; j++) {
-      			var imgS= document.createElement("img");
-          		imgS.src = 'images/shoes'+ i + '-' + COLORS[j] +'.png';
-          		imgS.id = 'shoes'+ i + '-' + COLORS[j];
-          		imgS.className = 'shoes';
-          		document.getElementById("images").appendChild(imgS);
-          		
-          		
-      		}
       	}
       	
       	
@@ -205,10 +208,13 @@
       		
   	   	img_blank.style.visibility = "hidden";
   	  	
+  	  	
       	if (el) {
       		el.style.visibility = visible ? "visible" : "hidden";
       		el.style.zIndex = Zindex++;
       	}
+      	
+      	
    	}
    	
    	
@@ -225,7 +231,7 @@
           		break;
           		
             case "shoes":
-          		length = 5;
+          		length = 6;
           		break;
           		
           	default:
