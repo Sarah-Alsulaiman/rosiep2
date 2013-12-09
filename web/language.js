@@ -591,7 +591,7 @@ Blockly.Language.shoes5 = {
 };
 
 //-------------------------------------------------------------------------
-// Hair 1 (straight)
+// Hair 1 (Natural)
 //-------------------------------------------------------------------------
 Blockly.Language.hair1 = {
   helpUrl: 'http://www.example.com/',
@@ -608,14 +608,14 @@ Blockly.Language.hair1 = {
 
 
 //-------------------------------------------------------------------------
-// Hair 2 (wavy)
+// Hair 2 (blonde)
 //-------------------------------------------------------------------------
 Blockly.Language.hair2 = {
   helpUrl: 'http://www.example.com/',
   init: function() {
     this.setColour(330, .45, .65);
     this.appendDummyInput()
-    	.appendTitle("wavy hair")
+    	.appendTitle("Blonde hair")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     var thisBlock = this; 
@@ -632,7 +632,7 @@ Blockly.Language.hair3 = {
   init: function() {
     this.setColour(330, .45, .65);
     this.appendDummyInput()
-    	.appendTitle("straight style")
+    	.appendTitle("Wavy style")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     var thisBlock = this; 
@@ -649,7 +649,7 @@ Blockly.Language.hair4 = {
   init: function() {
     this.setColour(330, .45, .65);
     this.appendDummyInput()
-    	.appendTitle("bony tail hair")
+    	.appendTitle("Bony tail")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     var thisBlock = this; 
