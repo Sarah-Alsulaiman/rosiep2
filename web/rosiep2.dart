@@ -109,7 +109,7 @@ void main() {
       compile(parts[1]);
       print('Dart received code from HTML ');
       
-      if (display_other) { // wanting to show the wrong choice
+      /*if (display_other) { // wanting to show the wrong choice
         print("ALTERNATE OUTFITS");
         if (ERROR_BLOCK == 'then')
           alternate_outfits = then_outfits;
@@ -146,24 +146,24 @@ void main() {
           }
         });
       }
-      //*/
-      else { //show real outfits
+      */
+      //else { //show real outfits
         if (outfits.length != 0) {
           Timer.run(() => display(1));
         }
         timer = new Timer.periodic(new Duration(milliseconds: 1000), (Timer t) {
           if (outfits.length == 0) {
             timer.cancel();
-            
+            if (CURRENT_LEVEL == "3") {
+              String background = CURRENT_WEATHER;
+              sendMessage("bg " + background);
+            }
+            else if(CURRENT_LEVEL == "5") {
+              String background = CURRENT_PLACE;
+              sendMessage("bg " + background);
+            }
             if (check_input) {
-              if (CURRENT_LEVEL == "3") {
-                String background = CURRENT_WEATHER;
-                sendMessage("bg " + background);
-              }
-              else if(CURRENT_LEVEL == "5") {
-                String background = CURRENT_PLACE;
-                sendMessage("bg " + background);
-              }
+              
               sendMessage("DONE!");
             }
             
@@ -177,7 +177,7 @@ void main() {
           }
         });
         
-      }
+      //}
       
       sendMessage("GOT IT!");
     }
@@ -429,7 +429,7 @@ void interpret (List commands, bool consider) {
         if (CURRENT_LEVEL == "3" && weather == "cold") {
           if (CHECK_AGAINST == "hot" ) {
             if (CURRENT_BLOCK == "then") {
-              ERROR_THEN = 'weather_hot_mismatch'; print("COLD OUTFIT IN HOT DAY"); ERROR_BLOCK = 'then'; bg_hot = display_other = true; bg_cold = false;
+              ERROR_THEN = 'weather_hot_mismatch'; print("COLD OUTFIT IN HOT DAY"); bg_hot = display_other = true; bg_cold = false;
               then_outfits.add(outfit);
               /*if (weather != CURRENT_WEATHER && weather != "any") {
                 ERR_MSG = "weather_mismatch"; 
@@ -438,16 +438,16 @@ void interpret (List commands, bool consider) {
               }*/
               
             }
-            else { ERROR_OTHER = ''; other_outfits.add(outfit);}
+            else { ERROR_OTHER = ''; other_outfits.add(outfit); bg_hot = display_other = false; }
           }
           
           else { //check against cold
             
             if (CURRENT_BLOCK == 'then') {
-              ERROR_THEN = ''; then_outfits.add(outfit); 
+              ERROR_THEN = ''; then_outfits.add(outfit); bg_hot = display_other = false;
             }
             else {  ERROR_OTHER = 'weather_hot_mismatch'; print("COLD OUTFIT IN HOT DAY"); 
-                    other_outfits.add(outfit); ERROR_BLOCK = 'other'; bg_hot = display_other = true; bg_cold = false;}
+                    other_outfits.add(outfit); bg_hot = display_other = true; bg_cold = false;}
           }
           
         }
@@ -455,21 +455,21 @@ void interpret (List commands, bool consider) {
         else if( CURRENT_LEVEL == "3" && weather == "hot") {
           if (CHECK_AGAINST == "hot" ) {
             if(CURRENT_BLOCK == "then" ) {
-              ERROR_THEN = ''; then_outfits.add(outfit);
+              ERROR_THEN = ''; then_outfits.add(outfit); bg_cold = display_other = false;
             }
             else {
               ERROR_OTHER = 'weather_cold_mismatch'; print("HOT OUTFIT IN COLD DAY"); 
-              other_outfits.add(outfit); ERROR_BLOCK = 'other'; bg_cold = display_other = true; bg_hot = false;
+              other_outfits.add(outfit); bg_cold = display_other = true; bg_hot = false;
             }
           }
           
           else { //check against cold
             if (CURRENT_BLOCK == "then") {
               ERROR_THEN = 'weather_cold_mismatch'; print("HOT OUTFIT IN COLD DAY"); 
-              then_outfits.add(outfit); ERROR_BLOCK = 'then'; bg_cold = display_other = true; bg_hot = false;
+              then_outfits.add(outfit); bg_cold = display_other = true; bg_hot = false;
             }
             else {
-              ERROR_OTHER = ''; other_outfits.add(outfit);
+              ERROR_OTHER = ''; other_outfits.add(outfit); bg_cold = display_other = false;
             }
           }
         }
@@ -703,8 +703,8 @@ void randomize() {
   Random rnd = new Random();
   var x = rnd.nextInt(2);
   CURRENT_PLACE = places[x];
-  text['place_gym_mismatch'] = "Don't be silly! <br> you shouldn't wear that to this place!";
-  text['place_wedding_mismatch'] = "Don't be silly! <br> you shouldn't wear that to this place!";
+  text['place_gym_mismatch'] = "Don't be silly! <br> choose appropriate outfits to each place!";
+  text['place_wedding_mismatch'] = "Don't be silly! <br> choose appropriate outfits to each place!";
   
   var colors = ['black', 'purple'];
   
@@ -718,8 +718,8 @@ void randomize() {
   x = rnd.nextInt(2);
   CURRENT_WEATHER = weather[x];
    
-  text['weather_hot_mismatch'] = "Don't be silly! <br> you shouldn't wear that in this weather!";
-  text['weather_cold_mismatch'] = "Don't be silly! <br> you shouldn't wear that in this weather!";
+  text['weather_hot_mismatch'] = "Don't be silly! <br> choose appropriate outfits to each weather!";
+  text['weather_cold_mismatch'] = "Don't be silly! <br> choose appropriate outfits to each weather!";
   
 }
 
