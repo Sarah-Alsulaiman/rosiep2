@@ -1,0 +1,37 @@
+﻿text['if'] = (CURRENT_LEVEL == "3")? "You need to account for an outfit for cold weather and another for hot weather" : "You need to account for an outfit to a wedding and another to a gym";
+
+text['repeat'] = "Rosie wants to repeat the process, <br> choose a block to repeat over and over again<br>";
+text['black'] = "Make sure you choose the color black <br> for one of the bottoms!";
+text['grey'] = "Make sure you choose the color grey <br> for one of the bottoms!";
+text['blue'] = "Make sure you choose the color blue <br> for one of the bottoms!";
+  
+  
+text['weather'] = "Remember, it might be hot or cold outside";
+  
+  
+text['top'] = "Make sure you choose both a top and a bottom";
+text['bottom'] = "Make sure you choose both a top and a bottom";
+  
+text['top_purple'] = "Remember, dress code is purple! <br/> you can change the outfit color from the coloring menu<br>";
+text['bottom_purple'] = "Remember, dress code is purple! <br> you can change the outfit color from the coloring menu<br>";
+  
+text['other'] = "Make sure you choose an outfit for each case";
+text['then'] = "Make sure you choose an outfit for each case";
+text['color'] = "Remember, top will only be either black or purple";
+text['get'] = "Choose a block to help you decide ";
+text['going'] = "Remember, there are two occasions";
+ 
+  
+text['abstraction'] = "Make sure you fill the definition";
+text['call'] = "You created a definition but didn't use it!";
+text['func'] = "Outfit definitions menu help you create a shortcut";
+  
+text['all_black'] = "Remember, Rosie doesn't want to wear all black!";
+text['not_black'] = "Remember, Rosie wants a black bottom <br> if the top is not black";
+  
+text['place'] = 'Remember, you need to wear the wedding outfit when going to a wedding';
+  
+text['place_gym_mismatch'] = "Don't be silly! <br> choose appropriate outfits to each place!";
+text['place_wedding_mismatch'] = "Don't be silly! <br> choose appropriate outfits to each place!";
+text['weather_hot_mismatch'] = "Don't be silly! <br> choose appropriate outfits to each weather!";
+text['weather_cold_mismatch'] = "Don't be silly! <br> choose appropriate outfits to each weather!";

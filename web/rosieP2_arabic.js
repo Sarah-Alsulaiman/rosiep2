@@ -5,13 +5,13 @@
 	var MAX_LEVEL = 7;
     var MIN_LEVEL = 1;
     var CURRENT_LEVEL = getLevel();
-    var LEVELS_MSG = ["تود روزي الذهاب مع صديقتها ياسمين الى المطعم، هل بامكانك مساعدتها في اختيار اللبس؟ <BR><BR> ",
-                        "روزي معزومة الى حفلة صديقتها، ويجب على الجميع لبس اللون الموف،  <BR/> هل بامكانك مساعدتها في اختيار اللبس؟ ",
-                        "روزي تريد الذهاب للتنزه قليلاَ، قد يكون الجو بارد وقد يكون حار! هل بامكانك مساعدة روزي في اختيار اللبس لكل الحالتين؟",
-                        "الآن بامكانك اختيار لبس معين واطلاق اسم عليه ليسهل عليك استخدامه لاحقاً، هل بامكانك اختيار لحضور الزواجات وتسميته : فستان زواج؟",
-                        "روزي معزومة لحضور زواج، ولكنها تود الذهاب للنادي الرياضي، هل بامكانك مساعدتها في اختيار اللبس المناسب للحالتين؟<BR/>",
-                        "روزي تريد عمل عرض ازياء! انها تريد القيام بلبس تنورة رمادية ثم سوداء ثم زرقاء، ومن ثم تكرار ذلك 5 مرات! هل بامكانك جعلها تفعل ذلك؟",
-                        "الآن تستطيع اللعب بالمكعبات كيفما شئت! <br><br>"
+    var LEVELS_MSG = ["<BR>ترغب روزي بالذهاب مع صديقتها ياسمين الى المطعم، هل بإمكانك مساعدتها في اختيار اللبس المناسب؟<BR><BR> ",
+                        "<BR> تلقت روزي دعوة لحضورحفلة نجاح صديقتها ياسمين، يجب على الجميع لبس اللون الموف <BR/> هل بإمكانك مساعدة روزي في اختيار اللبس؟",
+                        "<BR> روزي تود الخروج للتنزه، هل بإمكانك مساعدتها في اختيار لبس بحيث اذا كان الطقس حار فإنها ستلبس ملابس صيفية،<BR> أما اذا كان الطقس بارد، فإنها ستلبس ملابس شتوية",
+                        "<BR> الآن، بامكانك اختيار لبس بألوانك المفضلة لحضور الحفلات واطلاق اسم عليه لتتمكن من استخدامه لاحقاً بدون الحاجة لإعادة تنسيقه، هل بإمكانك اختيار هذا اللبس وجعل روزي ترتديه؟<BR>",
+                        "<BR> هل بإمكانك اختيار الملابس لروزي بحيث اذا كانت ستذهب الى حفلة تخرج صديقتها دينا، سوف تقوم بلبس الملابس المفضلة التي قمت باختيارها سابقاً، أما اذا كانت ستذهب الى النادي الرياضي، فإنها ستلبس ملابس الرياضة؟<BR>",
+                        "<BR> روزي تريد عمل عرض أزياء، سوف تقوم بلبس بنطلون جينز، ثم تنورة طويلة سوداء، ثم تنورة قصيرة رمادية،<BR>ثم ستقوم بتكرار هذه العملية 5 مرات،هل بإمكانك مساعدة روزي لعمل عرض الأزياء؟<BR>",
+                        "<BR> الآن يمكنك اللعب بالمكعبات بكل حرية ...<br><br>"
                        ];
     // Rosie wore a top that is either black or purple, when she wears a black top, she doesn't want to wear a black bottom, otherwise she wants the bottom to be black. Pick a bottom so that she doesn't wear all black (hint: check new blocks in the control section!)                   
     var colors = ['red', 'blue', 'gold', 'lime', 'black', 'pink', 'orange' , 'purple', 'grey'];
@@ -99,7 +99,7 @@
 	function advanceLevel () {
 		storeProcedure();
       if (CURRENT_LEVEL < MAX_LEVEL - 1) {
-        $.jqDialog.confirm("! رائع<BR/> <BR/> هل تريد الاستمرار ".replace('%1', CURRENT_LEVEL + 1),
+        $.jqDialog.confirm("رائع..!<BR/> <BR/> هل تود الاستمرار؟ ".replace('%1', CURRENT_LEVEL + 1),
         function() { window.location = window.location.protocol + '//' +
                      window.location.host + window.location.pathname +
                      '?level=' + (CURRENT_LEVEL + 1); },    // callback function for 'YES' button
@@ -109,7 +109,7 @@
       }
       
       else if (CURRENT_LEVEL == MAX_LEVEL - 1) {
-        $.jqDialog.alert("<center> !مبروك <br> لقد أنهيت كافة المراحل <br> <br>بإمكانك الآن اللعب بالمكعبات كيفما تشاء </center>", 
+        $.jqDialog.alert("<center> !Ù…Ø¨Ø±ÙˆÙƒ <br> مبروك، لقد أنهيت كافة المراحل <br> <br>الآن يمكنك للعب بالمكعبات بحرية ! </center>", 
         				function() { window.location = window.location.protocol + '//' + window.location.host + window.location.pathname + '?level=' + (CURRENT_LEVEL + 1);  }); // callback function for 'OK' button
       }   
     }
@@ -121,7 +121,7 @@
 //---------------------------------------------------------------------------
 	function showError () {
 	
-		$.jqDialog.alert("Are you missing something?<br><br>" + error, function() { }); // callback function for 'OK' button
+		$.jqDialog.alert("هل نسيت شيئاَ؟ <br><br>" + error, function() { }); // callback function for 'OK' button
       
     }
  
@@ -399,7 +399,7 @@
         //--------------------------------------------------
         if (code.length == 0) {
           setHtmlOpacity("hint1", 1.0);
-          fadeOutAfterDelay("hint1", 4000);
+          fadeOutAfterDelay("hint1", 5000);
         }
         
         else {
@@ -410,7 +410,7 @@
           //--------------------------------------------------
           if (!connected) {
             setHtmlOpacity("hint2", 1.0);
-            fadeOutAfterDelay("hint2", 4000);
+            fadeOutAfterDelay("hint2", 5000);
           }
         
           else {
@@ -440,7 +440,7 @@
       }
       
       else {
-      	alert("still generating previous outfit");
+      	alert("مازالت روزي تلبس ماقمت باختياره من قبل، الرجاء ضغط موافق وانتظارها لحين اكتمال اللبس السابق");
       
       }
     }
@@ -958,7 +958,7 @@ Blockly.Block.prototype.showContextMenu_ = function(x, y) {
       var toolbox1 = '<xml>';
       toolbox1 += '  <category></category>';
       
-      toolbox1 += '  <category name="+ البلايز"> <block type="top1"></block> <block type="top2"></block>';
+      toolbox1 += '  <category name="+ البلوزة"> <block type="top1"></block> <block type="top2"></block>';
       toolbox1 += '</category> <category> </category>'; //close tops
       
       toolbox1 += '<category name="+ الجزء السفلي"> <block type="bottom1"></block> <block type="bottom2"></block>';
@@ -974,32 +974,45 @@ Blockly.Block.prototype.showContextMenu_ = function(x, y) {
       
       //------------------------------------------------------------------------------
       var toolbox2 = '<xml> <category></category> ';
-      toolbox2 += '  <category name="+ البلايز"> <block type="top1"></block> <block type="top2"></block> <block type="top3"></block>';
-      toolbox2 += '</category> <category> </category>'; //close tops
-      
-      toolbox2 += '<category name="+ السفلي"> <block type="bottom1"></block> <block type="bottom2"></block> <block type="bottom3"></block>';
-      
-      toolbox2 += '</category> <category> </category>'; //close bottoms
-      
-      toolbox2 += '<category name="+ الشعر"> <block type="hair1"></block> <block type="hair2"></block> <block type="hair3"></block>';
-      toolbox2 += '</category> <category> </category>'; //close hair
-      
-      toolbox2 += '<category name="+ الحذاء"> <block type="shoes1"></block> <block type="shoes2"></block> <block type="shoes3"></block>';
-      toolbox2 += '</category> <category> </category>'; //close shoes
       
       toolbox2 += '<category name="+ الألوان"> <block type="red"></block> <block type="blue"></block>' + 
                     '<block type="black"></block> <block type="pink"></block> <block type="grey"></block> <block type="orange"></block> <block type="purple"></block>' +
                     '<block type="lime"></block> <block type="gold"></block>' ;
       toolbox2 += '</category> <category> </category>'; //close coloring
       
+      toolbox2 += '  <category name="+ البلوزة"> <block type="top1"></block> <block type="top2"></block> <block type="top3"></block>';
+      toolbox2 += '</category> <category> </category>'; //close tops
+      
+      toolbox2 += '<category name="+ الجزء السفلي"> <block type="bottom1"></block> <block type="bottom2"></block> <block type="bottom3"></block>';
+      
+      toolbox2 += '</category> <category> </category>'; //close bottoms
+      
+      toolbox2 += '<category name="+  الشعر"> <block type="hair1"></block> <block type="hair2"></block> <block type="hair3"></block>';
+      toolbox2 += '</category> <category> </category>'; //close hair
+      
+      toolbox2 += '<category name="+ الحذاء"> <block type="shoes1"></block> <block type="shoes2"></block> <block type="shoes3"></block>';
+      toolbox2 += '</category> <category> </category>'; //close shoes
+      
+      
+      
       toolbox2 += '</xml>';
       
       //------------------------------------------------------------------------------
       var toolbox3 = '<xml> <category></category> ';
-      toolbox3 += '  <category name="+ البلايز"> <block type="top1"></block> <block type="top2"></block> <block type="top3"></block> <block type="top4"></block>';
+      
+      toolbox3 += '<category name = "+ التحكم">  <block type = "control_if"></block> <block type="weather"></block> ';
+      toolbox3 += '</category> <category> </category>'; //close controls
+     
+      
+       toolbox3 += '<category name="+ الألوان"> <block type="red"></block> <block type="blue"></block>' + 
+                    '<block type="black"></block> <block type="pink"></block> <block type="grey"></block> <block type="orange"></block> <block type="purple"></block>' +
+                    '<block type="lime"></block> <block type="gold"></block>' ;
+      toolbox3 += '</category> <category> </category>'; //close coloring
+      
+      toolbox3 += '  <category name="+ البلوزة"> <block type="top1"></block> <block type="top2"></block> <block type="top3"></block> <block type="top4"></block>';
       toolbox3 += '</category> <category> </category>'; //close tops
       
-      toolbox3 += '<category name="+ السفلي"> <block type="bottom1"></block> <block type="bottom2"></block> <block type="bottom3"></block> <block type="bottom4"></block>';
+      toolbox3 += '<category name="+ الجزء السفلي"> <block type="bottom1"></block> <block type="bottom2"></block> <block type="bottom3"></block> <block type="bottom4"></block>';
       
       toolbox3 += '</category> <category> </category>'; //close bottoms
       
@@ -1009,21 +1022,25 @@ Blockly.Block.prototype.showContextMenu_ = function(x, y) {
       toolbox3 += '<category name="+ الحذاء"> <block type="shoes1"></block> <block type="shoes2"></block> <block type="shoes3"></block> <block type="shoes4"></block>';
       toolbox3 += '</category> <category> </category>'; //close shoes
       
-      toolbox3 += '<category name="+ الألوان"> <block type="red"></block> <block type="blue"></block>' + 
-                    '<block type="black"></block> <block type="pink"></block> <block type="grey"></block> <block type="orange"></block> <block type="purple"></block>' +
-                    '<block type="lime"></block> <block type="gold"></block>' ;
-      toolbox3 += '</category> <category> </category>'; //close coloring
-      
-      toolbox3 += '<category name = "+ التحكم">  <block type = "control_if"></block> <block type="weather"></block> ';
-      toolbox3 += '</category> <category> </category>'; //close controls
       toolbox3 += '</xml>';
+      
+      
       
       //------------------------------------------------------------------------------
       var toolbox4 = '<xml> <category></category> ';
-      toolbox4 += '  <category name="+ البلايز"> <block type="top1"></block> <block type="top2"></block> <block type="top3"></block> <block type="top4"></block> <block type="top5"></block>';
+      
+      toolbox4 += '<category name = "+ أسماء الملابس" custom="PROCEDURE">';
+      toolbox4 += '</category> <category> </category>'; //close definitions
+      
+      toolbox4 += '<category name="+ الألوان"> <block type="red"></block> <block type="blue"></block>' + 
+                    '<block type="black"></block> <block type="pink"></block> <block type="grey"></block> <block type="orange"></block> <block type="purple"></block>' +
+                    '<block type="lime"></block> <block type="gold"></block>' ;
+      toolbox4 += '</category> <category> </category>'; //close coloring
+      
+      toolbox4 += '  <category name="+ البلوزة"> <block type="top1"></block> <block type="top2"></block> <block type="top3"></block> <block type="top4"></block> <block type="top5"></block>';
       toolbox4 += '</category> <category> </category>'; //close tops
       
-      toolbox4 += '<category name="+ السفلي"> <block type="bottom1"></block> <block type="bottom2"></block> <block type="bottom3"></block> <block type="bottom4"></block> <block type="bottom5"></block>';
+      toolbox4 += '<category name="+ الجزء السفلي"> <block type="bottom1"></block> <block type="bottom2"></block> <block type="bottom3"></block> <block type="bottom4"></block> <block type="bottom5"></block>';
       
       toolbox4 += '</category> <category> </category>'; //close bottoms
       
@@ -1033,25 +1050,32 @@ Blockly.Block.prototype.showContextMenu_ = function(x, y) {
       
       toolbox4 += '<category name="+ الحذاء"> <block type="shoes1"></block> <block type="shoes2"></block> <block type="shoes3"></block> <block type="shoes4"></block> <block type="shoes5"></block>';
       toolbox4 += '</category> <category> </category>'; //close shoes
+     
       
-      toolbox4 += '<category name="+ الألوان"> <block type="red"></block> <block type="blue"></block>' + 
-                    '<block type="black"></block> <block type="pink"></block> <block type="grey"></block> <block type="orange"></block> <block type="purple"></block>' +
-                    '<block type="lime"></block> <block type="gold"></block>' ;
-      toolbox4 += '</category> <category> </category>'; //close coloring
       
-      toolbox4 += '<category name = "+ التحكم"> <block type = "control_if"></block> <block type="weather"></block>';
-      toolbox4 += '</category> <category> </category>'; //close controls
       
-      toolbox4 += '<category name = "+ اسماء الملابس" custom="PROCEDURE"></category>';
-      toolbox4 += '</category> <category> </category>'; //close definitions
+      
       toolbox4 += '</xml>';
       
       //------------------------------------------------------------------------------
       var toolbox5 = '<xml> <category></category> ';
-      toolbox5 += '  <category name="+ البلايز"> <block type="top1"></block> <block type="top2"></block> <block type="top3"></block> <block type="top4"></block> <block type="top5"></block> <block type="top6"> </block> <block type="top7"> </block> <block type="top8"> </block>';
+      
+      toolbox5 += '<category name = "+ أسماء الملابس" custom="PROCEDURE">';
+      toolbox5 += '</category> <category> </category>'; //close definitions
+      
+      
+      toolbox5 += '<category name = "+ التحكم"> <block type = "control_if"></block> <block type="going_to"></block> ';
+      toolbox5 += '</category> <category> </category>'; //close controls
+      
+      toolbox5 += '<category name="+ الألوان"> <block type="red"></block> <block type="blue"></block>' + 
+                    '<block type="black"></block> <block type="pink"></block> <block type="grey"></block> <block type="orange"></block> <block type="purple"></block>' +
+                    '<block type="lime"></block> <block type="gold"></block>' ;
+      toolbox5 += '</category> <category> </category>'; //close coloring
+      
+      toolbox5 += '  <category name="+ البلوزة"> <block type="top1"></block> <block type="top2"></block> <block type="top3"></block> <block type="top4"></block> <block type="top5"></block> <block type="top6"> </block> <block type="top7"> </block> <block type="top8"> </block>';
       toolbox5 += '</category> <category> </category>'; //close tops
       
-      toolbox5 += '<category name="+ السفلي"> <block type="bottom1"></block> <block type="bottom2"></block> <block type="bottom3"></block> <block type="bottom4"></block> <block type="bottom5"></block> <block type="bottom6"></block> <block type="bottom7"></block> <block type="bottom8"></block>';
+      toolbox5 += '<category name="+ الجزء السفلي"> <block type="bottom1"></block> <block type="bottom2"></block> <block type="bottom3"></block> <block type="bottom4"></block> <block type="bottom5"></block> <block type="bottom6"></block> <block type="bottom7"></block> <block type="bottom8"></block>';
       
       toolbox5 += '</category> <category> </category>'; //close bottoms
       
@@ -1061,51 +1085,38 @@ Blockly.Block.prototype.showContextMenu_ = function(x, y) {
       toolbox5 += '<category name="+ الحذاء"> <block type="shoes1"></block> <block type="shoes2"></block> <block type="shoes3"></block> <block type="shoes4"></block> <block type="shoes5"></block>';
       toolbox5 += '</category> <category> </category>'; //close shoes
       
-      
-      toolbox5 += '<category name="+ الألوان"> <block type="red"></block> <block type="blue"></block>' + 
-                    '<block type="black"></block> <block type="pink"></block> <block type="grey"></block> <block type="orange"></block> <block type="purple"></block>' +
-                    '<block type="lime"></block> <block type="gold"></block>' ;
-      toolbox5 += '</category> <category> </category>'; //close coloring
-      
-      toolbox5 += '<category name = "+ التحكم"> <block type = "control_if"></block> <block type="going_to"></block> <block type="control_repeat"></block>';
-      toolbox5 += '</category> <category> </category>'; //close controls
-      
-      toolbox5 += '<category name = "+ اسماء الملابس" custom="PROCEDURE">  </category>';
-      toolbox5 += '</category> <category> </category>'; //close definitions
       toolbox5 += '</xml>';
       
       //------------------------------------------------------------------------------
       var toolbox6 = '<xml> <category></category> ';
       
-      toolbox6 += '<category name="+ اللسفلي"> <block type="bottom7"></block>';
-      
-      toolbox6 += '</category> <category> </category>'; //close bottoms
-      
-      toolbox6 += '<category name="+ الشعر"> <block type="hair1"></block> <block type="hair2"></block> <block type="hair3"></block> <block type="hair4"></block> <block type="hair5"></block>';
-      toolbox6 += '</category> <category> </category>'; //close hair
-      
-      toolbox6 += '<category name="+ الحذاء"> <block type="shoes1"></block> <block type="shoes2"></block> <block type="shoes3"></block> <block type="shoes4"></block> <block type="shoes5"></block>';
-      toolbox6 += '</category> <category> </category>'; //close shoes
-      
+      toolbox6 += '<category name = "+ التحكم"> <block type="control_repeat"></block>';
+      toolbox6 += '</category> <category> </category>'; //close controls
       
       toolbox6 += '<category name="+ الألوان"> <block type="black"></block> <block type="blue"></block> <block type="grey"></block> ';
                    
       toolbox6 += '</category> <category> </category>'; //close coloring
       
-      toolbox6 += '<category name = "+ التحكم"> <block type="control_repeat"></block>';
-      toolbox6 += '</category> <category> </category>'; //close controls
+      toolbox6 += '<category name="+ الجزء السفلي"><block type = "bottom1"></block> <block type = "bottom5"></block> <block type="bottom7"></block>';
       
-      toolbox6 += '<category name = "+ اسماء الملابس" custom="PROCEDURE"></category>';
-      toolbox6 += '</category> <category> </category>'; //close definitions
+      toolbox6 += '</category> <category> </category>'; //close bottoms
+      
+      toolbox6 += '<category name="+  الشعر"> <block type="hair1"></block> <block type="hair2"></block> <block type="hair3"></block> <block type="hair4"></block> <block type="hair5"></block>';
+      toolbox6 += '</category> <category> </category>'; //close hair
+      
+      toolbox6 += '<category name="+ الحذاء"> <block type="shoes1"></block> <block type="shoes2"></block> <block type="shoes3"></block> <block type="shoes4"></block> <block type="shoes5"></block>';
+      toolbox6 += '</category> <category> </category>'; //close shoes
+      
       toolbox6 += '</xml>';
+     
       
       //------------------------------------------------------------------------------
       var toolbox7 = '<xml> <category></category> ';
      
-      toolbox7 += '  <category name="+ البلايز"> <block type="top1"></block> <block type="top2"></block> <block type="top3"></block> <block type="top4"></block> <block type="top5"></block> <block type="top6"> </block> <block type="top7"> </block> <block type="top8"> </block>';
+      toolbox7 += '  <category name="+ البلوزة"> <block type="top1"></block> <block type="top2"></block> <block type="top3"></block> <block type="top4"></block> <block type="top5"></block> <block type="top6"> </block> <block type="top7"> </block> <block type="top8"> </block>';
       toolbox7 += '</category> <category> </category>'; //close tops
       
-      toolbox7 += '<category name="+ السفلي"> <block type="bottom1"></block> <block type="bottom2"></block> <block type="bottom3"></block> <block type="bottom4"></block> <block type="bottom5"></block> <block type="bottom6"></block> <block type="bottom7"></block> <block type="bottom8"></block>';
+      toolbox7 += '<category name="+ الجزء السفلي"> <block type="bottom1"></block> <block type="bottom2"></block> <block type="bottom3"></block> <block type="bottom4"></block> <block type="bottom5"></block> <block type="bottom6"></block> <block type="bottom7"></block> <block type="bottom8"></block>';
       
       toolbox7 += '</category> <category> </category>'; //close bottoms
       
@@ -1121,10 +1132,10 @@ Blockly.Block.prototype.showContextMenu_ = function(x, y) {
                     '<block type="lime"></block> <block type="gold"></block>' ;
       toolbox7 += '</category> <category> </category>'; //close coloring
       
-      toolbox7 += '<category name = "+ التحم"> <block type = "control_if"></block> <block type="going_to"></block> <block type="weather"></block> <block type="control_repeat"></block>';
+      toolbox7 += '<category name = "+ التحكم"> <block type = "control_if"></block> <block type="going_to"></block> <block type="weather"></block> <block type="control_repeat"></block>';
       toolbox7 += '</category> <category> </category>'; //close controls
       
-      toolbox7 += '<category name = "+ اسماء الملابس" custom="PROCEDURE"></category>';
+      toolbox7 += '<category name = "+ تسمية الملابس" custom="PROCEDURE">';
       toolbox7 += '</category> <category> </category>'; //close definitions
       toolbox7 += '</xml>';
       
@@ -1133,6 +1144,8 @@ Blockly.Block.prototype.showContextMenu_ = function(x, y) {
       {
         case 1:
           Blockly.inject(document.getElementById('rosie-code'), {path: '../blockly/', toolbox: toolbox1, rtl: true } );
+          setHtmlOpacity("hint1", 1.0);
+          fadeOutAfterDelay("hint1", 5000);
           break;
         case 2:
           Blockly.inject(document.getElementById('rosie-code'), {path: '../blockly/', toolbox: toolbox2, rtl: true } );
@@ -1153,10 +1166,11 @@ Blockly.Block.prototype.showContextMenu_ = function(x, y) {
           Blockly.inject(document.getElementById('rosie-code'), {path: '../blockly/', toolbox: toolbox7, rtl: true } );
           break;  
         default:
-          Blockly.inject(document.getElementById('rosie-code'), {path: '../blockly/', toolbox: toolbox1, rtl: true } );
+          Blockly.inject(document.getElementById('rosie-code'), {path: '../blockly/', toolbox: toolbox7, rtl: true } );
       }
       
-      if (CURRENT_LEVEL >= 4) {
+      
+      else if (CURRENT_LEVEL >= 4) {
       	 if ('sessionStorage' in window ) {
       	 	var saved_xml = '<xml>';
       	 	if (sessionStorage.procedure) {

@@ -97,7 +97,7 @@ void main() {
     
     if (msg.startsWith("@dart")) {
       CURRENT_LEVEL = msg.substring(5,6);
-      text['if'] = (CURRENT_LEVEL == "3")? "You need to account for an outfit for cold weather and another for hot weather" : "You need to account for an outfit to a wedding and another to a gym";
+      text['if'] = (CURRENT_LEVEL == "3")? "يجب عليك اختيار لبس للطقس الحار وآخر للطقس البارد" : "يجب عليك اختيار لبس مناسب لحضور الزواج وآخر لنادي الرياضة";
       parts = msg.split("#");
       randomize();
       /*if (CURRENT_LEVEL == "7") {
@@ -208,36 +208,42 @@ void main() {
   
  
   
-  text['repeat'] = "Rosie wants to repeat the process, <br> choose a block to repeat over and over again<br>";
-  text['black'] = "Make sure you choose the color black <br> for one of the bottoms!";
-  text['grey'] = "Make sure you choose the color grey <br> for one of the bottoms!";
-  text['blue'] = "Make sure you choose the color blue <br> for one of the bottoms!";
-  
-  
-  text['weather'] = "Remember, it might be hot or cold outside";
-  
-  
-  text['top'] = "Make sure you choose both a top and a bottom!";
-  text['bottom'] = "Make sure you choose both a top and a bottom!";
-  
-  text['top_purple'] = "Remember, dress code is purple! <br/> you can change the outfit color from the coloring menu<br>";
-  text['bottom_purple'] = "Remember, dress code is purple! <br> you can change the outfit color from the coloring menu<br>";
-  
-  text['other'] = "Make sure you choose an outfit for each case";
-  text['then'] = "Make sure you choose an outfit for each case";
+
+  text['repeat'] = "روزي تريد تكرار العرض عدة مرات, <br> اختر مكعب لمساعدتك في التكرار مرة تلو الأخرى<br>";
+  text['black'] = "تأكد من اختيارك اللون الأسود بالاضافة الى بقية الألوان <br> ";
+  text['grey'] = "أكد من اختيارك اللون الرمادي بالاضافة الى بقية الألوان <br> ";
+  text['blue'] = "أكد من اختيارك اللون الأزرق بالاضافة الى بقية الألوان <br> ";
+  text['repeat_st'] = "تأكد من تكرار" ;
+    
+  text['weather'] = "تذكر! قد يكون الطقس حار أو بارد في الخارج";
+    
+    
+  text['top'] = "تأكد من اختيارك لجميع اجزاء الملابس";
+  text['bottom'] = "تأكد من اختيارك لجميع أجزاء الملابس";
+    
+  text['top_purple'] = "تذكر! يجب على الجميع لبس اللون الموف، بامكانك تغيير لون اللبس من قائمة الألوان <br/> <br>";
+  text['bottom_purple'] = "تذكر! يجب على الجميع لبس اللون الموف، بامكانك تغيير لون اللبس من قائمة الألوان <br> <br>";
+    
+  text['other'] = "تأكد من اختيارك لبس مناسب لكل الحالتين";
+  text['then'] = "تأكد من اختيارك لبس مناسب لكل الحالتين";
   text['color'] = "Remember, top will only be either black or purple";
   text['get'] = "Choose a block to help you decide ";
-  text['going'] = "Remember, there are two occasions";
- 
-  
-  text['abstraction'] = "Make sure you fill the definition";
-  text['call'] = "You created a definition but didn't use it!";
-  text['func'] = "Outfit definitions menu help you create a shortcut";
-  
+  text['going'] = "تذكر! قد تذهب روزي الى مكانين مختلفين";
+   
+    
+  text['abstraction'] = "تأكد من اختيار الملابس المناسبة لهذا الاسم";
+  text['call'] = "لقد قمت باختيار اسم اللبس ولكنك لم تقم باستخدامه، بامكانك ايجاده في قائمة اسماء الملابس";
+  text['func'] = "قائمة اسماء الملابس تساعدك في اختيار اللبس بطريقة اسرع لاحقاَ";
+    
   text['all_black'] = "Remember, Rosie doesn't want to wear all black!";
   text['not_black'] = "Remember, Rosie wants a black bottom <br> if the top is not black";
-  
-  text['place'] = 'Remember, you need to wear the wedding outfit when going to a wedding';
+    
+  text['place'] = 'تذكر! لقد قمت بتنسيق لبس للحفلات سابقاً، بامكانك استخدامه الآن في قائمة اسماء الملابس';
+    
+  text['place_gym_mismatch'] = "هل أنت جاد؟ <br> قم باختيار لبس مناسب للمكانين المختلفين ";
+  text['place_wedding_mismatch'] = "هل أنت جاد؟ <br> قم باختيار لبس مناسب للمكانين المختلفين";
+  text['weather_hot_mismatch'] = "هل أنت جاد؟ <br> قم باختيار لبس مناسب للطقسين المختلفين";
+  text['weather_cold_mismatch'] = "هل أنت جاد؟ <br> قم باختيار لبس مناسب للطقسين المختلفين";
   
 }
 
@@ -703,8 +709,7 @@ void randomize() {
   Random rnd = new Random();
   var x = rnd.nextInt(2);
   CURRENT_PLACE = places[x];
-  text['place_gym_mismatch'] = "Don't be silly! <br> choose appropriate outfits to each place!";
-  text['place_wedding_mismatch'] = "Don't be silly! <br> choose appropriate outfits to each place!";
+  
   
   var colors = ['black', 'purple'];
   
@@ -718,8 +723,6 @@ void randomize() {
   x = rnd.nextInt(2);
   CURRENT_WEATHER = weather[x];
    
-  text['weather_hot_mismatch'] = "Don't be silly! <br> choose appropriate outfits to each weather!";
-  text['weather_cold_mismatch'] = "Don't be silly! <br> choose appropriate outfits to each weather!";
   
 }
 
