@@ -211,7 +211,8 @@
   	  	
       	if (el) {
       		el.style.visibility = visible ? "visible" : "hidden";
-      		el.style.zIndex = Zindex++;
+      		if (variations != "background")
+      			el.style.zIndex = Zindex++;
       	}
       	
       	

@@ -211,7 +211,8 @@
   	  	
       	if (el) {
       		el.style.visibility = visible ? "visible" : "hidden";
-      		el.style.zIndex = Zindex++;
+      		if (variations != "background")
+      			el.style.zIndex = Zindex++;
       	}
       	
       	
@@ -1170,7 +1171,7 @@ Blockly.Block.prototype.showContextMenu_ = function(x, y) {
       }
       
       
-      else if (CURRENT_LEVEL >= 4) {
+      if (CURRENT_LEVEL >= 4) {
       	 if ('sessionStorage' in window ) {
       	 	var saved_xml = '<xml>';
       	 	if (sessionStorage.procedure) {

@@ -65,6 +65,7 @@ A:hover {text-decoration: underline; color: rgba(102, 0, 102, .6);}
    padding: 10px;
    text-align: center;
    background-color: rgba(255, 192, 203, .6); 
+   z-index: 2;
 }
 
 #rosie-toolbar {
@@ -79,25 +80,6 @@ A:hover {text-decoration: underline; color: rgba(102, 0, 102, .6);}
    padding: 5px;
    width: 150px;
    z-index: 2147483647;
-}
-
-
-.swatch {
-   background-color: red;
-   width: 30px;
-   height: 30px;
-   border-radius: 17px;
-   display: inline-block;
-   margin: 3px;
-}
-
-.pswatch {
-   background-color: #666;
-   width: 60px;
-   height: 60px;
-   display: inline-block;
-   margin: 3px;
-   border-radius: 30px;
 }
 
 
@@ -118,14 +100,11 @@ button {
 
 .background {
   position: absolute;
-  transition: opacity .25s ease-in-out;
-  -moz-transition: opacity .25s ease-in-out;
-  -webkit-transition: opacity .25s ease-in-out;
   opacity: 100;
-  z-index: 2;
+  z-index: 1;
   visibility : hidden;
-  left: 1150px;
-  top: 100px;
+  left: 1120px;
+  top: 88px;
   
 }
 
@@ -135,7 +114,7 @@ button {
    -moz-transition: opacity .25s ease-in-out;
    -webkit-transition: opacity .25s ease-in-out;
    opacity: 100;
-   z-index: 2;
+   z-index: 3;
    visibility : hidden;
    left: 1120px;
    top: 88px;
@@ -149,7 +128,7 @@ button {
    -moz-transition: opacity .25s ease-in-out;
    -webkit-transition: opacity .25s ease-in-out;
    opacity: 100;
-   z-index: 2;
+   z-index: 3;
    visibility : hidden;
    left: 1120px;
    top: 88px;
@@ -162,7 +141,7 @@ button {
   -moz-transition: opacity .25s ease-in-out;
   -webkit-transition: opacity .25s ease-in-out;
   opacity: 100;
-  z-index: 2;
+  z-index: 3;
   visibility : hidden;
   left: 1120px;
   top: 88px;
@@ -175,7 +154,7 @@ button {
   -moz-transition: opacity .25s ease-in-out;
   -webkit-transition: opacity .25s ease-in-out;
   opacity: 100;
-  z-index: 2;
+  z-index: 3;
   visibility : hidden;
   left: 1120px;
   top: 88px;
