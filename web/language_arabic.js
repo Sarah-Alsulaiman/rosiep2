@@ -73,7 +73,7 @@ Blockly.Language.top3 = {
     this.setTooltip( function() {
       					var color = Blockly.JavaScript.valueToCode(thisBlock, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
       					if (color == '0')
-      						return 'top3-blue';
+      						return 'top3-red';
       					else {
       						color = color.replace(/"/g, "").replace(/\(/g, "").replace(/\)/g, "");
       						console.log("COLOR="+color);
@@ -291,14 +291,14 @@ Blockly.Language.bottom3 = {
     this.setColour(330, .45, .65);
     this.appendValueInput("color")
         .setCheck([String, "var"])
-        .appendTitle("فستان جزء سفلي")
+        .appendTitle("فستان سفلي")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     var thisBlock = this; 
     this.setTooltip( function() {
       					var color = Blockly.JavaScript.valueToCode(thisBlock, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
       					if (color == '0')
-      						return 'bottom3-blue';
+      						return 'bottom3-red';
       					else {
       						color = color.replace(/"/g, "").replace(/\(/g, "").replace(/\)/g, "");
       						console.log("COLOR="+color);
@@ -459,7 +459,7 @@ Blockly.Language.shoes1 = {
     this.setColour(330, .45, .65);
     this.appendValueInput("color")
         .setCheck([String, "var"])
-        .appendTitle("جزمة فلات")
+        .appendTitle("حذاء فلات")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     var thisBlock = this; 
@@ -543,7 +543,7 @@ Blockly.Language.shoes4 = {
     this.setColour(330, .45, .65);
     this.appendValueInput("color")
         .setCheck([String, "var"])
-        .appendTitle("جزمة رياضة")
+        .appendTitle("حذاء رياضي")
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     var thisBlock = this; 
@@ -954,7 +954,7 @@ Blockly.Language.control_if = {
     this.appendValueInput("CONDITION")
         .setCheck(["input", "going_to", "weather"])
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendTitle("اذا كان");
+        .appendTitle("اذا كان: ");
     this.appendDummyInput();
     this.appendStatementInput("THEN")
     .setAlign(Blockly.ALIGN_RIGHT)
@@ -962,7 +962,7 @@ Blockly.Language.control_if = {
     this.appendDummyInput();
     this.appendStatementInput("ELSE")
     .setAlign(Blockly.ALIGN_RIGHT)
-        .appendTitle("اذا لم يكن صحيحاَ");
+        .appendTitle("اذا لم يكن صحيحاً");
     this.appendDummyInput()
     this.setPreviousStatement(true);
     this.setNextStatement(true);
@@ -977,7 +977,7 @@ Blockly.Language.going_to = {
     this.setColour(34, .66, .95);
     this.appendDummyInput()
         .appendTitle("المكان")
-        .appendTitle(new Blockly.FieldDropdown([["زواج", "wedding"], ["نادي الرياضة", "gym"]]), "place");
+        .appendTitle(new Blockly.FieldDropdown([["حفلة", "wedding"], ["نادي الرياضة", "gym"]]), "place");
     this.setOutput(true, "going_to");
     this.setTooltip('');
   }
@@ -990,7 +990,7 @@ Blockly.Language.weather = {
   init: function() {
     this.setColour(34, .66, .95);
     this.appendDummyInput()
-        .appendTitle(": الطقس في الخارج")
+        .appendTitle("الطقس في الخارج")
         .appendTitle(new Blockly.FieldDropdown([["حار", "hot"], ["بارد", "cold"]]), "weather");
     this.setOutput(true, "weather");
     this.setTooltip('');
@@ -1013,7 +1013,7 @@ Blockly.Language.procedures_defnoreturn = {
     var name = Blockly.Procedures.findLegalName(
         Blockly.LANG_PROCEDURES_DEFNORETURN_PROCEDURE, this);
     this.appendDummyInput()
-    	.appendTitle(": اسم اللبس")
+    	.appendTitle("اسم اللبس")
         .appendTitle(new Blockly.FieldTextInput("ضع اسم مناسب هنا",
         Blockly.Procedures.rename), 'NAME')
         .appendTitle('', 'PARAMS');
@@ -1207,7 +1207,7 @@ Blockly.Language.procedures_callnoreturn = {
   init: function() {
     this.setColour(34, .66, .95);
     this.appendDummyInput()
-        .appendTitle(": قم بارتداء التالي")
+        .appendTitle("اختصار الى اللبس: ")
         .appendTitle(Blockly.LANG_PROCEDURES_CALLNORETURN_PROCEDURE, 'NAME');
     this.setPreviousStatement(true);
     this.setNextStatement(true);

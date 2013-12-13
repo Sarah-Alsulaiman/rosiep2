@@ -97,7 +97,7 @@ void main() {
     
     if (msg.startsWith("@dart")) {
       CURRENT_LEVEL = msg.substring(5,6);
-      text['if'] = (CURRENT_LEVEL == "3")? "You need to account for an outfit for cold weather and another for hot weather" : "You need to account for an outfit to a wedding and another to a gym";
+      text['if'] = (CURRENT_LEVEL == "3")? "You need to account for an outfit for cold weather and another for hot weather" : "You need to account for an outfit to a party and another to a gym";
       parts = msg.split("#");
       randomize();
       /*if (CURRENT_LEVEL == "7") {
@@ -231,13 +231,16 @@ void main() {
  
   
   text['abstraction'] = "Make sure you fill the definition";
-  text['call'] = "You created a definition but didn't use it!";
+  text['call'] = "You created a definition but didn't use it, you can find its shortcut in the outfit definitions menu";
   text['func'] = "Outfit definitions menu help you create a shortcut";
   
   text['all_black'] = "Remember, Rosie doesn't want to wear all black!";
   text['not_black'] = "Remember, Rosie wants a black bottom <br> if the top is not black";
   
-  text['place'] = 'Remember, you need to wear the wedding outfit when going to a wedding';
+  text['place'] = 'Remember, you can use the shortcut when going to a party';
+  
+  text['count'] = 'Remember, Rosie wants to repeat 3 times!';
+  
   
 }
 
@@ -542,7 +545,9 @@ void processRepeat(List nested, bool consider) {
   var outfit;
   
   blocks[block_name['repeat']][1] = true; print("repeat FOUND");
-  
+  if (count != 3) {
+    ERR_MSG = 'count';
+  }
   for (var i=0; i < count; i++) {
     interpret(block, consider);
   }

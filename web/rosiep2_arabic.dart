@@ -97,7 +97,7 @@ void main() {
     
     if (msg.startsWith("@dart")) {
       CURRENT_LEVEL = msg.substring(5,6);
-      text['if'] = (CURRENT_LEVEL == "3")? "يجب عليك اختيار لبس للطقس الحار وآخر للطقس البارد" : "يجب عليك اختيار لبس مناسب لحضور الزواج وآخر لنادي الرياضة";
+      text['if'] = (CURRENT_LEVEL == "3")? "يجب عليك اختيار لبس للطقس الحار وآخر للطقس البارد" : "يجب عليك اختيار لبس مناسب لحضور الحفلة وآخر لنادي الرياضة";
       parts = msg.split("#");
       randomize();
       /*if (CURRENT_LEVEL == "7") {
@@ -232,18 +232,22 @@ void main() {
    
     
   text['abstraction'] = "تأكد من اختيار الملابس المناسبة لهذا الاسم";
-  text['call'] = "لقد قمت باختيار اسم اللبس ولكنك لم تقم باستخدامه، بامكانك ايجاده في قائمة اسماء الملابس";
+  text['call'] = "لقد قمت باختيار اسم اللبس ولكنك لم تقم باستخدامه، بإمكانك إيجاد الاختصار المخصص له في قائمة اسماء الملابس";
   text['func'] = "قائمة اسماء الملابس تساعدك في اختيار اللبس بطريقة اسرع لاحقاَ";
     
   text['all_black'] = "Remember, Rosie doesn't want to wear all black!";
   text['not_black'] = "Remember, Rosie wants a black bottom <br> if the top is not black";
     
-  text['place'] = 'تذكر! لقد قمت بتنسيق لبس للحفلات سابقاً، بامكانك استخدامه الآن في قائمة اسماء الملابس';
+  text['place'] = 'تذكر! لقد قمت بتنسيق لبس للحفلات سابقاً، بامكانك استخدامه عن طريق الاختصار المخصص له من قائمة اسماء الملابس';
+  
+  text['count'] = 'تذكر! روزي تريد التكرار لـ 3 مرات!';
     
   text['place_gym_mismatch'] = "هل أنت جاد؟ <br> قم باختيار لبس مناسب للمكانين المختلفين ";
   text['place_wedding_mismatch'] = "هل أنت جاد؟ <br> قم باختيار لبس مناسب للمكانين المختلفين";
   text['weather_hot_mismatch'] = "هل أنت جاد؟ <br> قم باختيار لبس مناسب للطقسين المختلفين";
   text['weather_cold_mismatch'] = "هل أنت جاد؟ <br> قم باختيار لبس مناسب للطقسين المختلفين";
+  
+  
   
 }
 
@@ -548,7 +552,8 @@ void processRepeat(List nested, bool consider) {
   var outfit;
   
   blocks[block_name['repeat']][1] = true; print("repeat FOUND");
-  
+  if (count != 3)
+    ERR_MSG = 'count';
   for (var i=0; i < count; i++) {
     interpret(block, consider);
   }

@@ -8,9 +8,9 @@
     var LEVELS_MSG = ["<BR>ترغب روزي بالذهاب مع صديقتها ياسمين الى المطعم، هل بإمكانك مساعدتها في اختيار اللبس المناسب؟<BR><BR> ",
                         "<BR> تلقت روزي دعوة لحضورحفلة نجاح صديقتها ياسمين، يجب على الجميع لبس اللون الموف <BR/> هل بإمكانك مساعدة روزي في اختيار اللبس؟",
                         "<BR> روزي تود الخروج للتنزه، هل بإمكانك مساعدتها في اختيار لبس بحيث اذا كان الطقس حار فإنها ستلبس ملابس صيفية،<BR> أما اذا كان الطقس بارد، فإنها ستلبس ملابس شتوية",
-                        "<BR> الآن، بامكانك اختيار لبس بألوانك المفضلة لحضور الحفلات واطلاق اسم عليه لتتمكن من استخدامه لاحقاً بدون الحاجة لإعادة تنسيقه، هل بإمكانك اختيار هذا اللبس وجعل روزي ترتديه؟<BR>",
-                        "<BR> هل بإمكانك اختيار الملابس لروزي بحيث اذا كانت ستذهب الى حفلة تخرج صديقتها دينا، سوف تقوم بلبس الملابس المفضلة التي قمت باختيارها سابقاً، أما اذا كانت ستذهب الى النادي الرياضي، فإنها ستلبس ملابس الرياضة؟<BR>",
-                        "<BR> روزي تريد عمل عرض أزياء، سوف تقوم بلبس بنطلون جينز، ثم تنورة طويلة سوداء، ثم تنورة قصيرة رمادية،<BR>ثم ستقوم بتكرار هذه العملية 5 مرات،هل بإمكانك مساعدة روزي لعمل عرض الأزياء؟<BR>",
+                        "<BR> الآن، بامكانك انشاء اختصار للزي الخاص بالحفلات واطلاق اسم عليه لتتمكن من استخدامه لاحقاً بدون الحاجة لإعادة تنسيقه، هل بإمكانك اختيار هذا الزي وجعل روزي ترتديه؟(تلميح:سوف يظهر الاختصار في قائمة اسماء الملابس بعد تنسيقك لهذا الزي )<BR>",
+                        "<BR> هل بإمكانك اختيار الملابس لروزي بحيث اذا كانت ستذهب الى حفلة تخرج صديقتها دينا، سوف تقوم بلبس الملابس المفضلة التي قمت باختيارها سابقاً عن طريق الاختصار، أما اذا كانت ستذهب الى النادي الرياضي، فإنها ستلبس ملابس الرياضة؟<BR>",
+                        "<BR> روزي تريد عمل عرض أزياء، سوف تقوم بلبس بنطلون جينز، ثم تنورة طويلة سوداء، ثم تنورة قصيرة رمادية،<BR>ثم ستقوم بتكرار هذه العملية 3 مرات،هل بإمكانك مساعدة روزي لعمل عرض الأزياء؟<BR>",
                         "<BR> الآن يمكنك اللعب بالمكعبات بكل حرية ...<br><br>"
                        ];
     // Rosie wore a top that is either black or purple, when she wears a black top, she doesn't want to wear a black bottom, otherwise she wants the bottom to be black. Pick a bottom so that she doesn't wear all black (hint: check new blocks in the control section!)                   
@@ -35,8 +35,9 @@
     var originalShoes;
     var originalHair;
     var tempImg;
-    var Zindex = 3;
+    var Zindex = 4;
     var originalZindex;
+    var CURRENT_BG = 'room';
     
     var dafault_procedure = false;
 //-----------------------------------------------------------------------------------------
@@ -99,7 +100,7 @@
 	function advanceLevel () {
 		storeProcedure();
       if (CURRENT_LEVEL < MAX_LEVEL - 1) {
-        $.jqDialog.confirm("رائع..!<BR/> <BR/> هل تود الاستمرار؟ ".replace('%1', CURRENT_LEVEL + 1),
+        $.jqDialog.confirm("رائع..! لقد تمت اضافة مكعبات جديدة للملابس داخل القوائم<BR/> <BR/> هل تود الاستمرار؟ ".replace('%1', CURRENT_LEVEL + 1),
         function() { window.location = window.location.protocol + '//' +
                      window.location.host + window.location.pathname +
                      '?level=' + (CURRENT_LEVEL + 1); },    // callback function for 'YES' button
@@ -109,7 +110,7 @@
       }
       
       else if (CURRENT_LEVEL == MAX_LEVEL - 1) {
-        $.jqDialog.alert("<center> !Ù…Ø¨Ø±ÙˆÙƒ <br> مبروك، لقد أنهيت كافة المراحل <br> <br>الآن يمكنك للعب بالمكعبات بحرية ! </center>", 
+        $.jqDialog.alert("<center> مبروك! <br> لقد أنهيت كافة المراحل <br> <br>الآن يمكنك اللعب بالمكعبات بحرية ! </center>", 
         				function() { window.location = window.location.protocol + '//' + window.location.host + window.location.pathname + '?level=' + (CURRENT_LEVEL + 1);  }); // callback function for 'OK' button
       }   
     }
@@ -202,20 +203,23 @@
       	
       	hideVariations(variations);
       	
-		
+      	if (el) {
+      		if (variations != "background") {
+	      		el.style.visibility = visible ? "visible" : "hidden";
+	      		el.style.zIndex = Zindex++;
+      		}
+      		else {
+      			var bg = document.getElementById("rosie-output");
+      			bg.style.background = "url(\'images//" + id + ".png\')";
+      			CURRENT_BG = id;
+      		}
+      	}
+     	
   	   	if (CURRENT_LEVEL == 6)
       		document.getElementById('top5-red').style.visibility = "visible";
       		
   	   	img_blank.style.visibility = "hidden";
-  	  	
-  	  	
-      	if (el) {
-      		el.style.visibility = visible ? "visible" : "hidden";
-      		if (variations != "background")
-      			el.style.zIndex = Zindex++;
-      	}
-      	
-      	
+  
    	}
    	
    	
@@ -261,14 +265,6 @@
    			
    			}
    		}
-   		
-  	 	
-   		var places = ['gym', 'wedding', 'hot', 'cold'];
-   			
-   		for ( var i=0; i < places.length; i++) {
-   			var bg = document.getElementById(places[i]);
-   			bg.style.visibility = "hidden";
-   		}
    			
    	}
    
@@ -279,7 +275,7 @@
     	hideVariations("bottom");
     	hideVariations("shoes");
     	hideVariations("hair");
-   
+    	
     }
     
 	function setHtmlOpacity(id, opacity) {
@@ -392,6 +388,7 @@
 //  Send the generated Javascript code to dart for processing                                                                                  
 //---------------------------------------------------------------------------------------
 	function sendBlocklyCode() {
+		
       if (!playing) {
         var code = Blockly.Generator.workspaceToCode('JavaScript');
         //alert(code);
@@ -433,6 +430,10 @@
    
               tempImg = '';
               playing = true;
+              if (CURRENT_BG != 'room') {
+              	var bg = document.getElementById("rosie-output");		
+      			bg.style.background = "url(\'images//room.png\')";
+              }
               //window.location.reload(true);
             //}
           }
@@ -441,7 +442,7 @@
       }
       
       else {
-      	alert("مازالت روزي تلبس ماقمت باختياره من قبل، الرجاء ضغط موافق وانتظارها لحين اكتمال اللبس السابق");
+      	alert("مازالت روزي تقوم بارتداء ماقمت باختياره من قبل، الرجاء ضغط موافق وانتظارها لحين اكتمال اللبس السابق");
       
       }
     }
@@ -453,7 +454,7 @@
 //----------------------------------------------------------------------------------------
 	function inject() {     populate();
 	
-		//Blockly.Workspace.prototype.traceOn = true;
+		//Blockly.Workspace.traceOn(true);
       //***********************************************************************************************
       Blockly.makeColour = function(hue, sat, val) {
 		  return goog.color.hsvToHex(hue, sat,
@@ -1053,9 +1054,6 @@ Blockly.Block.prototype.showContextMenu_ = function(x, y) {
       toolbox4 += '</category> <category> </category>'; //close shoes
      
       
-      
-      
-      
       toolbox4 += '</xml>';
       
       //------------------------------------------------------------------------------
@@ -1064,8 +1062,7 @@ Blockly.Block.prototype.showContextMenu_ = function(x, y) {
       toolbox5 += '<category name = "+ أسماء الملابس" custom="PROCEDURE">';
       toolbox5 += '</category> <category> </category>'; //close definitions
       
-      
-      toolbox5 += '<category name = "+ التحكم"> <block type = "control_if"></block> <block type="going_to"></block> ';
+      toolbox5 += '<category name = "+ التحكم"> <block type="going_to"></block> <block type = "control_if"></block> ';
       toolbox5 += '</category> <category> </category>'; //close controls
       
       toolbox5 += '<category name="+ الألوان"> <block type="red"></block> <block type="blue"></block>' + 
@@ -1091,6 +1088,9 @@ Blockly.Block.prototype.showContextMenu_ = function(x, y) {
       //------------------------------------------------------------------------------
       var toolbox6 = '<xml> <category></category> ';
       
+      toolbox6 += '<category name = "+ أسماء الملابس" custom="PROCEDURE">';
+      toolbox6 += '</category> <category> </category>'; //close definitions
+      
       toolbox6 += '<category name = "+ التحكم"> <block type="control_repeat"></block>';
       toolbox6 += '</category> <category> </category>'; //close controls
       
@@ -1114,6 +1114,17 @@ Blockly.Block.prototype.showContextMenu_ = function(x, y) {
       //------------------------------------------------------------------------------
       var toolbox7 = '<xml> <category></category> ';
      
+      toolbox7 += '<category name = "+ تسمية الملابس" custom="PROCEDURE">';
+      toolbox7 += '</category> <category> </category>'; //close definitions
+      
+      toolbox7 += '<category name = "+ التحكم"> <block type = "control_if"></block> <block type="going_to"></block> <block type="weather"></block> <block type="control_repeat"></block>';
+      toolbox7 += '</category> <category> </category>'; //close controls
+      
+      toolbox7 += '<category name="+ الألوان"> <block type="red"></block> <block type="blue"></block>' + 
+                    '<block type="black"></block> <block type="pink"></block> <block type="grey"></block> <block type="orange"></block> <block type="purple"></block>' +
+                    '<block type="lime"></block> <block type="gold"></block>' ;
+      toolbox7 += '</category> <category> </category>'; //close coloring
+      
       toolbox7 += '  <category name="+ البلوزة"> <block type="top1"></block> <block type="top2"></block> <block type="top3"></block> <block type="top4"></block> <block type="top5"></block> <block type="top6"> </block> <block type="top7"> </block> <block type="top8"> </block>';
       toolbox7 += '</category> <category> </category>'; //close tops
       
@@ -1128,16 +1139,11 @@ Blockly.Block.prototype.showContextMenu_ = function(x, y) {
       toolbox7 += '</category> <category> </category>'; //close shoes
       
       
-      toolbox7 += '<category name="+ الألوان"> <block type="red"></block> <block type="blue"></block>' + 
-                    '<block type="black"></block> <block type="pink"></block> <block type="grey"></block> <block type="orange"></block> <block type="purple"></block>' +
-                    '<block type="lime"></block> <block type="gold"></block>' ;
-      toolbox7 += '</category> <category> </category>'; //close coloring
       
-      toolbox7 += '<category name = "+ التحكم"> <block type = "control_if"></block> <block type="going_to"></block> <block type="weather"></block> <block type="control_repeat"></block>';
-      toolbox7 += '</category> <category> </category>'; //close controls
       
-      toolbox7 += '<category name = "+ تسمية الملابس" custom="PROCEDURE">';
-      toolbox7 += '</category> <category> </category>'; //close definitions
+      
+      
+     
       toolbox7 += '</xml>';
       
       
@@ -1179,7 +1185,7 @@ Blockly.Block.prototype.showContextMenu_ = function(x, y) {
       	 		for ( x=0; x < pArr.length; x++) {
       	 			saved_xml += pArr[x];
       	 		}
-      	 		//saved_xml += sessionStorage.procedure;
+      	 		//saved_xml += '<title name="TEXT">hello</title>';
       	 		saved_xml += '</xml>';	
       	 		var xml = Blockly.Xml.textToDom(saved_xml);
       			Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
@@ -1190,6 +1196,8 @@ Blockly.Block.prototype.showContextMenu_ = function(x, y) {
       	
       }
       
+      var div = document.getElementById('rosie-code');
+      //div.innerHTML = div.innerHTML + 'hi';
       
       document.getElementById('full_text_div').innerHTML= LEVELS_MSG[CURRENT_LEVEL - 1];
       //document.getElementById('level-h').innerHTML= "Level " + CURRENT_LEVEL + " :";

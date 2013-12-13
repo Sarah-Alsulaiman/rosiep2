@@ -73,7 +73,7 @@ Blockly.Language.top3 = {
     this.setTooltip( function() {
       					var color = Blockly.JavaScript.valueToCode(thisBlock, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
       					if (color == '0')
-      						return 'top3-blue';
+      						return 'top3-red';
       					else {
       						color = color.replace(/"/g, "").replace(/\(/g, "").replace(/\)/g, "");
       						console.log("COLOR="+color);
@@ -298,7 +298,7 @@ Blockly.Language.bottom3 = {
     this.setTooltip( function() {
       					var color = Blockly.JavaScript.valueToCode(thisBlock, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
       					if (color == '0')
-      						return 'bottom3-blue';
+      						return 'bottom3-red';
       					else {
       						color = color.replace(/"/g, "").replace(/\(/g, "").replace(/\)/g, "");
       						console.log("COLOR="+color);
@@ -975,7 +975,7 @@ Blockly.Language.going_to = {
     this.setColour(34, .66, .95);
     this.appendDummyInput()
         .appendTitle("Going To")
-        .appendTitle(new Blockly.FieldDropdown([["wedding", "wedding"], ["gym", "gym"]]), "place");
+        .appendTitle(new Blockly.FieldDropdown([["party", "wedding"], ["gym", "gym"]]), "place");
     this.setOutput(true, "going_to");
     this.setTooltip('');
   }
@@ -1205,7 +1205,7 @@ Blockly.Language.procedures_callnoreturn = {
   init: function() {
     this.setColour(34, .66, .95);
     this.appendDummyInput()
-        .appendTitle("Wear")
+        .appendTitle("Shortcut to:")
         .appendTitle(Blockly.LANG_PROCEDURES_CALLNORETURN_PROCEDURE, 'NAME');
     this.setPreviousStatement(true);
     this.setNextStatement(true);

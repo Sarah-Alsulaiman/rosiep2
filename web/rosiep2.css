@@ -31,6 +31,28 @@ body {
    background-color: white; 
 }
 
+
+#rosie-output {
+   position: absolute;
+   left: 1110px;
+   top: 78px;
+   width: 600px;
+   height: 920px;
+   background: url("images/room.png");
+   
+}
+
+.rosie {
+  z-index:2;
+  position: absolute;
+   left: 1120px;
+   top: 88px;
+   width: 600px;
+   height: 900px;
+   
+   
+}
+
 .level-text {
    background-color: white;
    width: 888px;
@@ -56,17 +78,6 @@ A:active {text-decoration: none}
 A:hover {text-decoration: underline; color: rgba(102, 0, 102, .6);}
 
 
-#rosie-output {
-   position: absolute;
-   left: 1110px;
-   top: 78px;
-   width: 600px;
-   height: 900px;
-   padding: 10px;
-   text-align: center;
-   background-color: rgba(255, 192, 203, .6); 
-   z-index: 2;
-}
 
 #rosie-toolbar {
    background-color: rgba(255, 192, 203, 1); 
@@ -74,7 +85,7 @@ A:hover {text-decoration: underline; color: rgba(102, 0, 102, .6);}
    border: 2px solid;
    border-color:  rgba(102, 0, 102, .6);
    position: absolute;
-   top: 940px;
+   top: 945px;
    left: 1380px;
    text-align: center;
    padding: 5px;
@@ -100,11 +111,12 @@ button {
 
 .background {
   position: absolute;
+  transition: opacity .25s ease-in-out;
+  -moz-transition: opacity .25s ease-in-out;
+  -webkit-transition: opacity .25s ease-in-out;
   opacity: 100;
   z-index: 1;
   visibility : hidden;
-  left: 1120px;
-  top: 88px;
   
 }
 

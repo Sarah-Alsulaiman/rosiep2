@@ -7,13 +7,13 @@
     var CURRENT_LEVEL = getLevel();
     var LEVELS_MSG = ["<br>Rosie is going to a resturant with her friend, Jasmin. Help her decide what to wear.<BR><BR>",
                         "<br>Rosie is invited to a party. Dress code is purple. <BR/> Help Rosie decide what to wear.",
-                        " Rosie wants to go out for a walk. Can you help Rosie choose what to wear so that when it's hot outside, she would wear summer clothes, and when it is cold outside she would wear winter clothes?",
-                        " Now, you can pick an outfit with your favorite colors to wear to parties and give it a name so that you can use it faster later, can you pick such outfit and let Rosie wear it?",
-                        " Can you dress Rosie so that when she is going to her friend's graduation party, shoe would wear the favorite outfit you picked earlier, and when she is going to a gym, she would wear gym outfit?",
-                        " Rosie wants to do a fashion show where she will wear a blue jeans and then a black long skirt and then a short grey skirt, she will do this over and over again 5 times in a row",
-                        " Play with the blocks as you like! <br><br>"
+                        "<br>Rosie wants to go out for a walk. Can you help Rosie choose what to wear so that when it's hot outside, she would wear summer clothes, and when it is cold outside she would wear winter clothes?",
+                        "Now, you can create a shortcut for an outfit with your favorite colors to wear to parties and give it a name so that you can use it faster later, can you pick such outfit and let Rosie wear it?(Hint: a shortcut will appear in the 'outfit definitions' menu just after you create a full outfit",
+                        "Can you dress Rosie so that when she is going to her friend's graduation party, she would wear the favorite outfit you picked earlier using the shortcut, and when she is going to a gym, she would wear gym outfit?",
+                        "<br>Rosie wants to do a fashion show where she will wear a blue jeans and then a black long skirt and then a short grey skirt, she will do this over and over again 3 times in a row",
+                        "<br>Play with the blocks as you like! <br><br>"
                        ];
-    // Rosie wore a top that is either black or purple, when she wears a black top, she doesn't want to wear a black bottom, otherwise she wants the bottom to be black. Pick a bottom so that she doesn't wear all black (hint: check new blocks in the control section!)                   
+    // Rosie wore a top that is either black or purple, when she wears a black top, she doesn't want to wear a black bottom, otherwise she wants the bottom to be black. Pick a bottom so that she doesn't wear all black (Hint: check new blocks in the control section!)                   
     var colors = ['red', 'blue', 'gold', 'lime', 'black', 'pink', 'orange' , 'purple', 'grey'];
     var playing = false;
     var error = '';
@@ -37,6 +37,7 @@
     var tempImg;
     var Zindex = 3;
     var originalZindex;
+    var CURRENT_BG = 'room';
     
     var dafault_procedure = false;
 //-----------------------------------------------------------------------------------------
@@ -99,7 +100,7 @@
 	function advanceLevel () {
 		storeProcedure();
       if (CURRENT_LEVEL < MAX_LEVEL - 1) {
-        $.jqDialog.confirm("Wonderful!<BR/> <BR/> Would you like to continue? ".replace('%1', CURRENT_LEVEL + 1),
+        $.jqDialog.confirm("Wonderful! Now you have more outfit options to use inside the menues!<BR/> <BR/>Would you like to continue? ".replace('%1', CURRENT_LEVEL + 1),
         function() { window.location = window.location.protocol + '//' +
                      window.location.host + window.location.pathname +
                      '?level=' + (CURRENT_LEVEL + 1); },    // callback function for 'YES' button
@@ -203,17 +204,22 @@
       	hideVariations(variations);
       	
 		
+  	   	if (el) {
+      		if (variations != "background") {
+	      		el.style.visibility = visible ? "visible" : "hidden";
+	      		el.style.zIndex = Zindex++;
+      		}
+      		else {
+      			var bg = document.getElementById("rosie-output");
+      			bg.style.background = "url(\'images//" + id + ".png\')";
+      			CURRENT_BG = id;
+      		}
+      	}
+     	
   	   	if (CURRENT_LEVEL == 6)
       		document.getElementById('top5-red').style.visibility = "visible";
       		
   	   	img_blank.style.visibility = "hidden";
-  	  	
-  	  	
-      	if (el) {
-      		el.style.visibility = visible ? "visible" : "hidden";
-      		if (variations != "background")
-      			el.style.zIndex = Zindex++;
-      	}
       	
       	
    	}
@@ -260,14 +266,6 @@
    				item.style.visibility = "hidden";
    			
    			}
-   		}
-   		
-  	 	
-   		var places = ['gym', 'wedding', 'hot', 'cold'];
-   			
-   		for ( var i=0; i < places.length; i++) {
-   			var bg = document.getElementById(places[i]);
-   			bg.style.visibility = "hidden";
    		}
    			
    	}
@@ -433,6 +431,10 @@
    
               tempImg = '';
               playing = true;
+               if (CURRENT_BG != 'room') {
+              	var bg = document.getElementById("rosie-output");		
+      			bg.style.background = "url(\'images//room.png\')";
+              }
               //window.location.reload(true);
             //}
           }
@@ -975,6 +977,12 @@ Blockly.Block.prototype.showContextMenu_ = function(x, y) {
       
       //------------------------------------------------------------------------------
       var toolbox2 = '<xml> <category></category> ';
+      
+      toolbox2 += '<category name="+ Coloring"> <block type="red"></block> <block type="blue"></block>' + 
+                    '<block type="black"></block> <block type="pink"></block> <block type="grey"></block> <block type="orange"></block> <block type="purple"></block>' +
+                    '<block type="lime"></block> <block type="gold"></block>' ;
+      toolbox2 += '</category> <category> </category>'; //close coloring
+      
       toolbox2 += '  <category name="+ Tops"> <block type="top1"></block> <block type="top2"></block> <block type="top3"></block>';
       toolbox2 += '</category> <category> </category>'; //close tops
       
@@ -988,15 +996,21 @@ Blockly.Block.prototype.showContextMenu_ = function(x, y) {
       toolbox2 += '<category name="+ Shoes"> <block type="shoes1"></block> <block type="shoes2"></block> <block type="shoes3"></block>';
       toolbox2 += '</category> <category> </category>'; //close shoes
       
-      toolbox2 += '<category name="+ Coloring"> <block type="red"></block> <block type="blue"></block>' + 
-                    '<block type="black"></block> <block type="pink"></block> <block type="grey"></block> <block type="orange"></block> <block type="purple"></block>' +
-                    '<block type="lime"></block> <block type="gold"></block>' ;
-      toolbox2 += '</category> <category> </category>'; //close coloring
-      
+     
       toolbox2 += '</xml>';
       
       //------------------------------------------------------------------------------
       var toolbox3 = '<xml> <category></category> ';
+      
+      toolbox3 += '<category name = "+ Controls">  <block type = "control_if"></block> <block type="weather"></block> ';
+      toolbox3 += '</category> <category> </category>'; //close controls
+      
+      toolbox3 += '<category name="+ Coloring"> <block type="red"></block> <block type="blue"></block>' + 
+                    '<block type="black"></block> <block type="pink"></block> <block type="grey"></block> <block type="orange"></block> <block type="purple"></block>' +
+                    '<block type="lime"></block> <block type="gold"></block>' ;
+      toolbox3 += '</category> <category> </category>'; //close coloring
+      
+      
       toolbox3 += '  <category name="+ Tops"> <block type="top1"></block> <block type="top2"></block> <block type="top3"></block> <block type="top4"></block>';
       toolbox3 += '</category> <category> </category>'; //close tops
       
@@ -1010,17 +1024,26 @@ Blockly.Block.prototype.showContextMenu_ = function(x, y) {
       toolbox3 += '<category name="+ Shoes"> <block type="shoes1"></block> <block type="shoes2"></block> <block type="shoes3"></block> <block type="shoes4"></block>';
       toolbox3 += '</category> <category> </category>'; //close shoes
       
-      toolbox3 += '<category name="+ Coloring"> <block type="red"></block> <block type="blue"></block>' + 
-                    '<block type="black"></block> <block type="pink"></block> <block type="grey"></block> <block type="orange"></block> <block type="purple"></block>' +
-                    '<block type="lime"></block> <block type="gold"></block>' ;
-      toolbox3 += '</category> <category> </category>'; //close coloring
       
-      toolbox3 += '<category name = "+ Controls">  <block type = "control_if"></block> <block type="weather"></block> ';
-      toolbox3 += '</category> <category> </category>'; //close controls
+      
+      
       toolbox3 += '</xml>';
       
       //------------------------------------------------------------------------------
       var toolbox4 = '<xml> <category></category> ';
+      
+      toolbox4 += '<category name = "+ Outfit Definitions" custom="PROCEDURE">';
+      toolbox4 += '</category> <category> </category>'; //close definitions
+      
+      toolbox4 += '<category name = "+ Controls"> <block type = "control_if"></block> <block type="weather"></block>';
+      toolbox4 += '</category> <category> </category>'; //close controls
+      
+      toolbox4 += '<category name="+ Coloring"> <block type="red"></block> <block type="blue"></block>' + 
+                    '<block type="black"></block> <block type="pink"></block> <block type="grey"></block> <block type="orange"></block> <block type="purple"></block>' +
+                    '<block type="lime"></block> <block type="gold"></block>' ;
+      toolbox4 += '</category> <category> </category>'; //close coloring
+      
+      
       toolbox4 += '  <category name="+ Tops"> <block type="top1"></block> <block type="top2"></block> <block type="top3"></block> <block type="top4"></block> <block type="top5"></block>';
       toolbox4 += '</category> <category> </category>'; //close tops
       
@@ -1035,20 +1058,23 @@ Blockly.Block.prototype.showContextMenu_ = function(x, y) {
       toolbox4 += '<category name="+ Shoes"> <block type="shoes1"></block> <block type="shoes2"></block> <block type="shoes3"></block> <block type="shoes4"></block> <block type="shoes5"></block>';
       toolbox4 += '</category> <category> </category>'; //close shoes
       
-      toolbox4 += '<category name="+ Coloring"> <block type="red"></block> <block type="blue"></block>' + 
-                    '<block type="black"></block> <block type="pink"></block> <block type="grey"></block> <block type="orange"></block> <block type="purple"></block>' +
-                    '<block type="lime"></block> <block type="gold"></block>' ;
-      toolbox4 += '</category> <category> </category>'; //close coloring
-      
-      toolbox4 += '<category name = "+ Controls"> <block type = "control_if"></block> <block type="weather"></block>';
-      toolbox4 += '</category> <category> </category>'; //close controls
-      
-      toolbox4 += '<category name = "+ Outfit Definitions" custom="PROCEDURE"></category>';
-      toolbox4 += '</category> <category> </category>'; //close definitions
+       
       toolbox4 += '</xml>';
       
       //------------------------------------------------------------------------------
       var toolbox5 = '<xml> <category></category> ';
+      
+      toolbox5 += '<category name = "+ Outfit Definitions" custom="PROCEDURE">';
+      toolbox5 += '</category> <category> </category>'; //close definitions
+      
+      toolbox5 += '<category name = "+ Controls"> <block type="going_to"></block> <block type = "control_if"> </block> ';
+      toolbox5 += '</category> <category> </category>'; //close controls
+      
+      toolbox5 += '<category name="+ Coloring"> <block type="red"></block> <block type="blue"></block>' + 
+                    '<block type="black"></block> <block type="pink"></block> <block type="grey"></block> <block type="orange"></block> <block type="purple"></block>' +
+                    '<block type="lime"></block> <block type="gold"></block>' ;
+      toolbox5 += '</category> <category> </category>'; //close coloring
+      
       toolbox5 += '  <category name="+ Tops"> <block type="top1"></block> <block type="top2"></block> <block type="top3"></block> <block type="top4"></block> <block type="top5"></block> <block type="top6"> </block> <block type="top7"> </block> <block type="top8"> </block>';
       toolbox5 += '</category> <category> </category>'; //close tops
       
@@ -1063,22 +1089,21 @@ Blockly.Block.prototype.showContextMenu_ = function(x, y) {
       toolbox5 += '</category> <category> </category>'; //close shoes
       
       
-      toolbox5 += '<category name="+ Coloring"> <block type="red"></block> <block type="blue"></block>' + 
-                    '<block type="black"></block> <block type="pink"></block> <block type="grey"></block> <block type="orange"></block> <block type="purple"></block>' +
-                    '<block type="lime"></block> <block type="gold"></block>' ;
-      toolbox5 += '</category> <category> </category>'; //close coloring
-      
-      toolbox5 += '<category name = "+ Controls"> <block type = "control_if"></block> <block type="going_to"></block> <block type="control_repeat"></block>';
-      toolbox5 += '</category> <category> </category>'; //close controls
-      
-      toolbox5 += '<category name = "+ Outfit Definitions" custom="PROCEDURE">  </category>';
-      toolbox5 += '</category> <category> </category>'; //close definitions
       toolbox5 += '</xml>';
       
       //------------------------------------------------------------------------------
       var toolbox6 = '<xml> <category></category> ';
       
-      toolbox6 += '<category name="+ Bottoms"> <block type="bottom7"></block>';
+      toolbox6 += '<category name = "+ Outfit Definitions" custom="PROCEDURE">';
+      toolbox6 += '</category> <category> </category>'; //close definitions
+      
+      toolbox6 += '<category name = "+ Controls"> <block type="control_repeat"></block>';
+      toolbox6 += '</category> <category> </category>'; //close controls
+      
+      toolbox6 += '<category name="+ Coloring"> <block type="black"></block> <block type="blue"></block> <block type="grey"></block> ';
+      toolbox6 += '</category> <category> </category>'; //close coloring
+      
+      toolbox6 += '<category name="+ Bottoms"> <block type="bottom1"></block> <block type="bottom5"></block> <block type="bottom7"></block>';
       
       toolbox6 += '</category> <category> </category>'; //close bottoms
       
@@ -1088,21 +1113,22 @@ Blockly.Block.prototype.showContextMenu_ = function(x, y) {
       toolbox6 += '<category name="+ Shoes"> <block type="shoes1"></block> <block type="shoes2"></block> <block type="shoes3"></block> <block type="shoes4"></block> <block type="shoes5"></block>';
       toolbox6 += '</category> <category> </category>'; //close shoes
       
-      
-      toolbox6 += '<category name="+ Coloring"> <block type="black"></block> <block type="blue"></block> <block type="grey"></block> ';
-                   
-      toolbox6 += '</category> <category> </category>'; //close coloring
-      
-      toolbox6 += '<category name = "+ Controls"> <block type="control_repeat"></block>';
-      toolbox6 += '</category> <category> </category>'; //close controls
-      
-      toolbox6 += '<category name = "+ Outfit Definitions" custom="PROCEDURE"></category>';
-      toolbox6 += '</category> <category> </category>'; //close definitions
       toolbox6 += '</xml>';
       
       //------------------------------------------------------------------------------
       var toolbox7 = '<xml> <category></category> ';
      
+      toolbox7 += '<category name = "+ Outfit Definitions" custom="PROCEDURE">';
+      toolbox7 += '</category> <category> </category>'; //close definitions
+      
+      toolbox7 += '<category name = "+ Controls"> <block type = "control_if"></block> <block type="going_to"></block> <block type="weather"></block> <block type="control_repeat"></block>';
+      toolbox7 += '</category> <category> </category>'; //close controls
+      
+      toolbox7 += '<category name="+ Coloring"> <block type="red"></block> <block type="blue"></block>' + 
+                    '<block type="black"></block> <block type="pink"></block> <block type="grey"></block> <block type="orange"></block> <block type="purple"></block>' +
+                    '<block type="lime"></block> <block type="gold"></block>' ;
+      toolbox7 += '</category> <category> </category>'; //close coloring
+      
       toolbox7 += '  <category name="+ Tops"> <block type="top1"></block> <block type="top2"></block> <block type="top3"></block> <block type="top4"></block> <block type="top5"></block> <block type="top6"> </block> <block type="top7"> </block> <block type="top8"> </block>';
       toolbox7 += '</category> <category> </category>'; //close tops
       
@@ -1116,17 +1142,6 @@ Blockly.Block.prototype.showContextMenu_ = function(x, y) {
       toolbox7 += '<category name="+ Shoes"> <block type="shoes1"></block> <block type="shoes2"></block> <block type="shoes3"></block> <block type="shoes4"></block> <block type="shoes5"></block>';
       toolbox7 += '</category> <category> </category>'; //close shoes
       
-      
-      toolbox7 += '<category name="+ Coloring"> <block type="red"></block> <block type="blue"></block>' + 
-                    '<block type="black"></block> <block type="pink"></block> <block type="grey"></block> <block type="orange"></block> <block type="purple"></block>' +
-                    '<block type="lime"></block> <block type="gold"></block>' ;
-      toolbox7 += '</category> <category> </category>'; //close coloring
-      
-      toolbox7 += '<category name = "+ Controls"> <block type = "control_if"></block> <block type="going_to"></block> <block type="weather"></block> <block type="control_repeat"></block>';
-      toolbox7 += '</category> <category> </category>'; //close controls
-      
-      toolbox7 += '<category name = "+ Outfit Definitions" custom="PROCEDURE"></category>';
-      toolbox7 += '</category> <category> </category>'; //close definitions
       toolbox7 += '</xml>';
       
       

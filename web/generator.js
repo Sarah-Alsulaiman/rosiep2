@@ -21,7 +21,7 @@ Blockly.JavaScript.top2 = function() {
 Blockly.JavaScript.top3 = function() {
 	var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
 	if (color == '0') {
-		return '[ "top3-", "blue", "hot", "wedding" ]';
+		return '[ "top3-", "red", "hot", "wedding" ]';
 	}
 	else {
 		return '[ "top3-",' + color + ', "hot", "wedding" ]';
@@ -104,7 +104,7 @@ Blockly.JavaScript.bottom2 = function() {
 Blockly.JavaScript.bottom3 = function() {
   var color = Blockly.JavaScript.valueToCode(this, 'color', Blockly.JavaScript.ORDER_NONE) || '0';
 	if (color == '0') {
-		return '[ "bottom3-", "blue", "any", "wedding" ]';
+		return '[ "bottom3-", "red", "any", "wedding" ]';
 	}
 	else {
 		return '[ "bottom3-",' + color + ', "any", "wedding" ]';
