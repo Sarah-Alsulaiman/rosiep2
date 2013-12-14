@@ -154,12 +154,8 @@ void main() {
         timer = new Timer.periodic(new Duration(milliseconds: 1000), (Timer t) {
           if (outfits.length == 0) {
             timer.cancel();
-            if (CURRENT_LEVEL == "3") {
-              String background = CURRENT_WEATHER;
-              sendMessage("bg " + background);
-            }
-            else if(CURRENT_LEVEL == "5") {
-              String background = CURRENT_PLACE;
+            if (CURRENT_LEVEL == "3" || CURRENT_LEVEL == "5" || int.parse(CURRENT_LEVEL) > 6) { 
+              String background = (blocks[block_name['weather']][1] == true)? CURRENT_WEATHER : CURRENT_PLACE; 
               sendMessage("bg " + background);
             }
             if (check_input) {
