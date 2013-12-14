@@ -431,7 +431,7 @@
    
               tempImg = '';
               playing = true;
-               if (CURRENT_BG != 'room') {
+              if (CURRENT_BG != 'room') {
               	var bg = document.getElementById("rosie-output");		
       			bg.style.background = "url(\'images//room.png\')";
               }

@@ -110,7 +110,7 @@
       }
       
       else if (CURRENT_LEVEL == MAX_LEVEL - 1) {
-        $.jqDialog.alert("<center> مبروك! <br> لقد أنهيت كافة المراحل <br> <br>الآن يمكنك اللعب بالمكعبات بحرية ! </center>", 
+        $.jqDialog.alert("<center> مبروك! <br> لقد أنهيت كافة المراحل <br> <br>الآن يمكنك اللعب بالمكعبات بكل بحرية ! </center>", 
         				function() { window.location = window.location.protocol + '//' + window.location.host + window.location.pathname + '?level=' + (CURRENT_LEVEL + 1);  }); // callback function for 'OK' button
       }   
     }

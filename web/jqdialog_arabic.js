@@ -22,10 +22,11 @@
 		//________button / control labels
 		labels: {
 			ok: 'موافق',
-			no: 'لا',
-			yes: 'نعم',
 			
-			cancel: 'الغاء'
+			yes: 'نعم',
+			no: 'لا',
+			
+			cancel: 'الغاء الأمر'
 		},
 
 		//________element ids
