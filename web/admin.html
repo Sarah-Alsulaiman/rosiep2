@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv='cache-control' content='no-cache'>
+    <meta http-equiv='expires' content='0'>
+    <meta http-equiv='pragma' content='no-cache'>
+    <script src="logging.js"></script>
+    <title>Admin Page</title>
+    
+    
+    
+    <script type="text/javascript">
+    initLogDatabase();
+    
+    function getData() {
+      
+
+
+      var e = document.getElementById("index-text");
+      if (e) {
+         getCode(
+            function(tx, result) {
+               for (var i=0; i<result.rows.length; i++) {
+                  var key = result.rows.item(i)['user'];
+                  e.innerHTML += key + "<br>";
+               }
+            });
+      }
+      
+      
+   }
+   
+    
+  function emptyDB() {
+   truncate();
+   
+  }
+    
+
+   </script>
+   
+  </head>
+  <body>
+    
+      <br>
+    <input type="button" value="Empty" onclick="emptyDB()">
+      <br>
+    <input type="button" value="Show" onclick="getData()"> 
+    <div class="index-text" id = "index-text" width = "500" height = "500" style = "background-color: white">
+      
+    </div>
+    
+    
+  </body>
+</html>

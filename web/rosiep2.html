@@ -21,12 +21,16 @@
     <script type="text/javascript" src="../blockly/generators/javascript.js"></script>
     
     <script type="text/javascript" src="language.js"></script>
-    
-    
     <script type="text/javascript" src="generator.js"></script>
     
-    <script type="text/javascript" src="rosiep2.js"></script>
+    <script type="text/javascript" src="html2canvas.js"></script>
     
+    <script type="text/javascript" src="rosiep2.js"></script>
+    <script type="text/javascript" src="logging.js"></script>
+    <script type="text/javascript">
+   
+   initLogDatabase();
+    </script>
        
   </head>
   <body>
@@ -64,7 +68,7 @@
     <!-- TOOLBAR -->
     <div id="rosie-toolbar">
       <div>
-        <button id="play-button" onclick="sendBlocklyCode();"></button>
+        <button id="play-button" onclick="log( getLevel(), getBlocklyCode() ); sendBlocklyCode();"></button>
       </div>
     </div>
     

@@ -77,11 +77,11 @@ $$.BoundClosure$2 = [P, {"": "BoundClosure;_self,__js_helper$_target,_receiver,_
 
 $$.Closure$2 = [H, {"": "Closure;call$2,$name", $is_args2: true}];
 
+$$.Closure$1 = [H, {"": "Closure;call$1,$name"}];
+
 $$.Closure$0 = [H, {"": "Closure;call$0,$name"}];
 
 $$.Closure$7 = [H, {"": "Closure;call$7,$name"}];
-
-$$.Closure$1 = [H, {"": "Closure;call$1,$name"}];
 
 (function (reflectionData) {
   function map(x){x={x:x};delete x.x;return x}
@@ -1621,6 +1621,33 @@ Primitives_objectHashCode: function(object) {
     object.$identityHash = hash;
   }
   return hash;
+},
+
+Primitives__throwFormatException: function(string) {
+  throw H.wrapException(P.FormatException$(string));
+},
+
+Primitives_parseInt: function(source, radix, handleError) {
+  var match, t1;
+  handleError = H.Primitives__throwFormatException$closure;
+  if (typeof source !== "string")
+    H.throwExpression(new P.ArgumentError(source));
+  match = /^\s*[+-]?((0x[a-f0-9]+)|(\d+)|([a-z0-9]+))\s*$/i.exec(source);
+  if (match != null) {
+    t1 = match.length;
+    if (2 >= t1)
+      throw H.ioore(match, 2);
+    if (match[2] != null)
+      return parseInt(source, 16);
+    if (3 >= t1)
+      throw H.ioore(match, 3);
+    if (match[3] != null)
+      return parseInt(source, 10);
+    return handleError.call$1(source);
+  }
+  if (match == null)
+    return handleError.call$1(source);
+  return parseInt(source, 10);
 },
 
 Primitives_objectTypeName: function(object) {
@@ -5257,7 +5284,7 @@ _ExceptionImplementation: {"": "Object;message",
 
 FormatException: {"": "Object;message",
   toString$0: function(_) {
-    return "FormatException: " + this.message;
+    return "FormatException: " + H.S(this.message);
   },
   $isException: true,
   static: {
@@ -6402,7 +6429,7 @@ main: function() {
   t2 = $.get$text();
   t2.$indexSet(t2, "abstraction", "Make sure you fill the definition");
   t2 = $.get$text();
-  t2.$indexSet(t2, "call", "You created a definition but didn't use it!");
+  t2.$indexSet(t2, "call", "You created a definition but didn't use it, you can find its shortcut in the outfit definitions menu");
   t2 = $.get$text();
   t2.$indexSet(t2, "func", "Outfit definitions menu help you create a shortcut");
   t2 = $.get$text();
@@ -6410,7 +6437,9 @@ main: function() {
   t2 = $.get$text();
   t2.$indexSet(t2, "not_black", "Remember, Rosie wants a black bottom <br> if the top is not black");
   t2 = $.get$text();
-  t2.$indexSet(t2, "place", "Remember, you need to wear the wedding outfit when going to a wedding");
+  t2.$indexSet(t2, "place", "Remember, you can use the shortcut when going to a party");
+  t2 = $.get$text();
+  t2.$indexSet(t2, "count", "Remember, Rosie wants to repeat 3 times!");
 },
 
 compile: function(json) {
@@ -7084,53 +7113,64 @@ interpret$bailout: function(state0, consider, commands, j, t1, t2, t3, t4, weath
 },
 
 processRepeat: function(nested, consider) {
-  var t1, count, block, t2, i;
+  var t1, t2, count, block, i;
   if (typeof nested !== "string" && (typeof nested !== "object" || nested === null || nested.constructor !== Array && !H.isJsIndexable(nested, nested[init.dispatchPropertyName])))
     return D.processRepeat$bailout(1, consider, nested);
-  t1 = nested.length;
-  if (1 >= t1)
+  t1 = J.getInterceptor(nested);
+  t2 = nested.length;
+  if (1 >= t2)
     throw H.ioore(nested, 1);
   count = nested[1];
-  if (2 >= t1)
+  if (typeof count !== "number")
+    return D.processRepeat$bailout(2, consider, nested, count, t1);
+  if (2 >= t2)
     throw H.ioore(nested, 2);
   block = nested[2];
-  t1 = $.get$blocks();
-  t2 = $.get$block_name();
-  t2 = t2.$index(t2, "repeat");
-  if (t2 >>> 0 !== t2 || t2 >= 18)
-    throw H.ioore(t1, t2);
-  t2 = t1[t2];
-  if (1 >= t2.length)
-    throw H.ioore(t2, 1);
-  t2[1] = true;
+  t2 = $.get$blocks();
+  t1 = $.get$block_name();
+  t1 = t1.$index(t1, "repeat");
+  if (t1 >>> 0 !== t1 || t1 >= 18)
+    throw H.ioore(t2, t1);
+  t1 = t2[t1];
+  if (1 >= t1.length)
+    throw H.ioore(t1, 1);
+  t1[1] = true;
   H.printToConsole("repeat FOUND");
-  if (typeof count !== "number")
-    throw H.iae(count);
-  i = 0;
-  for (; i < count; ++i)
+  if (count !== 3)
+    $.ERR_MSG = "count";
+  for (i = 0; i < count; ++i)
     D.interpret(block, consider);
 },
 
-processRepeat$bailout: function(state0, consider, nested) {
-  var t1, count, block, t2, i;
-  t1 = J.getInterceptor$asx(nested);
-  count = t1.$index(nested, 1);
-  block = t1.$index(nested, 2);
-  t1 = $.get$blocks();
-  t2 = $.get$block_name();
-  t2 = t2.$index(t2, "repeat");
-  if (t2 >>> 0 !== t2 || t2 >= 18)
-    throw H.ioore(t1, t2);
-  t2 = t1[t2];
-  if (1 >= t2.length)
-    throw H.ioore(t2, 1);
-  t2[1] = true;
-  H.printToConsole("repeat FOUND");
-  if (typeof count !== "number")
-    throw H.iae(count);
-  i = 0;
-  for (; i < count; ++i)
-    D.interpret(block, consider);
+processRepeat$bailout: function(state0, consider, nested, count, t1) {
+  switch (state0) {
+    case 0:
+    case 1:
+      state0 = 0;
+      t1 = J.getInterceptor$asx(nested);
+      count = t1.$index(nested, 1);
+    case 2:
+      var block, t2, i;
+      state0 = 0;
+      block = t1.$index(nested, 2);
+      t1 = $.get$blocks();
+      t2 = $.get$block_name();
+      t2 = t2.$index(t2, "repeat");
+      if (t2 >>> 0 !== t2 || t2 >= 18)
+        throw H.ioore(t1, t2);
+      t2 = t1[t2];
+      if (1 >= t2.length)
+        throw H.ioore(t2, 1);
+      t2[1] = true;
+      H.printToConsole("repeat FOUND");
+      if (!J.$eq(count, 3))
+        $.ERR_MSG = "count";
+      if (typeof count !== "number")
+        throw H.iae(count);
+      i = 0;
+      for (; i < count; ++i)
+        D.interpret(block, consider);
+  }
 },
 
 processCall: function(nested, consider) {
@@ -7782,7 +7822,7 @@ main_closure: {"": "Closure;",
     if (C.JSString_methods.startsWith$1(msg, "@dart")) {
       $.CURRENT_LEVEL = C.JSString_methods.substring$2(msg, 5, 6);
       t1 = $.get$text();
-      t1.$indexSet(t1, "if", $.CURRENT_LEVEL === "3" ? "You need to account for an outfit for cold weather and another for hot weather" : "You need to account for an outfit to a wedding and another to a gym");
+      t1.$indexSet(t1, "if", $.CURRENT_LEVEL === "3" ? "You need to account for an outfit for cold weather and another for hot weather" : "You need to account for an outfit to a party and another to a gym");
       $.parts = msg.split("#");
       D.randomize();
       t1 = $.parts;
@@ -7806,14 +7846,21 @@ main__closure: {"": "Closure;",
 
 main__closure0: {"": "Closure;",
   call$1: function(t) {
-    var t1;
+    var t1, t2;
     if ($.get$outfits().length === 0) {
       $.timer.cancel$0();
       t1 = $.CURRENT_LEVEL;
-      if (t1 === "3")
-        D.sendMessage(C.JSString_methods.$add("bg ", $.CURRENT_WEATHER));
-      else if (t1 === "5")
-        D.sendMessage(C.JSString_methods.$add("bg ", $.CURRENT_PLACE));
+      if (t1 === "3" || t1 === "5" || J.$gt$n(H.Primitives_parseInt(t1, null, null), 6)) {
+        t1 = $.get$blocks();
+        t2 = $.get$block_name();
+        t2 = t2.$index(t2, "weather");
+        if (t2 >>> 0 !== t2 || t2 >= 18)
+          throw H.ioore(t1, t2);
+        t2 = t1[t2];
+        if (1 >= t2.length)
+          throw H.ioore(t2, 1);
+        D.sendMessage(C.JSString_methods.$add("bg ", J.$eq(t2[1], true) ? $.CURRENT_WEATHER : $.CURRENT_PLACE));
+      }
       if ($.check_input)
         D.sendMessage("DONE!");
       else {
@@ -7831,6 +7878,7 @@ $$ = null;
 
 // Static function getters
 init.globalFunctions.IsolateNatives__processWorkerMessage$closure = H.IsolateNatives__processWorkerMessage$closure = new H.Closure$2(H.IsolateNatives__processWorkerMessage, "IsolateNatives__processWorkerMessage$closure");
+init.globalFunctions.Primitives__throwFormatException$closure = H.Primitives__throwFormatException$closure = new H.Closure$1(H.Primitives__throwFormatException, "Primitives__throwFormatException$closure");
 init.globalFunctions.toStringWrapper$closure = H.toStringWrapper$closure = new H.Closure$0(H.toStringWrapper, "toStringWrapper$closure");
 init.globalFunctions.invokeClosure$closure = H.invokeClosure$closure = new H.Closure$7(H.invokeClosure, "invokeClosure$closure");
 init.globalFunctions.typeNameInChrome$closure = H.typeNameInChrome$closure = new H.Closure$1(H.typeNameInChrome, "typeNameInChrome$closure");
@@ -8033,6 +8081,11 @@ J.$ge$n = function(receiver, a0) {
   if (typeof receiver == "number" && typeof a0 == "number")
     return receiver >= a0;
   return J.getInterceptor$n(receiver).$ge(receiver, a0);
+};
+J.$gt$n = function(receiver, a0) {
+  if (typeof receiver == "number" && typeof a0 == "number")
+    return receiver > a0;
+  return J.getInterceptor$n(receiver).$gt(receiver, a0);
 };
 J.$index$asx = function(receiver, a0) {
   if (receiver.constructor == Array || typeof receiver == "string" || H.isJsIndexable(receiver, receiver[init.dispatchPropertyName]))

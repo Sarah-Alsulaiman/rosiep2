@@ -1,0 +1,247 @@
+﻿* { -webkit-user-select: none; }
+
+body {
+   /* background-color: #3399cc; */
+   background-image: url('images/texture2.png');
+   overflow: hidden;
+   font-family: tahoma, arial, sans-serif;
+   margin: 0px;
+   padding: 0px;
+}
+
+h2 {
+   color: white;
+   font-size: 18px;
+   text-shadow: 1px 1px 2px #333;
+}
+
+a {
+   font-size: 20px;
+   color: white;
+   text-decoration: none;
+   text-shadow: 1px 1px 2px #333;
+}
+
+a:hover { color: #fc3; }
+a:active { color: red; }
+
+a.big-link {
+   font-size: 36px;
+   font-weight: bold;
+}
+
+td, tr, img { margin: 0px; padding: 0px; }
+
+footer {
+   position: absolute;
+   bottom: 8px;
+   display: block;
+   text-align: center;
+   color: white;
+   font-family: arial, helvetical, sans-serif;
+   font-size: 13px;
+   width: 100%;
+   margin-left: 50px;
+   margin-right: 50px;
+   margin-bottom: 10px;
+   line-height: 130%;
+}
+
+#level-name {
+   background-color: white;
+   border: 2px solid #333;
+   color: #333;
+   font-size: 16px;
+   text-align: center;
+   font-weight: bold;
+   position: relative;
+   top: -18px;
+   left: 15px;
+   width: 175px;
+   padding: 5px;
+   -moz-border-radius: 15px;
+   border-radius: 15px;
+}
+
+.dialog {
+   position: absolute;
+   top: 180px;
+   left: 200px;
+   width: 560px;
+   padding: 20px 30px 20px 30px;
+   border: 2px solid #333;
+   /* background-color: rgba(33, 33, 33, 0.5); */
+   background-color: #343;
+   font-family: sans-serif;
+   font-size: 18px;
+   color: white;
+   text-align: left;
+   text-shadow: 0px 0px 2px #005588;
+   -moz-box-shadow: 5px 5px 5px #222;
+   -webkit-box-shadow: 5px 5px 5px #222;
+   box-shadow: 5px 5px 5px #222;
+   -moz-border-radius: 20px;
+   border-radius: 20px;
+   line-height: 130%;
+   letter-spacing: 0.6pt;
+}
+
+#hint-title {
+   font-family: arial, sans-serif;
+   text-align: center;
+   font-size: 25px;
+   font-weight: normal;
+   margin-bottom: 10px;
+   letter-spacing: 1pt;
+   text-shadow: none;
+}
+
+#hint-image {
+   border: 1px black solid;
+}
+
+#hint-author {
+   text-align: center;
+   font-size: 10px;
+   font-weight: normal;
+   position: relative;
+   top: -8px;
+   color: white;
+   text-shadow: none;
+   letter-spacing: 1pt;
+}
+
+#hint-text {
+   text-align: left;
+   font-size: 18px;
+   margin: 10px 25px 10px 25px;
+   font-weight: normal;
+   text-shadow: none;
+   letter-spacing: 1px;
+   font-family: sans-serif;
+}
+
+#title {
+   position: inherit;
+   margin-left: auto;
+   margin-right: auto;
+   margin-top: 300px;
+}
+
+#dialog-hint {
+   visibility: hidden;
+   width: 1000px;
+   padding: 10px 10px 20px 10px;
+   -moz-border-radius: 0px;
+   border-radius: 0px;
+   top: 80px;
+   text-align: center;
+}
+
+#dialog-help1 {
+   visibility: hidden;
+   width: 400px;
+   text-align: center;
+}
+
+#dialog-help2 {
+   visibility: hidden;
+   width: 400px;
+   text-align: center;
+}
+
+#dialog-levels {
+   visibility: hidden;
+   font-weight: bold;
+   width: 300px;
+   text-align: center;
+}
+
+#dialog-credits {
+   visibility: hidden;
+   width: 650px;
+   font-size: 14px;
+   font-weight: normal;
+   line-height: 130%;
+   top: 80px;
+}
+
+#dialog-levels td {
+   padding-top: 12px;
+}
+
+#dialog-levels a {
+   margin: 10px;
+}
+
+#dialog-levels a.disabled {
+   color: #aaa;
+}
+
+#dialog-dyk {
+   visibility: hidden;
+   width: 500px;
+}
+
+#dialog-solution {
+   visibility: hidden;
+}
+
+#dialog-solution td {
+   text-align: center;
+}
+
+#science-tree {
+   /* background-color: #5aadda; */
+   background-color: #676;
+   border: 1px #333 solid;
+   margin-right: 5px;
+   padding: 10px;
+}
+
+#your-tree {
+   background-color: #676;
+   border: 1px #333 solid;
+   margin-left: 5px;
+   padding: 10px;
+}
+
+#dialog-instructions {
+   visibility: visible;
+   width: 400px;
+   position: static;
+   margin-top: 120px;
+   margin-left: auto;
+   margin-right: auto;
+}
+
+.level-star {
+   width: 17px;
+   height: 17px;
+}
+
+.key-form {
+   padding: 100px;
+   margin-top: 100px;
+   margin-left: auto;
+   margin-right: auto;
+   width: 500px;
+   text-align: center;
+   font-family: sans-serif;
+   font-size: 16px;
+   color: white;
+}
+
+.key-form input[type='text'] {
+   height: 23px;
+   width: 150px;
+   font-size: 14px;
+   -webkit-user-select: auto;
+}
+
+.key-form input[type='submit'] {
+   height: 23px;
+   width: 50px;
+   font-size: 14px;
+   display: inline;
+}

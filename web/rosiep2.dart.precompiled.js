@@ -77,11 +77,11 @@ $$.BoundClosure$2 = [P, {"": "BoundClosure;_self,__js_helper$_target,_receiver,_
 
 $$.Closure$2 = [H, {"": "Closure;call$2,$name", $is_args2: true}];
 
+$$.Closure$1 = [H, {"": "Closure;call$1,$name"}];
+
 $$.Closure$0 = [H, {"": "Closure;call$0,$name"}];
 
 $$.Closure$7 = [H, {"": "Closure;call$7,$name"}];
-
-$$.Closure$1 = [H, {"": "Closure;call$1,$name"}];
 
 (function (reflectionData) {
   function map(x){x={x:x};delete x.x;return x}
@@ -1621,6 +1621,33 @@ Primitives_objectHashCode: function(object) {
     object.$identityHash = hash;
   }
   return hash;
+},
+
+Primitives__throwFormatException: function(string) {
+  throw H.wrapException(P.FormatException$(string));
+},
+
+Primitives_parseInt: function(source, radix, handleError) {
+  var match, t1;
+  handleError = H.Primitives__throwFormatException$closure;
+  if (typeof source !== "string")
+    H.throwExpression(new P.ArgumentError(source));
+  match = /^\s*[+-]?((0x[a-f0-9]+)|(\d+)|([a-z0-9]+))\s*$/i.exec(source);
+  if (match != null) {
+    t1 = match.length;
+    if (2 >= t1)
+      throw H.ioore(match, 2);
+    if (match[2] != null)
+      return parseInt(source, 16);
+    if (3 >= t1)
+      throw H.ioore(match, 3);
+    if (match[3] != null)
+      return parseInt(source, 10);
+    return handleError.call$1(source);
+  }
+  if (match == null)
+    return handleError.call$1(source);
+  return parseInt(source, 10);
 },
 
 Primitives_objectTypeName: function(object) {
@@ -5257,7 +5284,7 @@ _ExceptionImplementation: {"": "Object;message",
 
 FormatException: {"": "Object;message",
   toString$0: function(_) {
-    return "FormatException: " + this.message;
+    return "FormatException: " + H.S(this.message);
   },
   $isException: true,
   static: {
@@ -6402,7 +6429,7 @@ main: function() {
   t2 = $.get$text();
   t2.$indexSet(t2, "abstraction", "Make sure you fill the definition");
   t2 = $.get$text();
-  t2.$indexSet(t2, "call", "You created a definition but didn't use it!");
+  t2.$indexSet(t2, "call", "You created a definition but didn't use it, you can find its shortcut in the outfit definitions menu");
   t2 = $.get$text();
   t2.$indexSet(t2, "func", "Outfit definitions menu help you create a shortcut");
   t2 = $.get$text();
@@ -6410,7 +6437,9 @@ main: function() {
   t2 = $.get$text();
   t2.$indexSet(t2, "not_black", "Remember, Rosie wants a black bottom <br> if the top is not black");
   t2 = $.get$text();
-  t2.$indexSet(t2, "place", "Remember, you need to wear the wedding outfit when going to a wedding");
+  t2.$indexSet(t2, "place", "Remember, you can use the shortcut when going to a party");
+  t2 = $.get$text();
+  t2.$indexSet(t2, "count", "Remember, Rosie wants to repeat 3 times!");
 },
 
 compile: function(json) {
@@ -7084,53 +7113,64 @@ interpret$bailout: function(state0, consider, commands, j, t1, t2, t3, t4, weath
 },
 
 processRepeat: function(nested, consider) {
-  var t1, count, block, t2, i;
+  var t1, t2, count, block, i;
   if (typeof nested !== "string" && (typeof nested !== "object" || nested === null || nested.constructor !== Array && !H.isJsIndexable(nested, nested[init.dispatchPropertyName])))
     return D.processRepeat$bailout(1, consider, nested);
-  t1 = nested.length;
-  if (1 >= t1)
+  t1 = J.getInterceptor(nested);
+  t2 = nested.length;
+  if (1 >= t2)
     throw H.ioore(nested, 1);
   count = nested[1];
-  if (2 >= t1)
+  if (typeof count !== "number")
+    return D.processRepeat$bailout(2, consider, nested, count, t1);
+  if (2 >= t2)
     throw H.ioore(nested, 2);
   block = nested[2];
-  t1 = $.get$blocks();
-  t2 = $.get$block_name();
-  t2 = t2.$index(t2, "repeat");
-  if (t2 >>> 0 !== t2 || t2 >= 18)
-    throw H.ioore(t1, t2);
-  t2 = t1[t2];
-  if (1 >= t2.length)
-    throw H.ioore(t2, 1);
-  t2[1] = true;
+  t2 = $.get$blocks();
+  t1 = $.get$block_name();
+  t1 = t1.$index(t1, "repeat");
+  if (t1 >>> 0 !== t1 || t1 >= 18)
+    throw H.ioore(t2, t1);
+  t1 = t2[t1];
+  if (1 >= t1.length)
+    throw H.ioore(t1, 1);
+  t1[1] = true;
   H.printToConsole("repeat FOUND");
-  if (typeof count !== "number")
-    throw H.iae(count);
-  i = 0;
-  for (; i < count; ++i)
+  if (count !== 3)
+    $.ERR_MSG = "count";
+  for (i = 0; i < count; ++i)
     D.interpret(block, consider);
 },
 
-processRepeat$bailout: function(state0, consider, nested) {
-  var t1, count, block, t2, i;
-  t1 = J.getInterceptor$asx(nested);
-  count = t1.$index(nested, 1);
-  block = t1.$index(nested, 2);
-  t1 = $.get$blocks();
-  t2 = $.get$block_name();
-  t2 = t2.$index(t2, "repeat");
-  if (t2 >>> 0 !== t2 || t2 >= 18)
-    throw H.ioore(t1, t2);
-  t2 = t1[t2];
-  if (1 >= t2.length)
-    throw H.ioore(t2, 1);
-  t2[1] = true;
-  H.printToConsole("repeat FOUND");
-  if (typeof count !== "number")
-    throw H.iae(count);
-  i = 0;
-  for (; i < count; ++i)
-    D.interpret(block, consider);
+processRepeat$bailout: function(state0, consider, nested, count, t1) {
+  switch (state0) {
+    case 0:
+    case 1:
+      state0 = 0;
+      t1 = J.getInterceptor$asx(nested);
+      count = t1.$index(nested, 1);
+    case 2:
+      var block, t2, i;
+      state0 = 0;
+      block = t1.$index(nested, 2);
+      t1 = $.get$blocks();
+      t2 = $.get$block_name();
+      t2 = t2.$index(t2, "repeat");
+      if (t2 >>> 0 !== t2 || t2 >= 18)
+        throw H.ioore(t1, t2);
+      t2 = t1[t2];
+      if (1 >= t2.length)
+        throw H.ioore(t2, 1);
+      t2[1] = true;
+      H.printToConsole("repeat FOUND");
+      if (!J.$eq(count, 3))
+        $.ERR_MSG = "count";
+      if (typeof count !== "number")
+        throw H.iae(count);
+      i = 0;
+      for (; i < count; ++i)
+        D.interpret(block, consider);
+  }
 },
 
 processCall: function(nested, consider) {
@@ -7782,7 +7822,7 @@ main_closure: {"": "Closure;",
     if (C.JSString_methods.startsWith$1(msg, "@dart")) {
       $.CURRENT_LEVEL = C.JSString_methods.substring$2(msg, 5, 6);
       t1 = $.get$text();
-      t1.$indexSet(t1, "if", $.CURRENT_LEVEL === "3" ? "You need to account for an outfit for cold weather and another for hot weather" : "You need to account for an outfit to a wedding and another to a gym");
+      t1.$indexSet(t1, "if", $.CURRENT_LEVEL === "3" ? "You need to account for an outfit for cold weather and another for hot weather" : "You need to account for an outfit to a party and another to a gym");
       $.parts = msg.split("#");
       D.randomize();
       t1 = $.parts;
@@ -7806,14 +7846,21 @@ main__closure: {"": "Closure;",
 
 main__closure0: {"": "Closure;",
   call$1: function(t) {
-    var t1;
+    var t1, t2;
     if ($.get$outfits().length === 0) {
       $.timer.cancel$0();
       t1 = $.CURRENT_LEVEL;
-      if (t1 === "3")
-        D.sendMessage(C.JSString_methods.$add("bg ", $.CURRENT_WEATHER));
-      else if (t1 === "5")
-        D.sendMessage(C.JSString_methods.$add("bg ", $.CURRENT_PLACE));
+      if (t1 === "3" || t1 === "5" || J.$gt$n(H.Primitives_parseInt(t1, null, null), 6)) {
+        t1 = $.get$blocks();
+        t2 = $.get$block_name();
+        t2 = t2.$index(t2, "weather");
+        if (t2 >>> 0 !== t2 || t2 >= 18)
+          throw H.ioore(t1, t2);
+        t2 = t1[t2];
+        if (1 >= t2.length)
+          throw H.ioore(t2, 1);
+        D.sendMessage(C.JSString_methods.$add("bg ", J.$eq(t2[1], true) ? $.CURRENT_WEATHER : $.CURRENT_PLACE));
+      }
       if ($.check_input)
         D.sendMessage("DONE!");
       else {
@@ -7831,6 +7878,7 @@ $$ = null;
 
 // Static function getters
 init.globalFunctions.IsolateNatives__processWorkerMessage$closure = H.IsolateNatives__processWorkerMessage$closure = new H.Closure$2(H.IsolateNatives__processWorkerMessage, "IsolateNatives__processWorkerMessage$closure");
+init.globalFunctions.Primitives__throwFormatException$closure = H.Primitives__throwFormatException$closure = new H.Closure$1(H.Primitives__throwFormatException, "Primitives__throwFormatException$closure");
 init.globalFunctions.toStringWrapper$closure = H.toStringWrapper$closure = new H.Closure$0(H.toStringWrapper, "toStringWrapper$closure");
 init.globalFunctions.invokeClosure$closure = H.invokeClosure$closure = new H.Closure$7(H.invokeClosure, "invokeClosure$closure");
 init.globalFunctions.typeNameInChrome$closure = H.typeNameInChrome$closure = new H.Closure$1(H.typeNameInChrome, "typeNameInChrome$closure");
@@ -8033,6 +8081,11 @@ J.$ge$n = function(receiver, a0) {
   if (typeof receiver == "number" && typeof a0 == "number")
     return receiver >= a0;
   return J.getInterceptor$n(receiver).$ge(receiver, a0);
+};
+J.$gt$n = function(receiver, a0) {
+  if (typeof receiver == "number" && typeof a0 == "number")
+    return receiver > a0;
+  return J.getInterceptor$n(receiver).$gt(receiver, a0);
 };
 J.$index$asx = function(receiver, a0) {
   if (receiver.constructor == Array || typeof receiver == "string" || H.isJsIndexable(receiver, receiver[init.dispatchPropertyName]))
@@ -11331,6 +11384,15 @@ function dart_precompiled($collectedClasses) {
   if ($desc instanceof Array)
     $desc = $desc[1];
   Closure$2.prototype = $desc;
+  function Closure$1(call$1, $name) {
+    this.call$1 = call$1;
+    this.$name = $name;
+  }
+  Closure$1.builtin$cls = "Closure$1";
+  $desc = $collectedClasses.Closure$1;
+  if ($desc instanceof Array)
+    $desc = $desc[1];
+  Closure$1.prototype = $desc;
   function Closure$0(call$0, $name) {
     this.call$0 = call$0;
     this.$name = $name;
@@ -11349,14 +11411,5 @@ function dart_precompiled($collectedClasses) {
   if ($desc instanceof Array)
     $desc = $desc[1];
   Closure$7.prototype = $desc;
-  function Closure$1(call$1, $name) {
-    this.call$1 = call$1;
-    this.$name = $name;
-  }
-  Closure$1.builtin$cls = "Closure$1";
-  $desc = $collectedClasses.Closure$1;
-  if ($desc instanceof Array)
-    $desc = $desc[1];
-  Closure$1.prototype = $desc;
-  return [JS_CONST, Interceptor, JSBool, JSNull, JavaScriptObject, PlainJavaScriptObject, UnknownJavaScriptObject, JSArray, JSMutableArray, JSFixedArray, JSExtendableArray, JSNumber, JSInt, JSDouble, JSString, CloseToken, JsIsolateSink, _Manager, _IsolateContext, _EventLoop, _EventLoop__runHelper_next, _IsolateEvent, _MainManagerStub, IsolateNatives__processWorkerMessage_closure, _BaseSendPort, _BaseSendPort_call_closure, _NativeJsSendPort, _NativeJsSendPort_send_closure, _NativeJsSendPort_send__closure, _WorkerSendPort, _WorkerSendPort_send_closure, ReceivePortImpl, _waitForPendingPorts_closure, _PendingSendPortFinder, _PendingSendPortFinder_visitList_closure, _PendingSendPortFinder_visitMap_closure, _JsSerializer, _JsCopier, _JsDeserializer, _JsVisitedMap, _MessageTraverserVisitedMap, _MessageTraverser, _Copier, _Copier_visitMap_closure, _Serializer, _Deserializer, TimerImpl, TimerImpl_internalCallback, TimerImpl_internalCallback0, TimerImpl$periodic_closure, TypeErrorDecoder, NullError, JsNoSuchMethodError, UnknownJsTypeError, unwrapException_saveStackTrace, _StackTrace, invokeClosure_closure, invokeClosure_closure0, invokeClosure_closure1, invokeClosure_closure2, invokeClosure_closure3, Closure, BoundClosure, CastErrorImplementation, applyExperimentalFixup_newGetTagDartFunction, ListIterator, MappedIterable, EfficientLengthMappedIterable, MappedIterator, FixedLengthListMixin, _AsyncError, Future, Future_wait_handleError, Future_wait_closure, _Completer, _AsyncCompleter, _Future, BoundClosure$2, _Future__addListener_closure, _Future__chainFutures_closure, _Future__chainFutures_closure0, _Future__asyncComplete_closure, _Future__asyncCompleteError_closure, _Future__propagateToListeners_closure, _Future__propagateToListeners_closure0, _Future__propagateToListeners__closure, _Future__propagateToListeners__closure0, Stream, Stream_forEach_closure, Stream_forEach__closure, Stream_forEach__closure0, Stream_forEach_closure0, Stream_length_closure, Stream_length_closure0, Stream_isEmpty_closure, Stream_isEmpty_closure0, StreamSubscription, EventSink, _EventSink, _cancelAndError_closure, Timer, _BaseZone, _BaseZone_bindCallback_closure, _BaseZone_bindCallback_closure0, _BaseZone_bindUnaryCallback_closure, _BaseZone_bindUnaryCallback_closure0, _rootHandleUncaughtError_closure, _RootZone, _HashMap, _HashMap_values_closure, HashMapKeyIterable, HashMapKeyIterator, _LinkedHashMap, _LinkedHashMap_values_closure, LinkedHashMapCell, LinkedHashMapKeyIterable, LinkedHashMapKeyIterator, _HashSet, _IdentityHashSet, HashSetIterator, _HashSetBase, HashSet, IterableBase, ListMixin, Maps_mapToString_closure, ListQueue, _ListQueueIterator, _convertJsonToDart_closure, _convertJsonToDart_walk, Converter, JsonDecoder, NoSuchMethodError_toString_closure, DateTime, DateTime_toString_fourDigits, DateTime_toString_threeDigits, DateTime_toString_twoDigits, Duration, Duration_toString_sixDigits, Duration_toString_twoDigits, Error, NullThrownError, ArgumentError, RangeError, UnsupportedError, UnimplementedError, StateError, ConcurrentModificationError, StackOverflowError, CyclicInitializationError, _ExceptionImplementation, FormatException, Expando, Function, Iterator, Null, Object, StackTrace, StringBuffer, Symbol, _EventStream, _EventStreamSubscription, EventStreamProvider, _LocationWrapper, ReceivePort, parse_closure, _Random, TypedData_ListMixin, TypedData_ListMixin_FixedLengthListMixin, TypedData_ListMixin0, TypedData_ListMixin_FixedLengthListMixin0, TypedData_ListMixin1, TypedData_ListMixin_FixedLengthListMixin1, TypedData_ListMixin2, TypedData_ListMixin_FixedLengthListMixin2, TypedData_ListMixin3, TypedData_ListMixin_FixedLengthListMixin3, TypedData_ListMixin4, TypedData_ListMixin_FixedLengthListMixin4, TypedData_ListMixin5, TypedData_ListMixin_FixedLengthListMixin5, TypedData_ListMixin6, TypedData_ListMixin_FixedLengthListMixin6, TypedData_ListMixin7, TypedData_ListMixin_FixedLengthListMixin7, Int64List, Uint64List, _convertDartToNative_PrepareForStructuredClone_findSlot, _convertDartToNative_PrepareForStructuredClone_readSlot, _convertDartToNative_PrepareForStructuredClone_writeSlot, _convertDartToNative_PrepareForStructuredClone_cleanupSlots, _convertDartToNative_PrepareForStructuredClone_walk, _convertDartToNative_PrepareForStructuredClone_walk_closure, convertNativeToDart_AcceptStructuredClone_findSlot, convertNativeToDart_AcceptStructuredClone_readSlot, convertNativeToDart_AcceptStructuredClone_writeSlot, convertNativeToDart_AcceptStructuredClone_walk, main_closure, main__closure, main__closure0, AnimationEvent, AutocompleteErrorEvent, BeforeLoadEvent, Blob, CloseEvent, CompositionEvent, CssFontFaceLoadEvent, CustomEvent, DeviceMotionEvent, DeviceOrientationEvent, DomError, DomException, ErrorEvent, Event, EventTarget, File, FileError, FocusEvent, HashChangeEvent, KeyboardEvent, Location, MediaError, MediaKeyError, MediaKeyEvent, MediaKeyMessageEvent, MediaKeyNeededEvent, MediaStreamEvent, MediaStreamTrackEvent, MessageEvent, MidiConnectionEvent, MidiMessageEvent, MouseEvent, MutationEvent, Navigator, NavigatorUserMediaError, OverflowEvent, PageTransitionEvent, PopStateEvent, PositionError, ProgressEvent, ResourceProgressEvent, RtcDataChannelEvent, RtcDtmfToneChangeEvent, RtcIceCandidateEvent, SecurityPolicyViolationEvent, SpeechInputEvent, SpeechRecognitionError, SpeechRecognitionEvent, SpeechSynthesisEvent, StorageEvent, TextEvent, TouchEvent, TrackEvent, TransitionEvent, UIEvent, WheelEvent, Window, _XMLHttpRequestProgressEvent, VersionChangeEvent, ZoomEvent, AudioProcessingEvent, OfflineAudioCompletionEvent, ContextEvent, SqlError, ByteBuffer, TypedData, ByteData, Float32List, Float64List, Int16List, Int32List, Int8List, Uint16List, Uint32List, Uint8ClampedList, Uint8List, Closure$2, Closure$0, Closure$7, Closure$1];
+  return [JS_CONST, Interceptor, JSBool, JSNull, JavaScriptObject, PlainJavaScriptObject, UnknownJavaScriptObject, JSArray, JSMutableArray, JSFixedArray, JSExtendableArray, JSNumber, JSInt, JSDouble, JSString, CloseToken, JsIsolateSink, _Manager, _IsolateContext, _EventLoop, _EventLoop__runHelper_next, _IsolateEvent, _MainManagerStub, IsolateNatives__processWorkerMessage_closure, _BaseSendPort, _BaseSendPort_call_closure, _NativeJsSendPort, _NativeJsSendPort_send_closure, _NativeJsSendPort_send__closure, _WorkerSendPort, _WorkerSendPort_send_closure, ReceivePortImpl, _waitForPendingPorts_closure, _PendingSendPortFinder, _PendingSendPortFinder_visitList_closure, _PendingSendPortFinder_visitMap_closure, _JsSerializer, _JsCopier, _JsDeserializer, _JsVisitedMap, _MessageTraverserVisitedMap, _MessageTraverser, _Copier, _Copier_visitMap_closure, _Serializer, _Deserializer, TimerImpl, TimerImpl_internalCallback, TimerImpl_internalCallback0, TimerImpl$periodic_closure, TypeErrorDecoder, NullError, JsNoSuchMethodError, UnknownJsTypeError, unwrapException_saveStackTrace, _StackTrace, invokeClosure_closure, invokeClosure_closure0, invokeClosure_closure1, invokeClosure_closure2, invokeClosure_closure3, Closure, BoundClosure, CastErrorImplementation, applyExperimentalFixup_newGetTagDartFunction, ListIterator, MappedIterable, EfficientLengthMappedIterable, MappedIterator, FixedLengthListMixin, _AsyncError, Future, Future_wait_handleError, Future_wait_closure, _Completer, _AsyncCompleter, _Future, BoundClosure$2, _Future__addListener_closure, _Future__chainFutures_closure, _Future__chainFutures_closure0, _Future__asyncComplete_closure, _Future__asyncCompleteError_closure, _Future__propagateToListeners_closure, _Future__propagateToListeners_closure0, _Future__propagateToListeners__closure, _Future__propagateToListeners__closure0, Stream, Stream_forEach_closure, Stream_forEach__closure, Stream_forEach__closure0, Stream_forEach_closure0, Stream_length_closure, Stream_length_closure0, Stream_isEmpty_closure, Stream_isEmpty_closure0, StreamSubscription, EventSink, _EventSink, _cancelAndError_closure, Timer, _BaseZone, _BaseZone_bindCallback_closure, _BaseZone_bindCallback_closure0, _BaseZone_bindUnaryCallback_closure, _BaseZone_bindUnaryCallback_closure0, _rootHandleUncaughtError_closure, _RootZone, _HashMap, _HashMap_values_closure, HashMapKeyIterable, HashMapKeyIterator, _LinkedHashMap, _LinkedHashMap_values_closure, LinkedHashMapCell, LinkedHashMapKeyIterable, LinkedHashMapKeyIterator, _HashSet, _IdentityHashSet, HashSetIterator, _HashSetBase, HashSet, IterableBase, ListMixin, Maps_mapToString_closure, ListQueue, _ListQueueIterator, _convertJsonToDart_closure, _convertJsonToDart_walk, Converter, JsonDecoder, NoSuchMethodError_toString_closure, DateTime, DateTime_toString_fourDigits, DateTime_toString_threeDigits, DateTime_toString_twoDigits, Duration, Duration_toString_sixDigits, Duration_toString_twoDigits, Error, NullThrownError, ArgumentError, RangeError, UnsupportedError, UnimplementedError, StateError, ConcurrentModificationError, StackOverflowError, CyclicInitializationError, _ExceptionImplementation, FormatException, Expando, Function, Iterator, Null, Object, StackTrace, StringBuffer, Symbol, _EventStream, _EventStreamSubscription, EventStreamProvider, _LocationWrapper, ReceivePort, parse_closure, _Random, TypedData_ListMixin, TypedData_ListMixin_FixedLengthListMixin, TypedData_ListMixin0, TypedData_ListMixin_FixedLengthListMixin0, TypedData_ListMixin1, TypedData_ListMixin_FixedLengthListMixin1, TypedData_ListMixin2, TypedData_ListMixin_FixedLengthListMixin2, TypedData_ListMixin3, TypedData_ListMixin_FixedLengthListMixin3, TypedData_ListMixin4, TypedData_ListMixin_FixedLengthListMixin4, TypedData_ListMixin5, TypedData_ListMixin_FixedLengthListMixin5, TypedData_ListMixin6, TypedData_ListMixin_FixedLengthListMixin6, TypedData_ListMixin7, TypedData_ListMixin_FixedLengthListMixin7, Int64List, Uint64List, _convertDartToNative_PrepareForStructuredClone_findSlot, _convertDartToNative_PrepareForStructuredClone_readSlot, _convertDartToNative_PrepareForStructuredClone_writeSlot, _convertDartToNative_PrepareForStructuredClone_cleanupSlots, _convertDartToNative_PrepareForStructuredClone_walk, _convertDartToNative_PrepareForStructuredClone_walk_closure, convertNativeToDart_AcceptStructuredClone_findSlot, convertNativeToDart_AcceptStructuredClone_readSlot, convertNativeToDart_AcceptStructuredClone_writeSlot, convertNativeToDart_AcceptStructuredClone_walk, main_closure, main__closure, main__closure0, AnimationEvent, AutocompleteErrorEvent, BeforeLoadEvent, Blob, CloseEvent, CompositionEvent, CssFontFaceLoadEvent, CustomEvent, DeviceMotionEvent, DeviceOrientationEvent, DomError, DomException, ErrorEvent, Event, EventTarget, File, FileError, FocusEvent, HashChangeEvent, KeyboardEvent, Location, MediaError, MediaKeyError, MediaKeyEvent, MediaKeyMessageEvent, MediaKeyNeededEvent, MediaStreamEvent, MediaStreamTrackEvent, MessageEvent, MidiConnectionEvent, MidiMessageEvent, MouseEvent, MutationEvent, Navigator, NavigatorUserMediaError, OverflowEvent, PageTransitionEvent, PopStateEvent, PositionError, ProgressEvent, ResourceProgressEvent, RtcDataChannelEvent, RtcDtmfToneChangeEvent, RtcIceCandidateEvent, SecurityPolicyViolationEvent, SpeechInputEvent, SpeechRecognitionError, SpeechRecognitionEvent, SpeechSynthesisEvent, StorageEvent, TextEvent, TouchEvent, TrackEvent, TransitionEvent, UIEvent, WheelEvent, Window, _XMLHttpRequestProgressEvent, VersionChangeEvent, ZoomEvent, AudioProcessingEvent, OfflineAudioCompletionEvent, ContextEvent, SqlError, ByteBuffer, TypedData, ByteData, Float32List, Float64List, Int16List, Int32List, Int8List, Uint16List, Uint32List, Uint8ClampedList, Uint8List, Closure$2, Closure$1, Closure$0, Closure$7];
 }

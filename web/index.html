@@ -6,11 +6,21 @@
     <meta http-equiv='cache-control' content='no-cache'>
     <meta http-equiv='expires' content='0'>
     <meta http-equiv='pragma' content='no-cache'>
-
+    <script src="logging.js"></script>
     <title>Rosie the Fashionista</title>
     
     <link rel="stylesheet" href="rosieP2_arabic.css">
-       
+    
+    <script type="text/javascript">
+      initLogDatabase();
+      log("start", "Game");
+      function startGame(language) {
+         //clearLevelHistory();
+         window.location = (language == "E") ? "rosiep2.html" : "rosiep2_arabic.html";
+         return false;
+      }
+   </script>
+   
   </head>
   <body>
     <img src="images/rosieTitle.png" id="title">
@@ -21,9 +31,9 @@
         	<center>
         		Choose your language:
                 <br>
-        		<a href="rosiep2.html">English</a>
+        		<a href="rosiep2.html" onclick="return startGame('E');">English</a>
         	    <br>
-        		<a href="rosiep2_arabic.html">Arabic</a>
+        		<a href="rosiep2_arabic.html" onclick="return startGame('A');">Arabic</a>
         	</center>
         </element>
     </div>

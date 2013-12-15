@@ -385,7 +385,11 @@
       
       return connected;
     }
-    
+ 
+ function getBlocklyCode() {
+    var code = Blockly.Generator.workspaceToCode('JavaScript');
+    return code;
+ }
 //---------------------------------------------------------------------------------------
 //  Send the generated Javascript code to dart for processing                                                                                  
 //---------------------------------------------------------------------------------------
@@ -448,7 +452,18 @@
       }
     }
     
+//--------------------------------------------------------------------
+// Convert Workspace to text
+//--------------------------------------------------------------------   
+
+function workspaceToText () {
+	var current_xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+    var current_xml_text = Blockly.Xml.domToText(current_xml);
     
+    return current_xml_text;
+
+
+} 
 //----------------------------------------------------------------------------------------
 // Inject blockly to this page and display the message corrosponding to the current level
 // Blockly redefined functions

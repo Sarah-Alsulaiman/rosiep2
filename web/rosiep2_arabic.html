@@ -24,6 +24,7 @@
     <script type="text/javascript" src="language_arabic.js"></script>
     <script type="text/javascript" src="generator.js"></script>
     <script type="text/javascript" src="rosiep2_arabic.js"></script>
+    <script type="text/javascript" src="logging.js"></script>
        
   </head>
   <body>
@@ -63,7 +64,7 @@
     <!-- TOOLBAR -->
     <div id="rosie-toolbar">
       <div>
-        <button id="play-button" onclick="sendBlocklyCode();"></button>
+        <button id="play-button" onclick="log( getLevel(), getBlocklyCode() ); sendBlocklyCode();"></button>
       </div>
     </div>
     
@@ -72,7 +73,7 @@
     
     <div id="images"> </div>
       
-    <script type="application/dart" src="rosiep2_arabic.dart"></script>
+    <script type="application/dart" src="rosiep2_arabic.dart.js"></script>
     <script src="packages/browser/dart.js"></script>
     <script type="text/javascript" >
       inject();

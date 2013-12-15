@@ -383,7 +383,11 @@
       
       return connected;
     }
-    
+   
+   function getBlocklyCode() {
+    var code = Blockly.Generator.workspaceToCode('JavaScript');
+    return code;
+ } 
 //---------------------------------------------------------------------------------------
 //  Send the generated Javascript code to dart for processing                                                                                  
 //---------------------------------------------------------------------------------------

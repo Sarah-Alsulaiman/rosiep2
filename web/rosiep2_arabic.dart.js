@@ -77,11 +77,11 @@ $$.BoundClosure$2 = [P, {"": "BoundClosure;_self,__js_helper$_target,_receiver,_
 
 $$.Closure$2 = [H, {"": "Closure;call$2,$name", $is_args2: true}];
 
+$$.Closure$1 = [H, {"": "Closure;call$1,$name"}];
+
 $$.Closure$0 = [H, {"": "Closure;call$0,$name"}];
 
 $$.Closure$7 = [H, {"": "Closure;call$7,$name"}];
-
-$$.Closure$1 = [H, {"": "Closure;call$1,$name"}];
 
 (function (reflectionData) {
   function map(x){x={x:x};delete x.x;return x}
@@ -1621,6 +1621,33 @@ Primitives_objectHashCode: function(object) {
     object.$identityHash = hash;
   }
   return hash;
+},
+
+Primitives__throwFormatException: function(string) {
+  throw H.wrapException(P.FormatException$(string));
+},
+
+Primitives_parseInt: function(source, radix, handleError) {
+  var match, t1;
+  handleError = H.Primitives__throwFormatException$closure;
+  if (typeof source !== "string")
+    H.throwExpression(new P.ArgumentError(source));
+  match = /^\s*[+-]?((0x[a-f0-9]+)|(\d+)|([a-z0-9]+))\s*$/i.exec(source);
+  if (match != null) {
+    t1 = match.length;
+    if (2 >= t1)
+      throw H.ioore(match, 2);
+    if (match[2] != null)
+      return parseInt(source, 16);
+    if (3 >= t1)
+      throw H.ioore(match, 3);
+    if (match[3] != null)
+      return parseInt(source, 10);
+    return handleError.call$1(source);
+  }
+  if (match == null)
+    return handleError.call$1(source);
+  return parseInt(source, 10);
 },
 
 Primitives_objectTypeName: function(object) {
@@ -5257,7 +5284,7 @@ _ExceptionImplementation: {"": "Object;message",
 
 FormatException: {"": "Object;message",
   toString$0: function(_) {
-    return "FormatException: " + this.message;
+    return "FormatException: " + H.S(this.message);
   },
   $isException: true,
   static: {
@@ -6392,9 +6419,9 @@ main: function() {
   t2 = $.get$text();
   t2.$indexSet(t2, "bottom_purple", "\u062a\u0630\u0643\u0631! \u064a\u062c\u0628 \u0639\u0644\u0649 \u0627\u0644\u062c\u0645\u064a\u0639 \u0644\u0628\u0633 \u0627\u0644\u0644\u0648\u0646 \u0627\u0644\u0645\u0648\u0641\u060c \u0628\u0627\u0645\u0643\u0627\u0646\u0643 \u062a\u063a\u064a\u064a\u0631 \u0644\u0648\u0646 \u0627\u0644\u0644\u0628\u0633 \u0645\u0646 \u0642\u0627\u0626\u0645\u0629 \u0627\u0644\u0623\u0644\u0648\u0627\u0646 <br> <br>");
   t2 = $.get$text();
-  t2.$indexSet(t2, "other", "\u062a\u0623\u0643\u062f \u0645\u0646 \u0627\u062e\u062a\u064a\u0627\u0631\u0643 \u0644\u0628\u0633 \u0645\u0646\u0627\u0633\u0628 \u0644\u0643\u0644 \u0627\u0644\u062d\u0627\u0644\u062a\u064a\u0646");
+  t2.$indexSet(t2, "other", "\u062a\u0623\u0643\u062f \u0645\u0646 \u0627\u062e\u062a\u064a\u0627\u0631\u0643 \u0644\u0628\u0633\u064a\u0646 \u0645\u062e\u062a\u0644\u0641\u064a\u0646 \u0644\u0643\u0644 \u0627\u0644\u062d\u0627\u0644\u062a\u064a\u0646");
   t2 = $.get$text();
-  t2.$indexSet(t2, "then", "\u062a\u0623\u0643\u062f \u0645\u0646 \u0627\u062e\u062a\u064a\u0627\u0631\u0643 \u0644\u0628\u0633 \u0645\u0646\u0627\u0633\u0628 \u0644\u0643\u0644 \u0627\u0644\u062d\u0627\u0644\u062a\u064a\u0646");
+  t2.$indexSet(t2, "then", "\u062a\u0623\u0643\u062f \u0645\u0646 \u0627\u062e\u062a\u064a\u0627\u0631\u0643 \u0644\u0628\u0633\u064a\u0646 \u0645\u062e\u062a\u0644\u0641\u064a\u0646 \u0644\u0643\u0644 \u0627\u0644\u062d\u0627\u0644\u062a\u064a\u0646");
   t2 = $.get$text();
   t2.$indexSet(t2, "color", "Remember, top will only be either black or purple");
   t2 = $.get$text();
@@ -6404,7 +6431,7 @@ main: function() {
   t2 = $.get$text();
   t2.$indexSet(t2, "abstraction", "\u062a\u0623\u0643\u062f \u0645\u0646 \u0627\u062e\u062a\u064a\u0627\u0631 \u0627\u0644\u0645\u0644\u0627\u0628\u0633 \u0627\u0644\u0645\u0646\u0627\u0633\u0628\u0629 \u0644\u0647\u0630\u0627 \u0627\u0644\u0627\u0633\u0645");
   t2 = $.get$text();
-  t2.$indexSet(t2, "call", "\u0644\u0642\u062f \u0642\u0645\u062a \u0628\u0627\u062e\u062a\u064a\u0627\u0631 \u0627\u0633\u0645 \u0627\u0644\u0644\u0628\u0633 \u0648\u0644\u0643\u0646\u0643 \u0644\u0645 \u062a\u0642\u0645 \u0628\u0627\u0633\u062a\u062e\u062f\u0627\u0645\u0647\u060c \u0628\u0627\u0645\u0643\u0627\u0646\u0643 \u0627\u064a\u062c\u0627\u062f\u0647 \u0641\u064a \u0642\u0627\u0626\u0645\u0629 \u0627\u0633\u0645\u0627\u0621 \u0627\u0644\u0645\u0644\u0627\u0628\u0633");
+  t2.$indexSet(t2, "call", "\u0644\u0642\u062f \u0642\u0645\u062a \u0628\u0627\u062e\u062a\u064a\u0627\u0631 \u0627\u0633\u0645 \u0627\u0644\u0644\u0628\u0633 \u0648\u0644\u0643\u0646\u0643 \u0644\u0645 \u062a\u0642\u0645 \u0628\u0627\u0633\u062a\u062e\u062f\u0627\u0645\u0647\u060c \u0628\u0625\u0645\u0643\u0627\u0646\u0643 \u0625\u064a\u062c\u0627\u062f \u0627\u0644\u0627\u062e\u062a\u0635\u0627\u0631 \u0627\u0644\u0645\u062e\u0635\u0635 \u0644\u0647 \u0641\u064a \u0642\u0627\u0626\u0645\u0629 \u0627\u0633\u0645\u0627\u0621 \u0627\u0644\u0645\u0644\u0627\u0628\u0633");
   t2 = $.get$text();
   t2.$indexSet(t2, "func", "\u0642\u0627\u0626\u0645\u0629 \u0627\u0633\u0645\u0627\u0621 \u0627\u0644\u0645\u0644\u0627\u0628\u0633 \u062a\u0633\u0627\u0639\u062f\u0643 \u0641\u064a \u0627\u062e\u062a\u064a\u0627\u0631 \u0627\u0644\u0644\u0628\u0633 \u0628\u0637\u0631\u064a\u0642\u0629 \u0627\u0633\u0631\u0639 \u0644\u0627\u062d\u0642\u0627\u064e");
   t2 = $.get$text();
@@ -6412,7 +6439,9 @@ main: function() {
   t2 = $.get$text();
   t2.$indexSet(t2, "not_black", "Remember, Rosie wants a black bottom <br> if the top is not black");
   t2 = $.get$text();
-  t2.$indexSet(t2, "place", "\u062a\u0630\u0643\u0631! \u0644\u0642\u062f \u0642\u0645\u062a \u0628\u062a\u0646\u0633\u064a\u0642 \u0644\u0628\u0633 \u0644\u0644\u062d\u0641\u0644\u0627\u062a \u0633\u0627\u0628\u0642\u0627\u064b\u060c \u0628\u0627\u0645\u0643\u0627\u0646\u0643 \u0627\u0633\u062a\u062e\u062f\u0627\u0645\u0647 \u0627\u0644\u0622\u0646 \u0641\u064a \u0642\u0627\u0626\u0645\u0629 \u0627\u0633\u0645\u0627\u0621 \u0627\u0644\u0645\u0644\u0627\u0628\u0633");
+  t2.$indexSet(t2, "place", "\u062a\u0630\u0643\u0631! \u0644\u0642\u062f \u0642\u0645\u062a \u0628\u062a\u0646\u0633\u064a\u0642 \u0644\u0628\u0633 \u0644\u0644\u062d\u0641\u0644\u0627\u062a \u0633\u0627\u0628\u0642\u0627\u064b\u060c \u0628\u0627\u0645\u0643\u0627\u0646\u0643 \u0627\u0633\u062a\u062e\u062f\u0627\u0645\u0647 \u0639\u0646 \u0637\u0631\u064a\u0642 \u0627\u0644\u0627\u062e\u062a\u0635\u0627\u0631 \u0627\u0644\u0645\u062e\u0635\u0635 \u0644\u0647 \u0645\u0646 \u0642\u0627\u0626\u0645\u0629 \u0627\u0633\u0645\u0627\u0621 \u0627\u0644\u0645\u0644\u0627\u0628\u0633");
+  t2 = $.get$text();
+  t2.$indexSet(t2, "count", "\u062a\u0630\u0643\u0631! \u0631\u0648\u0632\u064a \u062a\u0631\u064a\u062f \u0627\u0644\u062a\u0643\u0631\u0627\u0631 \u0644\u0640 3 \u0645\u0631\u0627\u062a!");
   t2 = $.get$text();
   t2.$indexSet(t2, "place_gym_mismatch", "\u0647\u0644 \u0623\u0646\u062a \u062c\u0627\u062f\u061f <br> \u0642\u0645 \u0628\u0627\u062e\u062a\u064a\u0627\u0631 \u0644\u0628\u0633 \u0645\u0646\u0627\u0633\u0628 \u0644\u0644\u0645\u0643\u0627\u0646\u064a\u0646 \u0627\u0644\u0645\u062e\u062a\u0644\u0641\u064a\u0646 ");
   t2 = $.get$text();
@@ -7094,53 +7123,64 @@ interpret$bailout: function(state0, consider, commands, j, t1, t2, t3, t4, weath
 },
 
 processRepeat: function(nested, consider) {
-  var t1, count, block, t2, i;
+  var t1, t2, count, block, i;
   if (typeof nested !== "string" && (typeof nested !== "object" || nested === null || nested.constructor !== Array && !H.isJsIndexable(nested, nested[init.dispatchPropertyName])))
     return U.processRepeat$bailout(1, consider, nested);
-  t1 = nested.length;
-  if (1 >= t1)
+  t1 = J.getInterceptor(nested);
+  t2 = nested.length;
+  if (1 >= t2)
     throw H.ioore(nested, 1);
   count = nested[1];
-  if (2 >= t1)
+  if (typeof count !== "number")
+    return U.processRepeat$bailout(2, consider, nested, count, t1);
+  if (2 >= t2)
     throw H.ioore(nested, 2);
   block = nested[2];
-  t1 = $.get$blocks();
-  t2 = $.get$block_name();
-  t2 = t2.$index(t2, "repeat");
-  if (t2 >>> 0 !== t2 || t2 >= 18)
-    throw H.ioore(t1, t2);
-  t2 = t1[t2];
-  if (1 >= t2.length)
-    throw H.ioore(t2, 1);
-  t2[1] = true;
+  t2 = $.get$blocks();
+  t1 = $.get$block_name();
+  t1 = t1.$index(t1, "repeat");
+  if (t1 >>> 0 !== t1 || t1 >= 18)
+    throw H.ioore(t2, t1);
+  t1 = t2[t1];
+  if (1 >= t1.length)
+    throw H.ioore(t1, 1);
+  t1[1] = true;
   H.printToConsole("repeat FOUND");
-  if (typeof count !== "number")
-    throw H.iae(count);
-  i = 0;
-  for (; i < count; ++i)
+  if (count !== 3)
+    $.ERR_MSG = "count";
+  for (i = 0; i < count; ++i)
     U.interpret(block, consider);
 },
 
-processRepeat$bailout: function(state0, consider, nested) {
-  var t1, count, block, t2, i;
-  t1 = J.getInterceptor$asx(nested);
-  count = t1.$index(nested, 1);
-  block = t1.$index(nested, 2);
-  t1 = $.get$blocks();
-  t2 = $.get$block_name();
-  t2 = t2.$index(t2, "repeat");
-  if (t2 >>> 0 !== t2 || t2 >= 18)
-    throw H.ioore(t1, t2);
-  t2 = t1[t2];
-  if (1 >= t2.length)
-    throw H.ioore(t2, 1);
-  t2[1] = true;
-  H.printToConsole("repeat FOUND");
-  if (typeof count !== "number")
-    throw H.iae(count);
-  i = 0;
-  for (; i < count; ++i)
-    U.interpret(block, consider);
+processRepeat$bailout: function(state0, consider, nested, count, t1) {
+  switch (state0) {
+    case 0:
+    case 1:
+      state0 = 0;
+      t1 = J.getInterceptor$asx(nested);
+      count = t1.$index(nested, 1);
+    case 2:
+      var block, t2, i;
+      state0 = 0;
+      block = t1.$index(nested, 2);
+      t1 = $.get$blocks();
+      t2 = $.get$block_name();
+      t2 = t2.$index(t2, "repeat");
+      if (t2 >>> 0 !== t2 || t2 >= 18)
+        throw H.ioore(t1, t2);
+      t2 = t1[t2];
+      if (1 >= t2.length)
+        throw H.ioore(t2, 1);
+      t2[1] = true;
+      H.printToConsole("repeat FOUND");
+      if (!J.$eq(count, 3))
+        $.ERR_MSG = "count";
+      if (typeof count !== "number")
+        throw H.iae(count);
+      i = 0;
+      for (; i < count; ++i)
+        U.interpret(block, consider);
+  }
 },
 
 processCall: function(nested, consider) {
@@ -7784,7 +7824,7 @@ main_closure: {"": "Closure;",
     if (C.JSString_methods.startsWith$1(msg, "@dart")) {
       $.CURRENT_LEVEL = C.JSString_methods.substring$2(msg, 5, 6);
       t1 = $.get$text();
-      t1.$indexSet(t1, "if", $.CURRENT_LEVEL === "3" ? "\u064a\u062c\u0628 \u0639\u0644\u064a\u0643 \u0627\u062e\u062a\u064a\u0627\u0631 \u0644\u0628\u0633 \u0644\u0644\u0637\u0642\u0633 \u0627\u0644\u062d\u0627\u0631 \u0648\u0622\u062e\u0631 \u0644\u0644\u0637\u0642\u0633 \u0627\u0644\u0628\u0627\u0631\u062f" : "\u064a\u062c\u0628 \u0639\u0644\u064a\u0643 \u0627\u062e\u062a\u064a\u0627\u0631 \u0644\u0628\u0633 \u0645\u0646\u0627\u0633\u0628 \u0644\u062d\u0636\u0648\u0631 \u0627\u0644\u0632\u0648\u0627\u062c \u0648\u0622\u062e\u0631 \u0644\u0646\u0627\u062f\u064a \u0627\u0644\u0631\u064a\u0627\u0636\u0629");
+      t1.$indexSet(t1, "if", $.CURRENT_LEVEL === "3" ? "\u064a\u062c\u0628 \u0639\u0644\u064a\u0643 \u0627\u062e\u062a\u064a\u0627\u0631 \u0644\u0628\u0633 \u0644\u0644\u0637\u0642\u0633 \u0627\u0644\u062d\u0627\u0631 \u0648\u0622\u062e\u0631 \u0644\u0644\u0637\u0642\u0633 \u0627\u0644\u0628\u0627\u0631\u062f" : "\u064a\u062c\u0628 \u0639\u0644\u064a\u0643 \u0627\u062e\u062a\u064a\u0627\u0631 \u0644\u0628\u0633 \u0645\u0646\u0627\u0633\u0628 \u0644\u062d\u0636\u0648\u0631 \u0627\u0644\u062d\u0641\u0644\u0629 \u0648\u0622\u062e\u0631 \u0644\u0646\u0627\u062f\u064a \u0627\u0644\u0631\u064a\u0627\u0636\u0629");
       $.parts = msg.split("#");
       U.randomize();
       t1 = $.parts;
@@ -7808,14 +7848,21 @@ main__closure: {"": "Closure;",
 
 main__closure0: {"": "Closure;",
   call$1: function(t) {
-    var t1;
+    var t1, t2;
     if ($.get$outfits().length === 0) {
       $.timer.cancel$0();
       t1 = $.CURRENT_LEVEL;
-      if (t1 === "3")
-        U.sendMessage(C.JSString_methods.$add("bg ", $.CURRENT_WEATHER));
-      else if (t1 === "5")
-        U.sendMessage(C.JSString_methods.$add("bg ", $.CURRENT_PLACE));
+      if (t1 === "3" || t1 === "5" || J.$gt$n(H.Primitives_parseInt(t1, null, null), 6)) {
+        t1 = $.get$blocks();
+        t2 = $.get$block_name();
+        t2 = t2.$index(t2, "weather");
+        if (t2 >>> 0 !== t2 || t2 >= 18)
+          throw H.ioore(t1, t2);
+        t2 = t1[t2];
+        if (1 >= t2.length)
+          throw H.ioore(t2, 1);
+        U.sendMessage(C.JSString_methods.$add("bg ", J.$eq(t2[1], true) ? $.CURRENT_WEATHER : $.CURRENT_PLACE));
+      }
       if ($.check_input)
         U.sendMessage("DONE!");
       else {
@@ -7833,6 +7880,7 @@ $$ = null;
 
 // Static function getters
 init.globalFunctions.IsolateNatives__processWorkerMessage$closure = H.IsolateNatives__processWorkerMessage$closure = new H.Closure$2(H.IsolateNatives__processWorkerMessage, "IsolateNatives__processWorkerMessage$closure");
+init.globalFunctions.Primitives__throwFormatException$closure = H.Primitives__throwFormatException$closure = new H.Closure$1(H.Primitives__throwFormatException, "Primitives__throwFormatException$closure");
 init.globalFunctions.toStringWrapper$closure = H.toStringWrapper$closure = new H.Closure$0(H.toStringWrapper, "toStringWrapper$closure");
 init.globalFunctions.invokeClosure$closure = H.invokeClosure$closure = new H.Closure$7(H.invokeClosure, "invokeClosure$closure");
 init.globalFunctions.typeNameInChrome$closure = H.typeNameInChrome$closure = new H.Closure$1(H.typeNameInChrome, "typeNameInChrome$closure");
@@ -8035,6 +8083,11 @@ J.$ge$n = function(receiver, a0) {
   if (typeof receiver == "number" && typeof a0 == "number")
     return receiver >= a0;
   return J.getInterceptor$n(receiver).$ge(receiver, a0);
+};
+J.$gt$n = function(receiver, a0) {
+  if (typeof receiver == "number" && typeof a0 == "number")
+    return receiver > a0;
+  return J.getInterceptor$n(receiver).$gt(receiver, a0);
 };
 J.$index$asx = function(receiver, a0) {
   if (receiver.constructor == Array || typeof receiver == "string" || H.isJsIndexable(receiver, receiver[init.dispatchPropertyName]))
